@@ -1,0 +1,51 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+ {% comment %} {% url 'category:edit_category' %}  {% endcomment %}
+ <div class="body flex-grow-1 px-3">
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+ <div class="form-group p-3">
+    
+    <label style="color: white;" for="usr">Category Name</label>
+    <input name="category_name" type="text" class="form-control " id="usr">
+  </div>
+
+  <div class="form-group p-3">
+    <label style="color: white;" for="exampleFormControlFile1">Upload Image</label> <br>
+    <input name="img" type="file" class="form-control" id="exampleFormControlFile1">
+  </div>
+
+  <div class="p-3">
+  <button type="submit" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Edit Category</button>
+</div>
+</form>
+
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

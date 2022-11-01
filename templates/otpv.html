@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+</head>
+<body>
+
+  <style>
+    body{
+        background:#eee;
+      }
+      
+      .bgWhite{
+        background:white;
+        box-shadow:0px 3px 6px 0px #cacaca;
+      }
+      
+      .title{
+        font-weight:600;
+        margin-top:20px;
+        font-size:24px
+      }
+      
+      .customBtn{
+        border-radius:0px;
+        padding:10px;
+      }
+      
+      form input{
+        display:inline-block;
+        width:50px;
+        height:50px;
+        text-align:center;
+      }
+    </style>
+<script>
+      let digitValidate = function(ele){
+        console.log(ele.value);
+        ele.value = ele.value.replace(/[^0-9]/g,'');
+      }
+      
+      let tabChange = function(val){
+          let ele = document.querySelectorAll('input');
+          if(ele[val-1].value != ''){
+            ele[val].focus()
+          }else if(ele[val-1].value == ''){
+            ele[val-2].focus()
+          }   
+       }
+      
+      </script>
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-md-4 text-center">
+              <div class="row">
+                <div class="col-sm-12 mt-5 bgWhite">
+                  <div class="title">
+                    Verify OTP
+                  </div>
+                  
+                  <form action={% url "otp_v" %} method="POST" class="mt-5">
+                    {% csrf_token %}
+                  
+                  
+                    <input class="otp" type="text" name ="otp1" oninput='digitValidate(this)' tabindex="1" onkeyup='tabChange(1)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp2" oninput='digitValidate(this)' tabindex="2" onkeyup='tabChange(2)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp3" oninput='digitValidate(this)' tabindex="3"  onkeyup='tabChange(3)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp4" oninput='digitValidate(this)' tabindex="4" onkeyup='tabChange(4)' maxlength=1 >
+                    
+                  <hr class="mt-4">
+                  <button type="submit" class='btn btn-primary btn-block mt-4 mb-4 customBtn'>Verify</button>
+                </form>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</body>
+</html>
