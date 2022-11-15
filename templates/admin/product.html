@@ -41,7 +41,7 @@
         <td>{{i.category}}</td>
         <td>{{i.subcategory}}</td>
         
-        <td><a href={% url 'category:edit_category' i.id %} type="button" class="btn btn-success btn-sm">Edit</a></td>
+        <td><a href={% url 'pages:edit_product' i.id %} type="button" class="btn btn-success btn-sm">Edit</a></td>
         <td><a href={% url 'category:delete_product' i.id %} type="button" class="btn btn-danger btn-sm">Delete</a></td>
       
 

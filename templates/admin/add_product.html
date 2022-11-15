@@ -61,7 +61,7 @@
      <div class="row mb-4">
       <div class="col">
         <div class="form-outline">
-          <select name="p_catg" class="form-control" id="category">
+          <select name="p_catg" class="form-control" id="category1">
             <option value="">---select---</option>
             {% for i in Scata %}
            <option value="{{i.id}}">{{i.category_name}}</option>
@@ -133,7 +133,7 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
 
-      $("#category").change(function (){
+      $("#category1").change(function (){
         var url = "{% url 'category:dropdown_P' %}"
         var category_id = $(this).val();
 

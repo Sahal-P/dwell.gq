@@ -66,19 +66,79 @@
                     {% csrf_token %}
                   
                   
-                    <input class="otp" type="text" name ="otp1" oninput='digitValidate(this)' tabindex="1" onkeyup='tabChange(1)' maxlength=1 >
-                    <input class="otp" type="text" name ="otp2" oninput='digitValidate(this)' tabindex="2" onkeyup='tabChange(2)' maxlength=1 >
-                    <input class="otp" type="text" name ="otp3" oninput='digitValidate(this)' tabindex="3"  onkeyup='tabChange(3)' maxlength=1 >
-                    <input class="otp" type="text" name ="otp4" oninput='digitValidate(this)' tabindex="4" onkeyup='tabChange(4)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp1" oninput='digitValidate(this)' tabindex="1" onkeyup='tabChange(2)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp2" oninput='digitValidate(this)' tabindex="2" onkeyup='tabChange(3)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp3" oninput='digitValidate(this)' tabindex="3" onkeyup='tabChange(4)' maxlength=1 >
+                    <input class="otp" type="text" name ="otp4" oninput='digitValidate(this)' tabindex="4" maxlength=1 >
                     
                   <hr class="mt-4">
                   <button type="submit" class='btn btn-primary btn-block mt-4 mb-4 customBtn'>Verify</button>
                 </form>
+                <div id="some_div">
+
+                
+                </div>
+                <button disabled onclick = doSomething() id="resnd">resend</button>
                 </div>
               </div>
             </div>
         </div>
       </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+      <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script>
+
+    var timeLeft = 10;
+    var elem = document.getElementById('some_div');
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+      
+        if (timeLeft <=-1 ) {
+            clearTimeout(timerId);
+            document.getElementById("resnd").innerHTML = "resend"  
+            document.getElementById('resnd').removeAttribute('disabled')
+            
+        } else {
+            elem.innerHTML = timeLeft + ' seconds remaining';
+            timeLeft--;
+        }
+    }
+    
+    function doSomething() {
+      
+    
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'resendotp' %}",
+            data: { 1 : 1},
+            success: function (data) {
+              var timeLeft = 10;
+    var elem = document.getElementById('some_div');
+    var timerId = setInterval(countdown, 1000);
+    
+    function countdown() {
+      
+        if (timeLeft <=-1 ) {
+            clearTimeout(timerId);
+            document.getElementById("resnd").innerHTML = "resend"  
+            document.getElementById('resnd').removeAttribute('disabled')
+            
+        } else {
+            elem.innerHTML = timeLeft + ' seconds remaining';
+            timeLeft--;
+        }
+    }
+            }
+        })
+    }
+    
+    </script>
+      
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>
+

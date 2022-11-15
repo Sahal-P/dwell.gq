@@ -11,34 +11,6 @@
 
 
 
-<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="index.html">Dwell</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="oi oi-menu"></span> Menu
-      </button>
-
-      <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active"><a href="{% url "home" %}" class="nav-link">Home</a></li>
-          <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown04">
-              <a class="dropdown-item" href="{% url "pages:shop" %}">Shop</a>
-            <a class="dropdown-item" href="{% url "pages:productsingle" %}">Single Product</a>
-            <a class="dropdown-item" href="{% url "pages:cart" %}">Cart</a>
-            <a class="dropdown-item" href="{% url "pages:checkout" %}">Checkout</a>
-          </div>
-        </li>
-          <li class="nav-item"><a href="{% url "pages:about" %}" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="{% url "pages:blog" %}" class="nav-link">Blog</a></li>
-          <li class="nav-item"><a href="{% url "pages:contact" %}" class="nav-link">Contact</a></li>
-          <li class="nav-item cta cta-colored"><a href="{% url "pages:cart" %}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
-
-        </ul>
-      </div>
-    </div>
-  </nav>
 <!-- END nav -->
     
     <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
@@ -81,8 +53,8 @@
                         </div>
                         <hr>
                         <p class="bottom-area d-flex">
-                            <a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-                            <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
+                            <a href="{% url 'cart' %}" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                            <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
                         </p>
                     </div>
                 </div>
@@ -112,29 +84,7 @@
     </div>
 </section>
 
-    <section class="ftco-section-parallax">
-  <div class="parallax-img d-flex align-items-center">
-    <div class="container">
-      <div class="row d-flex justify-content-center py-5">
-        <div class="col-md-7 text-center heading-section ftco-animate">
-            <h1 class="big">Subscribe</h1>
-          <h2>Subcribe to our Newsletter</h2>
-          <div class="row d-flex justify-content-center mt-5">
-            <div class="col-md-8">
-              <form action="#" class="subscribe-form">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control" placeholder="Enter email address">
-                  <input type="submit" value="Subscribe" class="submit px-3">
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+ 
 
 
 
@@ -217,5 +167,43 @@
 
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+
+  function addWish(id){
+        
+    
+        var url = "{% url 'add_to_wishlist' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"id" : id},
+            success : function(r) {
+
+              Swal.fire(
+                'Product Added To Wishlist!',
+                '!',
+                'success'
+              )
+                
+            },
+            error: function() {
+              Swal.fire('Product Already Added')
+            }
+        });
+    }
+
+
+
+
+</script>
 
 {% endblock %}

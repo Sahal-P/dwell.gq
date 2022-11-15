@@ -1,0 +1,184 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+
+
+
+
+
+    <!-- END nav -->
+		
+		<div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <h1 class="mb-0 bread">My Wishlist</h1>
+            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <section class="h-100 h-custom">
+        <div class="container h-100 py-5">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              {% if wish%}
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+
+                    
+                    <tr>
+                      <th scope="col" class="h5">Product</th>
+                      <th scope="col">name</th>
+                      <th scope="col">Date</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">Qty</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                   
+                      
+                    {% for i in wish %}
+                    <tr>
+                      <th scope="row">
+                        <div class="d-flex align-items-center">
+                          <img src="/media/{{i.wished_item.product_img1}}" class="img-fluid rounded-3"
+                            style="width: 120px;" alt="Book">
+                          <div class="flex-column ms-4">
+                            <p class="mb-2"></p>
+                            <p class="mb-0"></p>
+                          </div>
+                        </div>
+                      </th>
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">{{i.wished_item.product_name}}</p>
+                      </td>
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">{{i.added_date}}</p>
+                      </td>
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">${{i.wished_item.selling_price}}</p>
+                      </td>
+                      </td>
+                      <td class="align-middle">
+                      
+                        <p class="mb-0" style="font-weight: 500; color:green;">{{i.quantity}}</p>
+                      
+                      </td>
+                      <td class="align-middle">
+                        <button id="del" type="button" onclick = RemoveWish({{i.id}}) class="btn btn-secondary">remove</button>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+
+              {% else %}
+              <div class="col-md-12 ftco-animate text-center">
+                <h2>you have no Wishlist yet</h2>
+                <a href="{% url "pages:c_category" %}" class="btn btn-secondary " href=""> Add Product To Wishlist</a>
+
+              </div>
+              
+              
+              {% endif %}
+              
+     
+            </div>
+          </div>
+        </div>
+      </section>
+
+     
+
+
+
+
+
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+
+<script>
+  function RemoveWish(id){
+
+    console.log("<<<<<<<<<<<<<")
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+      
+      
+        var url = "{% url 'delete_wish' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"id" : id},
+            success : function(r) {
+            
+              Swal.fire(
+                'Product Removed From Wishlist!',
+                '!',
+                'success'
+              )
+
+            },
+            error: function() {
+              Swal.fire('Please Try Again')
+            }
+        });
+     }
+   } 
+ }
+</script>
+
+
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
+  <script src="{% static "js/popper.min.js" %}"></script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <script src="{% static "js/jquery.easing.1.3.js" %}"></script>
+  <script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+  <script src="{% static "js/jquery.stellar.min.js" %}"></script>
+  <script src="{% static "js/owl.carousel.min.js" %}"></script>
+  <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+  <script src="{% static "js/aos.js" %}"></script>
+  <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
+  <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+  <script src="{% static "js/scrollax.min.js" %}"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+
+
+
+
+
+  
+
+    {% endblock %}

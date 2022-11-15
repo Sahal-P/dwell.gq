@@ -21,7 +21,6 @@ app_name = 'pages'
 
 urlpatterns = [ 
      path("",views.index,name="index"),
-     path("cart",views.cart,name="cart"),
      path("shop",views.shop,name="shop"),
      path("signle_P/<int:id>", views.signle_P,name="signle_P"),
      path("mensSC/<int:id>",views.mensSC,name="mensSC"),
@@ -41,6 +40,8 @@ urlpatterns = [
      path("add_subcategory", views.add_subcategory, name="add_subcategory"),
      path("add_product", views.add_product, name="add_product"),
      path("edit_subcategory/<int:id>", views.edit_subcategory, name="edit_subcategory"),
+     path("edit_product/<int:id>",views.edit_product,name="edit_product"),
+     path("user_block/<int:id>",views.user_block, name="user_block"),
 
                
 ]

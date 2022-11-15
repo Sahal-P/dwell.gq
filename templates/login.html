@@ -28,8 +28,13 @@
    	<link rel="stylesheet" type="text/css" href="{%static "login/css/main.css" %}">
 <!--===============================================================================================-->
 </head>
-<body style="background-color: #ffff;">
-	
+<body style="background-color: rgb(255, 245, 245) ;">
+
+
+
+	<div class="d-flex justify-content-center align-items-center container ">
+
+		<div class="row ">
 <div class="container">
 	<div class="limiter">
 		<div class="container-login100">
@@ -40,16 +45,20 @@
 						Login to continue
 					</span>
 					
+					<!-- class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz" -->
 					
-					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
-						<input class="input100" type="text" name="email">
-						<span class="focus-input100"></span>
+					
+					<div class="wrap-input100">
+						
+						<input class="input100" type="text" name="email"  id="contact-email">
+						<span  class="focus-input100"></span>
 						<span class="label-input100">Email</span>
+						
 					</div>
 					
 					
 					<div class="wrap-input100 validate-input" data-validate="Password is required">
-						<input class="input100" type="password" name="password">
+						<input class="input100" type="password" id="pswd" name="password">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>
 					</div>
@@ -104,7 +113,7 @@
 				</form>
 				
 				
-					<img class="img-fluid login100-more" src="{% static "login/images/bg-03.jpg" %}"  />
+					{% comment %} <img class="img-fluid login100-more" src="{% static "login/images/bg-03.jpg" %}"  /> {% endcomment %}
 				
 
 				
@@ -114,7 +123,61 @@
 	</div>
 	
 	</div>
-
+</div>
+	
+</div>
+	{% comment %} <script>
+		//document.getElementById("cc").innerHTML="jhhhhhhhhhh";
+		
+		var emailError = document.getElementById('email1')
+		var passwordError = document.getElementById('password1')
+		
+		function validateEmail(){
+			var email = document.getElementById('contact-email').value;
+			console.log("hi")
+	
+			if(email.length == 0){
+				console.log("h")
+				emailError.innerHTML = 'Email is required'
+				
+				return false;
+		}
+	
+			if(!email.match(/^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/)){
+				console.log("h")
+	
+				   emailError.innerHTML = 'Email Invalid'
+				return false;
+	
+		}
+	
+			emailError.innerHTML = '';
+			return true;
+		}
+		function verifyPassword() {  
+			var pw = document.getElementById("pswd").value;  
+			//check empty password field  
+			if(pw == "") {  
+				passwordError.innerHTML = "Fill the password please!";  
+			   return false;  
+			}  
+			 
+		   //minimum password length validation  
+			if(pw.length < 8) {  
+				passwordError.innerHTML = "Password length must be atleast 8 characters";  
+			   return false;  
+			}  
+			
+		  //maximum length of password validation  
+			if(pw.length > 15) {  
+				passwordError.innerHTML = "Password length must not exceed 15 characters";  
+			   return false;  
+			} 
+			passwordError.innerHTML = '';
+			return true;
+			 
+		  }  
+	</script> {% endcomment %}
 	
 	
 <!--===============================================================================================-->

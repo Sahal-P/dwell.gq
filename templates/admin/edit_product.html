@@ -1,0 +1,161 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+ <script>
+  $("#checkbox1").is(':checked', function(){
+    $("#checkbox1").prop('checked', true);
+  });
+  </script>  
+   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+
+ <div class="body flex-grow-1 px-3">
+  <form action= "" method="POST" enctype="multipart/form-data">
+    <!-- 2 column grid layout with text inputs for the first and last names -->
+    {% csrf_token %}
+    <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <input name="p_name" type="text" id="form6Example1" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example1">Product Name</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <input name="p_brand" type="text" id="form6Example2" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example2">Brand</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <input name="p_quantity" type="number" id="form6Example2" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example2">Quantity</label>
+        </div>
+      </div>
+    </div>
+  
+ 
+  
+    <!-- Text input -->
+    <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <input name="p_og" type="text" id="form6Example1" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example1">Original Price</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <input name="p_sp" type="text" id="form6Example2" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example2">Selling Price</label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Number input -->
+    
+     <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <select name="p_catg" class="form-control" id="category">
+            <option value="">---select---</option>
+            {% for i in Scata %}
+           <option value="{{i.id}}">{{i.category_name}}</option>
+      {% endfor %}
+          </select>
+          <label style="color: WHITE;" class="form-label" for="form6Example1">Category</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <select name="p_scatg" class="form-control" id ="subcategory1">
+            <option value="">---select---</option>
+
+
+
+          </select>
+          <label style="color: WHITE;" class="form-label" for="form6Example2">Sub Category</label>
+        </div>
+        <br>
+      </div> <div class="row mb-4">
+        <div class="col">
+          <div class="form-outline">
+            <input name="img1" type="file" class="form-control" id="exampleFormControlFile1">
+            <label style="color: white;" for="exampleFormControlFile1">Upload Image 1</label> <br>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-outline">
+            <input name="img2" type="file" class="form-control" id="exampleFormControlFile1">
+            <label style="color: white;" for="exampleFormControlFile1">Upload Image 2</label> <br>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-outline">
+            <input name="img3" type="file" class="form-control" id="exampleFormControlFile1">
+            <label style="color: white;" for="exampleFormControlFile1">Upload Image 3</label> <br>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-outline">
+            <input name="img4" type="file" class="form-control" id="exampleFormControlFile1">
+            <label style="color: white;" for="exampleFormControlFile1">Upload Image 4</label> <br>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  
+    <!-- Message input -->
+    <div class="form-outline mb-4">
+      <textarea name="p_disc" class="form-control" id="form6Example7" rows="4"></textarea>
+      <label  style="color: WHITE;" class="form-label" for="form6Example7">Product Discription</label>
+    </div>
+  
+    <!-- Checkbox -->
+    <div class="form-check mb-4">
+      <input name="p_av" class="form-check-input me-2" type="checkbox" value="False" id="checkbox1" checked />
+      <label  style="color: WHITE;" class="form-check-label" for="form6Example8">Availtablity</label>
+    </div>
+  
+    <!-- Submit button -->
+    <button type="submit" class="btn btn-success btn-lg btn-block mb-4">EDIT PRODUCT</button>
+  </form>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+      $("#category").change(function (){
+        var url = "{% url 'category:dropdown_PE' %}"
+        var category_id = $(this).val();
+
+        $.ajax({
+          url : url,
+          data :{"category":category_id},
+          success: function(data){
+            $("#subcategory1").html(data);
+          }
+
+        });
+
+      });
+ </script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

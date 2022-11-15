@@ -213,10 +213,15 @@
                         <td><span class="status text-success">&bull;</span>{{i.last_login}}</td>
                         <td><span class="status text-success">&bull;</span>Active</td>
                         <td>
-                            <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked />
-                            <label class="form-check-label" for="flexSwitchCheckChecked">Block</label>
-                          </div>
+                            <form action= {% url 'pages:user_block' i.id %}>
+                                {% if i.is_blocked is True %}
+                                <button type="submit" class="btn btn-danger" name="ubl" value="False">unblock</button>
+                                {% else %}
+                                <button type="submit" class="btn btn-success" name="bl" value="True">block</button>
+                                
+                                {% endif %}
+                            </form>
+                            
                         </td>
                     </tr>
                 

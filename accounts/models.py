@@ -5,6 +5,7 @@ from unittest.util import _MAX_LENGTH
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 import uuid
+from category.models import Products
 # Create your models here.
 
 class MyAccountManager(BaseUserManager):
@@ -60,11 +61,12 @@ class Account(AbstractBaseUser):
     is_staff        = models.BooleanField(default=False)
     is_active       = models.BooleanField(default=False)
     is_superuser    = models.BooleanField(default=False)
+    is_blocked      = models.BooleanField(default=False)
     
     objects = MyAccountManager()
 
     
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD  = 'email'
     REQUIRED_FIELDS = ['username','first_name','last_name','phone_number']
     
     def __str__(self):
@@ -76,8 +78,23 @@ class Account(AbstractBaseUser):
     def has_module_perms(self, add_label):
         return True
 
+class Address(models.Model):
+    user = models.ForeignKey(Account, on_delete= models.CASCADE)
+    first_name      = models.CharField(max_length = 50)
+    last_name       = models.CharField(max_length =50,null = True, blank=True)
+    email           = models.EmailField(max_length=100, null = True, blank=True)
+    phone_number_1  = models.CharField(max_length=50)
+    phone_number_2  = models.CharField(max_length=50, null = True, blank=True)
+    address_1       = models.TextField(blank=False)
+    address_2       = models.TextField(null= True, blank=True)
+    country         = models.CharField(max_length=50, blank=False)
+    State           = models.CharField(max_length=50, blank=False)
+    zip_code        = models.IntegerField(blank=False)
 
-class profile(models.Model):
-    user = models.OneToOneField(Account, on_delete=models.CASCADE, null=True)
-    otp = models.CharField(max_length = 100 , null = True , blank = True)
-    uid = models.UUIDField(default=uuid.uuid4)
+class Wishlist(models.Model):
+    user            = models.ForeignKey(Account,on_delete=models.CASCADE)
+    wished_item     = models.ForeignKey(Products,on_delete=models.CASCADE)
+    quantity        = models.IntegerField(null=True,blank=True)
+    added_date      = models.DateTimeField(auto_now_add=True)
+    
+   

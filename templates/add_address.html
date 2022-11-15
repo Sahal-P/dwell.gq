@@ -1,0 +1,310 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+	<style>
+		.qty .count {
+			color: #000;
+			display: inline-block;
+			vertical-align: top;
+			font-size: 25px;
+			font-weight: 700;
+			line-height: 30px;
+			padding: 0 2px
+			;min-width: 35px;
+			text-align: center;
+		}
+		.qty .plus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			}
+		.qty .minus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			background-clip: padding-box;
+		}
+		div {
+			text-align: center;
+		}
+		.minus:hover{
+			background-color: #717fe0 !important;
+		}
+		.plus:hover{
+			background-color: #717fe0 !important;
+		}
+		/*Prevent text selection*/
+		span{
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+		input{  
+			border: 0;
+			width: 2%;
+		}
+		nput::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input:disabled{
+			background-color:white;
+		}
+				 
+	</style>
+    
+ 
+    <!-- END nav -->
+		
+		<div class="hero-wrap hero-bread" >
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <h1 class="mb-0 bread">Add Address</h1>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+    <div class="container">
+
+    <div class="row-md-8 order-md-1">
+        <h4 class="mb-3">Billing address</h4>
+
+
+        <form class="needs-validation" novalidate  method="POST" action={% url 'add_address' %}>
+
+            {% csrf_token %}
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">First name</label>
+              <input type="text" class="form-control" name="first_name" id="firstName" placeholder="" required>
+              <div class="invalid-feedback">
+                Valid first name is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Last name</label>
+              <input type="text" class="form-control" name="last_name" id="lastName" placeholder=""  required>
+              <div class="invalid-feedback">
+                Valid last name is required.
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="firstName">Phone number 1</label>
+              <input type="number" class="form-control" name="phone1" id="firstName" placeholder="" required>
+              <div class="invalid-feedback">
+                Valid number is required.
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lastName">Phone number 2 (optional)</label>
+              <input type="number" class="form-control" name ="phone2" id="lastName" placeholder="" required>
+              <div class="invalid-feedback">
+                Valid last number required.
+              </div>
+            </div>
+          </div>
+  
+         
+  
+          <div class="mb-3">
+            <label for="email">Email <span class="text-muted">(Optional)</span></label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="you@example.com">
+            <div class="invalid-feedback">
+              Please enter a valid email address for shipping updates.
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label for="address">Address</label>
+            <input type="text" class="form-control" name="address1" id="address" placeholder="1234 Main St" required>
+            <div class="invalid-feedback">
+              Please enter your shipping address.
+            </div>
+          </div>
+  
+          <div class="mb-3">
+            <label for="address2">Address 2 <span class="text-muted">(Optional)</span></label>
+            <input type="text" class="form-control" name="address2" id="address2" placeholder="Apartment or suite">
+          </div>
+  
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <label for="country">Country</label>
+              <select class="custom-select d-block w-100" name="country" id="country" required>
+                <option value="">Choose...</option>
+                <option>India</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a valid country.
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="state">State</label>
+              <select class="custom-select d-block w-100" name="state" id="state" required>
+                <option value="">Choose...</option>
+                <option>Delhi</option>
+                <option>Kerala</option>
+                <option>Tamil Nadu</option>
+                <option>Rajestan</option>
+              </select>
+              <div class="invalid-feedback">
+                Please provide a valid state.
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <label for="zip">Zip</label>
+              <input type="number" class="form-control" name="zip_code" id="zip" placeholder="" required>
+              <div class="invalid-feedback">
+                Zip code required.
+              </div>
+            </div>
+          </div>
+          <hr class="mb-4">
+          
+         
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" class="custom-control-input" id="save-info">
+            <label class="custom-control-label" for="save-info">Save this information for next time</label>
+          </div>
+          <hr class="mb-4">
+          <button type="submit" class="btn btn-primary btn-lg btn-block" >Add address </button>
+
+        </form>
+
+
+    </div>
+
+
+
+    <div class="hero-wrap hero-bread" >
+        <div class="container">
+          <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+              <h1 class="mb-0 bread"></h1>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+   
+
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
+  <script src="{% static "js/popper.min.js" %}"></script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <script src="{% static "js/jquery.easing.1.3.js" %}"></script>
+  <script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+  <script src="{% static "js/jquery.stellar.min.js" %}"></script>
+  <script src="{% static "js/owl.carousel.min.js" %}"></script>
+  <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+  <script src="{% static "js/aos.js" %}"></script>
+  <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
+  <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+  <script src="{% static "js/scrollax.min.js" %}"></script>
+  <script src="{% static "https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="{% static "js/google-map.js" %}"></script>
+  <script src="{% static "js/main.js" %}"></script>
+
+  <script>
+		$(document).ready(function(){
+
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		            
+		            $('#quantity').val(quantity + 1);
+
+		          
+		            // Increment
+		        
+		    });
+
+		     $('.quantity-left-minus').click(function(e){
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		      
+		            // Increment
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+		    
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+		    $('#count1').prop('disabled', true);
+   			$(document).on('click','.plus',function(){
+				$('#count1').val(parseInt($('#count1').val()) + 1 );
+    		});
+        	$(document).on('click','.minus',function(){
+    			$('#count1').val(parseInt($('#count1').val()) - 1 );
+    				if ($('#count1').val() == 0) {
+						$('#count1').val(1);
+					}
+    	    	});
+ 		});
+	</script>
+    {% endblock %}

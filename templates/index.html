@@ -42,21 +42,26 @@
 	        <ul class="navbar-nav ml-auto">
 	          <li class="nav-item active"><a href="{% url "home" %}" style="font-size: 23px;"class="nav-link">Home</a></li>
 	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" style="font-size: 23px; margin-left: 30px;" aria-expanded="false">Shop</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" style="font-size: 23px;" aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="{% url "pages:shop" %}">Shop</a>
+              	<a class="dropdown-item" href="{% url "pages:c_category" %}">Shop</a>
 				<a class="dropdown-item" href="{% url "pages:c_category" %}">category</a>
-                <a class="dropdown-item" href="{% url "pages:productsingle" %}">Single Product</a>
-                <a class="dropdown-item" href="{% url "pages:cart" %}">Cart</a>
-                <a class="dropdown-item" href="{% url "pages:checkout" %}">Checkout</a>
+                <a class="dropdown-item" href="{% url "cart" %}">Cart</a>
+                <a class="dropdown-item" href="{% url "order_status" %}">Orders</a>
+				<a class="dropdown-item" href="{% url "wishlist" %}">Wishlist</a>
+			
               </div>
             </li>
 	          <li class="nav-item"><a href="{% url "pages:about" %}" style="font-size: 23px;" class="nav-link">About</a></li>
 	          <li class="nav-item"><a href="{% url "pages:blog" %}" style="font-size: 23px;" class="nav-link">Blog</a></li>
 	          <li class="nav-item"><a href="{% url "pages:contact" %}" style="font-size: 23px;" class="nav-link ">Contact</a></li>
-	          <li class="nav-item cta cta-colored"><a href="{% url "pages:cart" %}" class="nav-link" style="font-size: 23px;"><span class="icon-shopping_cart"></span>[0]</a></li>
-			  <li class="nav-item "><a href="{% url "log_out" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">logout<span  class="icon-exit_to_app"></span></a></li>
+	          <li class="nav-item cta cta-colored"><a href="{% url "cart" %}" class="nav-link" style="font-size: 23px;"><span class="icon-shopping_cart"></span>[0]</a></li>
+			  {% if request.user.is_authenticated %}
+			  <li class="nav-item "><a href="{% url "log_out" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">LOG OUT<span  class="icon-exit_to_app"></span></a></li>
+			  {% else %}
+			  <li class="nav-item "><a href="{% url "log_in" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">LOG IN<span  class="icon-exit_to_app"></span></a></li>
 
+			  {% endif %} 
 
 	        </ul>
 	      </div>
@@ -64,7 +69,7 @@
 	  </nav>
     <!-- END nav -->
 		
-		<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1.jpg'%});">
+		<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1_.jpg'%});">
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">

@@ -1,0 +1,234 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+
+ <div class="body flex-grow-1 px-3">
+  {% comment %} <a href= "" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Edit Orders</a> {% endcomment %}
+
+
+  <table class="table table-dark">
+    <thead>
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">user</th>
+
+        <th scope="col">Orderd Date</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        <th scope="col">Status</th>
+        <th scope="col">Cancel</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+     {% for order in orders  %}
+       
+    
+        <td><img src="/media/{{order.product.product_img1}}" alt="" border=3 height=150 width=150></img></td>
+        <td>{{order.user}}</td>
+        <td>{{order.orderd_date}}</td>
+        <td>{{order.quantity}}</td>
+        <td>{{order.sub_total}}</td>
+        <td>{% if order.status == "Return Requested waiting for approval"  %}
+
+            <button onclick = approve_or({{order.id}}) class="btn btn-light">Approve return request</button>
+
+                  
+            
+            {% elif order.status == "cancelled" %}
+                <h5 style="color: red;">Order cancelled</h5>
+
+            
+        
+                
+                  
+            {% else %}
+                  
+                
+                
+        
+            <select id="selectbox{{ forloop.counter }}" onchange=idc("selectbox{{ forloop.counter }}",{{order.id}}) class="form-select" aria-label="Default select example">
+                
+
+                {% if order.status == "placed" %}
+
+                <option selected>{{order.status}}</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Deliverd">Deliverd</option>
+                <option value="Refund In Progress">Refund In Progress</option>
+
+                <option value="Refund Initiated">Refund Initiated</option>
+               {% elif order.status == "Shipped" %}
+               <option selected>{{order.status}}</option>
+                <option value="Deliverd">Deliverd</option>
+                <option value="Refund In Progress">Refund In Progress</option>
+
+                <option value="Refund Initiated">Refund Initiated</option>
+                {% elif order.status == "Deliverd" %}
+                <option selected>{{order.status}}</option>
+
+                
+                {% elif order.status == "Refund In Progress" %}
+                <option selected>{{order.status}}</option>
+
+                <option value="Refund Initiated">Refund Initiated</option>
+                {% elif order.status == "Refund Initiated" %}
+                <option selected>{{order.status}}</option>
+                
+
+                <option value="Refund In Progress">Refund In Progress</option>
+
+                {% elif order.status == "Return Aproved" %}
+                <option selected>{{order.status}}</option>
+                <option value="Refund Initiated">Refund Initiated</option>
+                <option value="Refund In Progress">Refund In Progress</option>
+
+                
+                {% endif %}
+              </select>
+         {% endif %}
+            
+        </td>
+        
+        {% comment %} <td><a href="" type="button" class="btn btn-success btn-sm">Edit</a></td> {% endcomment %}
+        {% if order.status == "placed" or order.status == "Shipped" %}
+        <td><a onclick=ordercancell_a({{order.id}}) type="button" class="btn btn-danger btn-sm">Cancell</a></td>
+        {% endif %}
+
+      </tr>
+
+       
+      {% endfor %}
+    
+     
+    </tbody>
+  </table>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<script>
+
+    function idc(id,oid){
+        
+        var value = $("#"+id).val();
+
+        var url = "{% url 'admin_orderedit' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"value" : value, "oid" : oid},
+            success : function(i) {
+                Swal.fire({
+                    title: 'Are you sure you want to change the status?',
+                    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                    
+                    
+                      window.location.href = 'admin_order_detailes';
+                
+                    }
+                  })
+            },
+            error: function() {
+                alert('Error occured');
+            }
+        });
+    }
+
+    function ordercancell_a(id){
+        
+
+        var url = "{% url 'admin_order_cancell' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"id" : id},
+            success : function(response) {
+                Swal.fire({
+                    title: 'Are you sure you want to change the status?',
+                    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                    
+                    
+                      window.location.href = 'admin_order_detailes';
+                
+                    }
+                  })
+            },
+            error: function() {
+                alert('Error occured');
+            }
+        });
+    }
+
+
+    function approve_or(id){
+        
+
+        var url = "{% url 'approve_return' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"id" : id},
+            success : function(i) {
+                Swal.fire({
+                    title: 'Are you sure you want to approve?',
+                    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                    
+                    
+                      window.location.href = 'admin_order_detailes';
+                
+                    }
+                  })
+            },
+            error: function() {
+                alert('Error occured');
+            }
+        });
+    }
+
+
+
+</script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -1,0 +1,225 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+	<style>
+		.qty .count {
+			color: #000;
+			display: inline-block;
+			vertical-align: top;
+			font-size: 25px;
+			font-weight: 700;
+			line-height: 30px;
+			padding: 0 2px
+			;min-width: 35px;
+			text-align: center;
+		}
+		.qty .plus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			}
+		.qty .minus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			background-clip: padding-box;
+		}
+		div {
+			text-align: center;
+		}
+		.minus:hover{
+			background-color: #717fe0 !important;
+		}
+		.plus:hover{
+			background-color: #717fe0 !important;
+		}
+		/*Prevent text selection*/
+		span{
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+		input{  
+			border: 0;
+			width: 2%;
+		}
+		nput::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input:disabled{
+			background-color:white;
+		}
+				 
+	</style>
+ 
+    <!-- END nav -->
+		
+		<div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <h1 class="mb-0 bread">My Orders</h1>
+            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+    <section class="h-100 h-custom">
+        <div class="container h-100 py-5">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+      {% if orders is not None %}
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="h5">Product</th>
+                      <th scope="col" class="h5">name</th>
+                      <th scope="col">Quantity</th>
+                      <th scope="col">Price</th>
+                      <th scope="col">status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for i in orders  %}
+                      
+                    
+                    <tr>
+                      <th scope="row">
+                        <div class="d-flex align-items-center">
+                          <img src="/media/{{i.product.product_img1}}" class="img-fluid rounded-3"
+                            style="width: 120px;" alt="Book">
+							<div class="flex-column ms-4">
+								
+								
+							  </div>
+                        </div>
+                      </th>
+					  <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">{{i.product.product_name}}</p>
+						<p class="mb-0">{{i.product.subcategory}}</p>
+                      </td>
+                   
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">{{i.quantity}}</p>
+                      </td>
+                      <td class="align-middle">
+                        <p class="mb-0" style="font-weight: 500;">${{i.sub_total}}</p>
+                      </td>
+                      </td>
+                      <td class="align-middle">
+                      
+                        <p class="mb-0" style="font-weight: 500; color:green;">Order {{i.status}}</p>
+                      
+                      </td>
+                      <td class="align-middle">
+                        <a href={% url 'order_details' i.id %} class="btn btn-secondary">View</a>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% else %}
+
+              <h2>you have no orders yet</h2>
+              <a href="{% url "pages:c_category" %}" class="btn btn-secondary " href=""> Shop Now</a>
+
+      
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
+  <script src="{% static "js/popper.min.js" %}"></script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <script src="{% static "js/jquery.easing.1.3.js" %}"></script>
+  <script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+  <script src="{% static "js/jquery.stellar.min.js" %}"></script>
+  <script src="{% static "js/owl.carousel.min.js" %}"></script>
+  <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+  <script src="{% static "js/aos.js" %}"></script>
+  <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
+  <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+  <script src="{% static "js/scrollax.min.js" %}"></script>
+
+
+    {% endblock %}

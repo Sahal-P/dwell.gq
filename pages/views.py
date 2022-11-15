@@ -4,6 +4,7 @@ from django.utils.text import slugify
 
 from accounts.models import Account
 from category.models import Category, Products, SubCategory
+from cart.models import Cart,CartItem
 
 # Create your views here.
 
@@ -41,8 +42,7 @@ def productsingle(request):
 
 
 
-def cart(request):
-    return render (request,"cart.html")
+
 
 
 
@@ -68,7 +68,7 @@ def contact(request):
 
 
 def a_tables(request):
-    person = Account.objects.all()
+    person = Account.objects.all().order_by('id')
     return render(request, "admin/tables2.html",{"person":person})
 
 
@@ -105,26 +105,109 @@ def add_subcategory(request):
 def add_product(request):
     catg = SubCategory.objects.all()
     Scata = Category.objects.all()
-    return render (request, "admin/add_product.html", {"catg":catg ,"Scata":Scata })
+    return render (request, "admin/add_product.html" ,{"Scata":Scata})
 
 
 def edit_subcategory(request, id):
     cata = Category.objects.all()
     if request.POST:
+        
         subcategory =SubCategory.objects.get(id=id)
-        print(request.POST.get('category2'))
+        
         cat1=request.POST.get('category2')
-        print(cat1,"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
-        name = request.POST.get("subcategory_name")
-        
-        subcategory.Sub_img = request.FILES["img"]
-        subcategory.subcategory_name = name
-        subcategory.Sub_slug = slugify(name)
-        
         subcategory.category_id = cat1
-        
         subcategory.save()
+        if request.POST['subcategory_name']:
+            name = request.POST.get("subcategory_name")
+            subcategory.subcategory_name = name
+            subcategory.Sub_slug = slugify(name)
+            subcategory.save()
+        if request.POST['img']:
+            subcategory.Sub_img = request.FILES["img"]
+            subcategory.save()
         
         return redirect("pages:subcategory")
     
     return render (request, "admin/edit_subcategory.html", {"cata":cata})
+
+
+def edit_product(request,id):
+    catg = SubCategory.objects.all()
+    Scata = Category.objects.all()
+    if request.POST:
+        product = Products.objects.get(pk=id)
+        if request.POST['p_name']:
+            name = request.POST.get("p_name")
+            product.product_name=name
+            product.slug=slugify(name)
+            product.save()
+        
+        if request.POST['p_brand']:
+            brand = request.POST.get("p_brand")
+            product.brand=brand
+            product.save()
+        if request.POST['p_quantity']:
+            quantity = request.POST.get("p_quantity")
+            product.quantity=quantity
+            product.save()
+        if request.POST['p_og']:
+            og = request.POST.get("p_og")
+            product.original_price=og
+            product.save()
+        if request.POST['p_sp']:
+            sp = request.POST.get("p_sp")
+            product.selling_price=sp
+            product.save()
+        if request.POST['p_catg']:
+            category = request.POST.get("p_catg")
+            product.category_id =category
+            product.save()
+        if request.POST['p_scatg']:
+            subcategory = request.POST.get("p_scatg")
+            product.subcategory_id =subcategory
+            product.save()
+        if request.POST['img1']:
+            img1 = request.FILES["img1"]
+            product.product_img1 = img1
+            product.save()
+        if request.POST['img2']:
+            img2 = request.FILES["img2"]
+            product.product_img2 = img2
+            product.save()
+        if request.POST['img3']:
+            img3 = request.FILES["img3"]
+            product.product_img3 = img3 
+            product.save()
+        if request.POST['img4']:
+            img4 = request.FILES["img4"]
+            product.product_img4 = img4
+            product.save()
+        if request.POST['p_disc']:
+            discription = request.POST.get("p_disc")
+            product.description=discription
+            product.save()
+        if request.POST['p_av']:
+            status = request.POST.get("p_av")
+            product.status = status
+            product.save()
+        
+        
+
+        return redirect("pages:product")
+    
+    return render (request, "admin/edit_product.html",  {"catg":catg ,"Scata":Scata })
+
+
+
+def user_block(request, id):
+    id=id
+    val = request.GET.get('bl')
+    val2 = request.GET.get('ubl')
+    person = Account.objects.get(pk=id)
+    if val is not None:
+        person.is_blocked = True
+        person.save()
+    if val2 is not None:
+        person.is_blocked = False
+        person.save()
+    return redirect('pages:a_tables')

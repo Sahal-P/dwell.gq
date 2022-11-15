@@ -1,0 +1,359 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+	<style>
+		.qty .count {
+			color: #000;
+			display: inline-block;
+			vertical-align: top;
+			font-size: 25px;
+			font-weight: 700;
+			line-height: 30px;
+			padding: 0 2px
+			;min-width: 35px;
+			text-align: center;
+		}
+		.qty .plus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			}
+		.qty .minus {
+			cursor: pointer;
+			display: inline-block;
+			vertical-align: top;
+			color: white;
+			width: 30px;
+			height: 30px;
+			font: 30px/1 Arial,sans-serif;
+			text-align: center;
+			border-radius: 50%;
+			background-clip: padding-box;
+		}
+		div {
+			text-align: center;
+		}
+		.minus:hover{
+			background-color: #717fe0 !important;
+		}
+		.plus:hover{
+			background-color: #717fe0 !important;
+		}
+		/*Prevent text selection*/
+		span{
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+		input{  
+			border: 0;
+			width: 2%;
+		}
+		nput::-webkit-outer-spin-button,
+		input::-webkit-inner-spin-button {
+			-webkit-appearance: none;
+			margin: 0;
+		}
+		input:disabled{
+			background-color:white;
+		}
+				 
+	</style>
+
+    <!-- END nav -->
+		
+		<div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
+      <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+          <div class="col-md-9 ftco-animate text-center">
+            <h1 class="mb-0 bread">My Cart</h1>
+            <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<style>
+    @media (min-width: 1025px) {
+        .h-custom {
+        height: 100vh !important;
+        }
+        }
+        
+        .card-registration .select-input.form-control[readonly]:not([disabled]) {
+        font-size: 1rem;
+        line-height: 2.15;
+        padding-left: .75em;
+        padding-right: .75em;
+        }
+        
+        .card-registration .select-arrow {
+        top: 13px;
+        }
+        
+        .bg-grey {
+        background-color: #eae8e8;
+        }
+        
+        @media (min-width: 992px) {
+        .card-registration-2 .bg-grey {
+        border-top-right-radius: 16px;
+        border-bottom-right-radius: 16px;
+        }
+        }
+        
+        @media (max-width: 991px) {
+        .card-registration-2 .bg-grey {
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+        }
+        }
+</style>
+
+
+    <section class="h-100 h-custom">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+              <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                <div class="card-body p-0">
+                  <div class="row g-0">
+                    <div class="col-lg-8">
+                      <div class="p-5">
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                          <h1 class="fw-bold mb-0 text-black"></h1>
+                          <h6 class="mb-0 text-muted">3 items</h6>
+                        </div>
+
+
+
+
+
+                        {% for i in cart_items  %}
+                        <hr class="my-4">
+                        
+      
+                        <div class="row mb-4 d-flex justify-content-between align-items-center">
+                            
+                          <div class="col-md-2 col-lg-2 col-xl-2">
+
+                            
+                            <img
+                              src="/media/{{i.product.product_img1}}"
+                              class="img-fluid rounded-3" alt="Cotton T-shirt">
+                          </div>
+                          <div class="col-md-3 col-lg-3 col-xl-3">
+                            <h6 class="text-muted">{{i.product.subcategory}}</h6>
+                            <h6 class="text-black mb-0">{{i.product.product_name}}</h6>
+                          </div>
+                          
+                          <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                            <button class="btn btn-link px-2"
+                              onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                              -
+                            </button>
+      
+                            <input id="form1" min="1" max="30" name="quantity" value="{{i.Quantity}}" type="number"
+                              class="form-control form-control-sm" />
+      
+                            <button class="btn btn-link px-2"
+                              onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                            +
+                            </button>
+                          </div>
+                          <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                            <h6 class="mb-0">$ {{i.sub_total}}  </h6>
+                          </div>
+                          <div class="col-md-1 col-lg-1 col-xl-1 text-end">
+                            <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{i.id}}">x</button>
+                          </div>
+                        </div>
+                        <!-- Modal -->
+                            <div class="modal fade" id="exampleModalCenter{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Are you sure you want to remove from cart ?</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-md-6 col-lg-6 col-xl-6" style="align-items:center ;">
+
+                            
+                                            <img style="align-items:center ;"
+                                              src="/media/{{i.product.product_img1}}"
+                                              class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                          </div>
+                                         {{i.product.product_name}}
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                      <a type="button" class="btn btn-primary btn-lg">Yes</a>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                   
+                        
+                        
+
+                        {% endfor %}
+      
+
+
+
+
+
+
+
+
+
+                       
+      
+                        <hr class="my-4">
+      
+                        <div class="pt-5">
+                          <h6 class="mb-0"><a href="#!" class="text-body"><i
+                                class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-lg-4 bg-grey">
+                      <div class="p-5">
+                        <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                        <hr class="my-4">
+      
+                        <div class="d-flex justify-content-between mb-4">
+                          <h5 class="text-uppercase">items 3</h5>
+                          <h5>$ {{total}}</h5>
+                        </div>
+      
+                        <h5 class="text-uppercase mb-3">Shipping</h5>
+      
+                        <div class="mb-4 pb-2">
+                          <select class="select">
+                            <option value="1">Standard-Delivery- €5.00</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                            <option value="4">Four</option>
+                          </select>
+                        </div>
+      
+                        <h5 class="text-uppercase mb-3">Give code</h5>
+      
+                        <div class="mb-5">
+                          <div class="form-outline">
+                            <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                            <label class="form-label" for="form3Examplea2">Enter your code</label>
+                          </div>
+                        </div>
+      
+                        <hr class="my-4">
+      
+                        <div class="d-flex justify-content-between mb-5">
+                          <h5 class="text-uppercase">Total price</h5>
+                          <h5>$ {{total}}</h5>
+                        </div>
+      
+                        <a href="{% url 'checkout' %}" type="button" style="color:white;" class="btn btn-dark btn-block btn-lg"
+                          data-mdb-ripple-color="dark">Buy Now</a>
+      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+	
+
+   
+
+  
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
+  <script src="{% static "js/popper.min.js" %}"></script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <script src="{% static "js/jquery.easing.1.3.js" %}"></script>
+  <script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+  <script src="{% static "js/jquery.stellar.min.js" %}"></script>
+  <script src="{% static "js/owl.carousel.min.js" %}"></script>
+  <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+  <script src="{% static "js/aos.js" %}"></script>
+  <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
+  <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+  <script src="{% static "js/scrollax.min.js" %}"></script>
+  <script src="{% static "https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="{% static "js/google-map.js" %}"></script>
+  <script src="{% static "js/main.js" %}"></script>
+
+  <script>
+		$(document).ready(function(){
+
+		var quantitiy=0;
+		   $('.quantity-right-plus').click(function(e){
+		        
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		            
+		            $('#quantity').val(quantity + 1);
+
+		          
+		            // Increment
+		        
+		    });
+
+		     $('.quantity-left-minus').click(function(e){
+		        // Stop acting like a button
+		        e.preventDefault();
+		        // Get the field name
+		        var quantity = parseInt($('#quantity').val());
+		        
+		        // If is not undefined
+		      
+		            // Increment
+		            if(quantity>0){
+		            $('#quantity').val(quantity - 1);
+		            }
+		    });
+		    
+		});
+	</script>
+	<script>
+		$(document).ready(function(){
+		    $('#count1').prop('disabled', true);
+   			$(document).on('click','.plus',function(){
+				$('#count1').val(parseInt($('#count1').val()) + 1 );
+    		});
+        	$(document).on('click','.minus',function(){
+    			$('#count1').val(parseInt($('#count1').val()) - 1 );
+    				if ($('#count1').val() == 0) {
+						$('#count1').val(1);
+					}
+    	    	});
+ 		});
+	</script>
+    {% endblock %}

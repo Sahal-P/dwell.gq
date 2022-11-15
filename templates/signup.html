@@ -31,20 +31,20 @@
           <div class="col-md-7 py-5">
             <h3>Register</h3>
             <p class="mb-4">Enter the details to create account</p>
-            <form action={% url "user_signup" %} method="post">
+            <form action={% url "user_signup" %} method="post" id="submitf">
               {% csrf_token %}
               
                <div class="row">
                 <div class="col-md-6">
-                  <div class="form-group first">
+                  <div class="form-group first ">
                     <label for="fname">First Name</label>
-                    <input type="text" name="first_name" class="form-control" placeholder="" id="fname">
+                    <input type="text" name="first_name" class="form-control" onkeyup="validatename()" placeholder="" id="fname1"><span style="color:red; float: right; font-size: 15px;" id ="namef"></span>
                   </div>    
                 </div>
                 <div class="col-md-6">
                   <div class="form-group first">
                     <label for="lname">Last Name</label>
-                    <input type="text" name="last_name" class="form-control" placeholder="" id="lname">
+                    <input type="text" name="last_name" class="form-control" onkeyup="validatelname()" placeholder="" id="lname2"><span style="color:red; float: right; font-size: 15px;" id ="namel"></span>
                   </div>    
                 </div>
               </div> 
@@ -52,31 +52,32 @@
                 <div class="col-md-12">
                   <div class="form-group first">
                     <label for="email">Email Address</label>
-                    <input type="email" name="email" class="form-control" placeholder="" id="email">
+                    <input type="email" name="email" class="form-control" onkeyup="validateEmail()" placeholder="" id="contact-email"><span style="color:red; float: right; font-size: 15px;" id ="email1"></span>
                   </div>    
+                  
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group first">
                     <label for="lname">Phone Number</label>
-                    <input type="tel" name="phone_number" class="form-control" >
+                    <input type="tel" name="phone_number" onkeyup="validatephone()" class="form-control" id="phon"><span style="color:red; float: right; font-size: 15px;" id ="phn"></span>
                   </div>    
                 </div>
                 
-              <div class="row">
-              <div class="col-md-9">
+             
+              <div class="col-md-6">
                 <div class="form-group first">
                   <label for="lname">UserName</label>
-                  <input type="text" name="username" class="form-control" placeholder="" id="lname">
+                  <input type="text" name="username" class="form-control" onkeyup="validateuname()" placeholder="" id="uname"><span style="color:red; float: right; font-size: 15px;" id ="nameu"></span>
                 </div>    
               </div>
-            </div> 
+            </div>  <div class="row">
                 <div class="col-md-6">
               
                   <div class="form-group last mb-3">
                     <label for="password">Password</label>
-                    <input type="password" name ="password1" class="form-control" placeholder="" id="password">
+                    <input type="password" name ="password1" class="form-control" onkeyup="verifyPassword()" placeholder="" id="pswd"><span style="color:red; float: right; font-size: 15px;" id ="password1"></span>
                   </div>
                 </div>
                 <div class="col-md-6">
@@ -97,13 +98,15 @@
               </div>
               </div>
 
-              <input type="submit" value="Register" class="btn px-5 btn-dark">
+              <button type="submit" onclick="validateForm()" class="btn px-5 btn-dark">Register</button>
               <div style="padding-top: 2rem ;" >
                 <a href={% url "user_login" %}>
                   already have an account?
                 </a>
               </div>
+              <span style="color:red; float: right; font-size: 15px;" id ="submits"> {{checkemail}}
 
+              </span>
 
             </form>
           </div>
@@ -115,6 +118,147 @@
    
 
   </div>
+
+
+<script>
+
+       
+        
+        
+
+
+        function validateEmail(){
+            var emailError = document.getElementById('email1')
+            var email = document.getElementById('contact-email').value;
+            console.log("hi")
+
+            if(email.length == 0){
+            console.log("h")
+            emailError.innerHTML = 'Email is required'
+            
+              return false;
+            }
+          
+            if(!email.match(/^[a-zA-Z0-9.!#$%&’+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)$/)){
+                    emailError.innerHTML = 'Email Invalid'
+              return false;
+             }
+            else 
+              emailError.innerHTML = '' 
+
+          
+          emailError.innerHTML = '';
+          return true;
+        }
+        function verifyPassword() {  
+            var passwordError = document.getElementById('password1')
+             var pw = document.getElementById("pswd").value;  
+             //check empty password field  
+             if(pw == "") {  
+             passwordError.innerHTML = "Fill the password please!";  
+             return false;  
+             }  
+           
+             //minimum password length validation  
+             if(pw.length < 8) {  
+             passwordError.innerHTML = "Password length must be atleast 8 characters";  
+             return false;  
+             }  
+           
+             //maximum length of password validation  
+             if(pw.length > 15) {  
+             passwordError.innerHTML = "Password length must not exceed 15 characters";  
+             return false;  
+             } 
+             else 
+             passwordError.innerHTML = '' 
+          passwordError.innerHTML = '';
+          return true;
+        }
+        function validatename() {  
+          //collect form data in JavaScript variables  
+          var nameError = document.getElementById('namef')
+          var name1 = document.getElementById("fname1").value;  
+            
+            
+          //check empty first name field  
+          if(name1 == "") {  
+            nameError.innerHTML = "**Fill the first name";  
+            return false;  
+          }  
+            
+          //character data validation  
+          if(!isNaN(name1)){  
+            nameError.innerHTML = "**Only characters are allowed";  
+            return false;  
+          } 
+          else 
+            nameError.innerHTML = ''  
+        nameError.innerHTML = '';
+        return true;
+         //character data validation  
+          
+        } 
+        function validatelname() { 
+          var nameError = document.getElementById('namel')
+          var name2 = document.getElementById("lname2").value;
+
+          if(!isNaN(name2)){  
+            nameError.innerHTML = "**Only characters are allowed";  
+            return false;  
+          }
+          else 
+            nameError.innerHTML = ''   
+        
+        nameError.innerHTML = '';
+        return true;
+          
+        }
+        function validateuname() { 
+          var nameError = document.getElementById('nameu')
+          var name2 = document.getElementById("uname").value;
+
+          if(name2==""){  
+            nameError.innerHTML = "username required";  
+            return false;  
+          }
+          else 
+            nameError.innerHTML = ''   
+        
+        nameError.innerHTML = '';
+        return true;
+          
+        }
+        function validatephone() { 
+          var phoneError = document.getElementById('phn')
+          var x = document.getElementById("phon").value;
+
+          if(x.length <10 || x=="" || isNaN(x)){  
+            phoneError.innerHTML = "phonenumber is required"; 
+          
+           
+            return false;  
+          }
+          else 
+            phoneError.innerHTML = ''  
+        
+        phoneError.innerHTML = '';
+        return true;
+          
+        }
+
+        function validateForm(){
+          x = document.getElementById("submitf")
+          submitError = document.getElementById("submits")
+          if(!validatename() && !validateEmail() && !validatephone() && !validateuname() && !verifyPassword() && !validatelname() && !validateuname()){
+              
+              submitError.innerHTML = 'Please Fill the details to submit'
+              setTimeout(function(){submitError= 'none ';} , 3000)
+              return false;
+          }
+        }
+         
+</script>
     
     
 

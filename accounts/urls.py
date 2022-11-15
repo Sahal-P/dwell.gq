@@ -22,15 +22,12 @@ urlpatterns = [
      path("userlogin/",views.user_login,name="user_login"),
      path("user_signup",views.user_signup,name="user_signup"),
      path("log_out",views.log_out,name="log_out"),
+     path("log_in",views.log_in,name="log_in"),
+     path("signup_otp_v",views.signup_otp_v,name="signup_otp_v"),
      path("d_admin",views.d_admin,name="d_admin"),
      path("user_otp",views.user_otp,name="user_otp"),
      path("otp_v/",views.otp_v,name="otp_v"),
+     path("resendotp",views.resendotp, name="resendotp"),
      path("adminlogin",views. adminlogin,name="adminlogin"),
      path("adminlogout",views. adminlogout,name="adminlogout"),
-     
-    
-
-
-
-               
 ]
