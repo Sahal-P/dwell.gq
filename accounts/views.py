@@ -68,7 +68,7 @@ def user_signup(request,*args, **kwargs):
                 user = Account.objects.get(email=email,username=username)
                 user1 = authenticate(request,email=email,password=password)
                 if user1 is not None:
-                    otp_handler = otphandler(phone_number).sent_otp_on_phone()
+                    otp_handler = otphandler('9544633437').sent_otp_on_phone() # give phone_number instead of real numbers 
                     signupgetuser(email)
                     return redirect("signup_otp_v")
     except:
@@ -82,7 +82,6 @@ def signup_otp_v(request):
     email = signupgetuser.email
     user = Account.objects.get(email=email)
 
-    
     try:
         otp = otphandler.Otp
         if request.method == "POST":
@@ -92,14 +91,13 @@ def signup_otp_v(request):
             otp4 = request.POST.get("otp4")
             otp5 = otp1+otp2+otp3+otp4
             print(otp5)
+            print(otp)
             if otp == otp5:
                 login(request,user)
                 return render(request,"index.html")
     except:
         pass
-    
     return render (request, "signup_otpv.html")
-
 
 def user_otp(request):
     if request.user.is_authenticated:
@@ -112,19 +110,17 @@ def user_otp(request):
                 user = Account.objects.get(phone_number=phone_number)
                 request.user = user
                 otp_handler = otphandler(phone_number).sent_otp_on_phone()
-
                 return redirect("otp_v")
     except:
        pass
     return render(request,'otp.html')
+
 def otp_v(request):
     if request.user.is_authenticated:
          return redirect("home")
     phone = otphandler.phone_number
     user = Account.objects.get(phone_number=phone)
-
     request.user = user
-    
     try:    
         user =request.user
         otp = otphandler.Otp
@@ -139,24 +135,18 @@ def otp_v(request):
                 return render(request,"index.html")
     except:
         pass
-
     return render (request, "otpv.html" )
 
-
 def resendotp(request):
-    
     phone = otphandler.phone_number
     otphandler(phone).sent_otp_on_phone()
-
     return JsonResponse({phone:phone})
 
 def adminlogin(request):
     if request.POST:
         email= request.POST.get("email")
         password = request.POST.get("password")
-        
         user = authenticate(request,email=email,password=password)
-
         if user is not None:
             if user.is_superuser is True:
                login(request,user)
@@ -170,5 +160,6 @@ def adminlogout(request):
 def log_out(request):
     logout(request)
     return render(request, "login.html")
+
 def log_in(request):
     return redirect('user_login')

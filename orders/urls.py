@@ -31,5 +31,7 @@ urlpatterns = [
         path("admin_order_cancell", views.admin_order_cancell, name="admin_order_cancell"),
         path("return_order/<int:id>",views.return_order , name="return_order") ,
         path("approve_return" ,views.approve_return, name="approve_return"),
+        path("order_success" ,views.order_success, name="order_success"),
+        
                
 ]

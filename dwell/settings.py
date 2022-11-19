@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'wishlist',
+    'user_profile',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY ='unsafe-none'
+
 
 ROOT_URLCONF = 'dwell.urls'
 
@@ -152,3 +156,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_SID="AC85fdeaad04ced9b3d69c6db3cbea2621"
 AUTH_TOKEN ="3410f8c9db89eecb7ece1a554c817aa4"
+
+RAZOR_ID = "rzp_test_U3hCafDNlYy1xe"
+RAZOR_SECRET = "gUGeShTN3x0JX8COyS9Mpki6"

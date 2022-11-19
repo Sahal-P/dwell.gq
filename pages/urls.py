@@ -27,7 +27,6 @@ urlpatterns = [
      path("MshirtsP/<int:id>",views.MshirtsP,name="MshirtsP"),
      path("c_category",views.c_category,name="c_category"),
      path("productsingle",views.productsingle,name="productsingle"),
-     path("checkout",views.checkout,name="checkout"),
      path("about",views.about,name="about"),
      path("blog",views.blog,name="blog"),
      path("contact",views.contact,name="contact"),

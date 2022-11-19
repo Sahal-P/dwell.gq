@@ -1,18 +1,13 @@
 from django.shortcuts import render,redirect
 from django.utils.text import slugify
-
-
 from accounts.models import Account
 from category.models import Category, Products, SubCategory
 from cart.models import Cart,CartItem
 
 # Create your views here.
 
-
 def index(request):
     return render (request,"index.html")
-
-
 
 def shop(request):
     return render (request,"products.html")
@@ -36,47 +31,25 @@ def signle_P(request, id):
     obj = Products.objects.filter(id=id)
     return render (request, "product-single.html",{"obj":obj})
 
-
 def productsingle(request):
     return render (request,"product-single.html")
-
-
-
-
-
-
-
-def checkout(request):
-    return render (request,"checkout.html")
-
-
 
 def about(request):
     return render (request,"about.html")
 
-
-
 def blog(request):
     return render (request,"blog.html")
 
-
-
-
 def contact(request):
     return render (request,"contact.html")
-
-
 
 def a_tables(request):
     person = Account.objects.all().order_by('id')
     return render(request, "admin/tables2.html",{"person":person})
 
-
-
 def a_tables2(request):
     person = Account.objects.all()
     return render(request, "admin/tables.html",{"person":person})
-
 
 def category(request):
     cata = Category.objects.all()
@@ -86,34 +59,26 @@ def subcategory(request):
     cata = SubCategory.objects.all()
     return render (request, "admin/subcategory.html",{"cata":cata})
 
-
 def product(request):
     prod = Products.objects.all()
     return render (request, "admin/product.html", {"prod":prod})
 
-
 def add_category(request):
-    
     return render (request, "admin/add_category.html")
-
 
 def add_subcategory(request):
     cata = Category.objects.all()
     return render (request, "admin/add_subcategory.html", {"cata":cata})
-
 
 def add_product(request):
     catg = SubCategory.objects.all()
     Scata = Category.objects.all()
     return render (request, "admin/add_product.html" ,{"Scata":Scata})
 
-
 def edit_subcategory(request, id):
     cata = Category.objects.all()
     if request.POST:
-        
         subcategory =SubCategory.objects.get(id=id)
-        
         cat1=request.POST.get('category2')
         subcategory.category_id = cat1
         subcategory.save()
@@ -125,11 +90,8 @@ def edit_subcategory(request, id):
         if request.POST['img']:
             subcategory.Sub_img = request.FILES["img"]
             subcategory.save()
-        
         return redirect("pages:subcategory")
-    
     return render (request, "admin/edit_subcategory.html", {"cata":cata})
-
 
 def edit_product(request,id):
     catg = SubCategory.objects.all()
@@ -141,7 +103,6 @@ def edit_product(request,id):
             product.product_name=name
             product.slug=slugify(name)
             product.save()
-        
         if request.POST['p_brand']:
             brand = request.POST.get("p_brand")
             product.brand=brand
@@ -190,14 +151,9 @@ def edit_product(request,id):
             status = request.POST.get("p_av")
             product.status = status
             product.save()
-        
-        
-
         return redirect("pages:product")
     
     return render (request, "admin/edit_product.html",  {"catg":catg ,"Scata":Scata })
-
-
 
 def user_block(request, id):
     id=id

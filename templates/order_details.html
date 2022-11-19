@@ -100,7 +100,7 @@
                       <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">{{order.orderd_date}}</span> </p>
                     </div>
                     <div>
-                      <h6 class="mb-0"> <a href="#">View Details</a> </h6>
+                      <h6 class="mb-0"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">View Detailes</button></h6>
                     </div>
                   </div>
                 </div>
@@ -111,7 +111,11 @@
                       <p class="text-muted"> Qt: {{order.quantity}} item</p>
                       <p class="text-muted"> price: {{order.price}} item</p> 
                       <h4 class="mb-3">total : $ {{order.sub_total}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
-                      <p class="text-muted">Tracking Status on: <span class="text-body">11:30pm, Today</span></p>
+                      {% if order.status == "cancelled" %} 
+                      <p class="" style=" color: red;">Order Cancelled </p>
+                      {% else %}
+                      <p class="text-muted">Deliver To: <span class="text-body">{{address.address_1}} , {{address.State}} , {{address.zip_code}}</span></p>
+                      {% endif %}
                     </div>
                     <div>
                       <img class="align-self-center img-fluid"
@@ -122,24 +126,22 @@
                 </div>
                 <div class="card-footer p-4">
                   <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-                    demo
-                      </button>
+                    
                     
                     <div class="border-start h-100"></div> 
                      {% if order.status == "placed" or order.status == "Shipped" %}
-                    <a href="{% url 'ordercancell' order.id %}" class="btn btn-secondary mb-0" style="color: white;">Cancel</a>
+                    <a href="{% url 'ordercancell' order.id %}" class="btn btn-secondary mb-0 btn-lg" style="color: white;">Cancel</a>
                     {% elif order.status == "Deliverd" %}
                     <a href="{% url 'return_order' order.id %}" class="btn btn-secondary mb-0" style="color: white;">Return</a>
                     {% elif order.status == "cancelled" %}
-                    <h5 style="color: black;">Order cancelled</h5>
+                    <h5 style="color: rgb(247, 0, 0);">Order cancelled</h5>
                     {% elif order.status == "Return Requested waiting for approval" %}
                     <h5 style="color: black;">Return Requested waiting for approval</h5>
                     {% elif order.status == "Return Aproved" %}
                     <h5 style="color: black;">Return Request Aproved</h5>
                     {% endif %}
                     <div class="border-start h-100"></div>
-                    <h5 class="fw-normal mb-0"><a href="#!">Pre-pay</a></h5>
+                    {% comment %} <h5 class="fw-normal mb-0"><a href="#!">Pre-pay</a></h5> {% endcomment %}
                     <div class="border-start h-100"></div>
                     <h5 class="fw-normal mb-0"><a href="#!" class="text-muted"><i class="fas fa-ellipsis-v"></i></a>
                     </h5>

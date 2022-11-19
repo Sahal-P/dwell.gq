@@ -1,0 +1,86 @@
+
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+    
+<div class="hero-wrap hero-bread" style="background-image: url();">
+    <div class="container">
+      <div class="row no-gutters slider-text align-items-center justify-content-center">
+        <div class="col-md-9 ftco-animate text-center">
+          <h1 class="mb-0 bread">Account Settings</h1>
+          <p class="breadcrumbs"><span class="mr-2"><a href="{% url "home" %}">Home</a></span> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+      
+
+
+
+<div class="container rounded bg-white">
+     <div class="row align-items-center justify-content-center">
+{% comment %}         
+        <div class="col-md-3 border-right"> 
+        <div class="d-flex flex-column align-items-center text-center p-3 py-5">
+            <img class="rounded-circle mt-5" src="">
+            <span class="font-weight-bold">Amelly</span>
+            <span class="text-black-50">amelly12@bbb.com</span>
+            <span> </span></div> </div>  {% endcomment %}
+
+
+            <div class="col-md-6 border-right">
+                 <div class="p-3 py-5">
+                     <div class="d-flex justify-content-between align-items-center mb-3">
+                         <h4 class="text-right">Profile Settings</h4>
+
+
+                         <form action="{% url 'edit_user_profile' %}" method="POST">
+
+                            {% csrf_token %}
+                        </div> <div class="row mt-2">
+                             <div class="col-md-6"><label class="labels">Name</label><input type="text" name="first_name" class="form-control" placeholder="" value="{{user_profile.first_name}}">
+                            </div>
+                             <div class="col-md-6">
+                                <label class="labels">Surname</label>
+                                <input type="text" class="form-control" name="last_name"  value="{{user_profile.last_name}}" placeholder="">
+                            </div> </div> 
+                            <div class="row mt-3"> 
+                                <div class="col-md-12">
+                                    <label class="labels">PhoneNumber</label>
+                                    <input type="text" class="form-control" name="phone_number" placeholder="enter phone number" value="{{user_profile.phone_number}}">
+                                </div>
+                                 <div class="col-md-12">
+                                    <label class="labels">Username</label>
+                                    <input type="text" class="form-control" name="username" placeholder="enter address" value="{{user_profile.username}}">
+                                </div>
+                                 <div class="col-md-12">
+                                    <label class="labels">Email ID</label>
+                                    <input type="text" class="form-control" name="email" placeholder="enter email id" value="{{user_profile.email}}">
+                                </div> 
+                                
+                             </div> 
+                             {% comment %} <div class="row mt-3"> 
+                                <div class="col-md-6">
+                                    <label class="labels">Country</label>
+                                    <input type="text" class="form-control" placeholder="country" value="{{user_profile.country}}">
+                                </div>
+                                 <div class="col-md-6">
+                                    <label class="labels">State/Region</label>
+                                    <input type="text" class="form-control" value="" placeholder="state"></div> 
+                                </div> {% endcomment %}
+                                
+                                <div class="mt-5 text-center">
+                                    <button class="btn btn-secondary btn-lg profile-button" type="submit">Save Profile</button>
+                                </div>
+                             </div>
+                             </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock %}
