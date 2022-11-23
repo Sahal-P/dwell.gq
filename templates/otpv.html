@@ -78,7 +78,17 @@
 
                 
                 </div>
-                <button disabled onclick = doSomething() id="resnd">resend</button>
+                <button class="mb-5" disabled onclick = doSomething() id="resend">resend</button><br>
+                {% if messages %}
+                {% for message in messages %}
+                  {% comment %} {% if message.tags == 'success' %} {% endcomment %}
+                    <!-- sweetalert js -->
+                   <div class="mb-3">
+                      <span  style="color: rgb(229, 0, 0); font-size: 20px;">{{ message }}</span>
+                  </div>
+                  
+                 {% endfor %}
+               {% endif %}
                 </div>
               </div>
             </div>

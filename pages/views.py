@@ -45,11 +45,9 @@ def contact(request):
 
 def a_tables(request):
     person = Account.objects.all().order_by('id')
-    return render(request, "admin/tables2.html",{"person":person})
-
-def a_tables2(request):
-    person = Account.objects.all()
     return render(request, "admin/tables.html",{"person":person})
+
+
 
 def category(request):
     cata = Category.objects.all()

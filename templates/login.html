@@ -32,6 +32,26 @@
 
 
 
+{% if messages %}
+	{% for message in messages %}
+    {% comment %} {% if message.tags == 'success' %} {% endcomment %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: m,
+			
+		  })
+      </script>
+    
+   {% endfor %}
+ {% endif %}
+
+
+
 	<div class="d-flex justify-content-center align-items-center container ">
 
 		<div class="row ">
@@ -57,7 +77,7 @@
 					</div>
 					
 					
-					<div class="wrap-input100 validate-input" data-validate="Password is required">
+					<div class="wrap-input100">
 						<input class="input100" type="password" id="pswd" name="password">
 						<span class="focus-input100"></span>
 						<span class="label-input100">Password</span>

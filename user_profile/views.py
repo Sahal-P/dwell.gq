@@ -1,16 +1,20 @@
 from django.shortcuts import render,redirect
 from accounts.models import Account, Address
 from django.contrib.auth.views import PasswordChangeView , PasswordResetDoneView
+from django.contrib import messages
 # Create your views here.
 
 
 def user_profile(request):
-    user = request.user
-    user_profile = Account.objects.get(email =user)
-    
-    address = Address.objects.filter(user = user)
-    return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address})
-
+    # try:
+        user = request.user
+        user_profile = Account.objects.get(email =user)
+        address = Address.objects.filter(user = user)
+        
+        return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address})
+    # except:
+    #     messages.info(request, 'Please Login to view account detailes')
+    # return redirect(request.META.get('HTTP_REFERER'))
 
 def edit_user_profile(request):
     user = request.user
@@ -43,7 +47,7 @@ def edit_user_profile(request):
     address = Address.objects.filter(user = user)
     return render(request, "edit_profile.html" ,{"user_profile":user_profile,"address":address})
 
-def remove_address(request, id):
+def remove_address(request,id):
     destination = request.META.get('HTTP_REFERER')
     address = Address.objects.get(id=id)
     address.delete()

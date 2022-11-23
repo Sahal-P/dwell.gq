@@ -44,7 +44,6 @@ def add_address(request):
         next1 = PreviousUrl.next1
         return redirect(next1)
     PreviousUrl(destination)
-    print(request.META.get('HTTP_REFERER'),"uuuuuuuuuuuuuuuuuuuuuuuuu")
     return render(request, "add_address.html")
 
 class PreviousUrl:
@@ -78,11 +77,13 @@ def order_place(request,total=0,quantity=0,
     if request.POST and payment =='cod':
         
         adrs_id = request.POST.get('address')
+        to = Address.objects.get(id=adrs_id)
+        address_to=to.address_1
         order_id =uuid.uuid4()
         if payment and adrs_id is not None:
             for item in cart_items:
                 Orders(product = item.product ,user = request.user , 
-                       address= adrs_id ,total_price = item.sub_total(),
+                       address= address_to ,total_price = item.sub_total(),
                        payment=payment, status = "placed" ,
                        price = item.product.selling_price , 
                        quantity = item.Quantity,order_id = order_id).save()
@@ -94,36 +95,35 @@ def order_place(request,total=0,quantity=0,
         order_id = request.POST.get('order_id')
         payment_id = request.POST.get('payment_id')
         adrs_id = request.POST.get('add_id')
+        to = Address.objects.get(id=adrs_id)
+        address_to=to.address_1
     
         if payment is not None:
             for item in cart_items:
                 Orders(product = item.product ,user = request.user , 
-                       address= adrs_id ,total_price = item.sub_total(),
+                       address= address_to ,total_price = item.sub_total(),
                        payment=payment, status = "placed" ,
                        price = item.product.selling_price , 
                        quantity = item.Quantity, order_id=order_id, payment_id=payment_id).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
                 status = True
-            
             return JsonResponse({'status': status})
-    print("paypaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    print(paypal)
-    print(request.POST.get('payment_id'),request.POST.get('add_id'))
+        
     if request.POST and paypal =='Paypal':
         order_id = uuid.uuid4()
         payment_id = request.POST.get('payment_id')
         adrs_id = request.POST.get('add_id')
-        print("paypaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        to = Address.objects.get(id=adrs_id)
+        address_to=to.address_1
         if paypal is not None:
             for item in cart_items:
                 Orders(product = item.product ,user = request.user , 
-                       address= adrs_id ,total_price = item.sub_total(),
+                       address= address_to ,total_price = item.sub_total(),
                        payment=paypal, status = "placed" ,
                        price = item.product.selling_price , 
                        quantity = item.Quantity, order_id=order_id, payment_id=payment_id).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
                 status = True
-            print("ajaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
             return JsonResponse({'status': status})
             
     return redirect("checkout")
@@ -140,7 +140,6 @@ def order_success(request,total=0,quantity=0,
             delv = 5
             g_total = total+ tax+delv
     CartItem.objects.filter(user=request.user,is_active=True).delete()
-    
     return render(request , "order_success.html" ,{"user":user,"g_total":g_total})
 
 def order_status(request):
@@ -153,9 +152,8 @@ def order_status(request):
 def order_details(request, id):
     order = Orders.objects.get(id=id)
     id = order.address
-    address = Address.objects.get(id=id)
-    
-    return render(request, "order_details.html",{"order":order, "address": address})
+    # address = Address.objects.get(id=id)
+    return render(request, "order_details.html",{"order":order})
 
 def admin_orderedit(request):
     

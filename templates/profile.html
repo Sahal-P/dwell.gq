@@ -34,8 +34,8 @@
         <div class="col">
           <nav aria-label="breadcrumb" class="bg-light  rounded-3 p-3 mb-4">
             <ol class="breadcrumb mb-0 bg-light">
-              <li class="breadcrumb-item "><a href="{% url "home" %}">Home</a></li>
-              <li class="breadcrumb-item "><a href="{% url "user_profile" %}">Account</a></li>
+              <li class="breadcrumb-item "><a href="{% url "home" %}" style="color: black;">Home</a></li>
+              <li class="breadcrumb-item "><a href="{% url "user_profile" %}" style="color: black;">Account</a></li>
             </ol>
           </nav>
         </div>
@@ -52,7 +52,7 @@
               <p class="text-muted mb-4">Bay Area, San Francisco, CA</p> {% endcomment %}
               <div class="d-flex justify-content-center mb-2">
                 <a href="{% url 'edit_user_profile' %}" type="button" class="btn btn-secondary">Edit Profile</a>
-                <a href="{% url 'change-password' %}" type="button" class="btn btn-outline-success ms-1 ml-2">Change Password</a> 
+                <a id="chngp" data-url="{% url 'change-password' %}" onclick="changePass()" type="button" class="btn btn-outline-success ms-1 ml-2">Change Password</a> 
               </div>
             </div>
           </div>
@@ -125,8 +125,7 @@
 
                 </div>
                 <div class="col-sm-3">
-                  <a href="{% url 'remove_address' i.id %}" class="btn btn-sm btn-outline-danger ms-1 ml-2">remove</a>
-                  
+                  <a onclick = removeaddress({{i.id}}) id="Url" data-url="{% url 'remove_address' i.id %}" class="btn btn-sm btn-outline-danger ms-1 ml-2">remove</a>
                 </div>
               </div>
               <hr>
@@ -249,4 +248,58 @@
 <!-- loader -->
 <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
 
+
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function removeaddress(id){
+        
+        
+
+
+        Swal.fire({
+          title: 'Are you sure you want to remove address?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+              var url = $("#Url").attr("data-url");
+            location.href = url;
+            
+
+      }
+
+          }
+        )}
+
+        function changePass(){
+        
+        
+
+
+          Swal.fire({
+            title: 'Are you sure you want to change password?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes!'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                var url = $("#chngp").attr("data-url");
+              location.href = url;
+              
+  
+        }
+  
+            }
+          )}
+
+
+        
+</script>
 {% endblock %}

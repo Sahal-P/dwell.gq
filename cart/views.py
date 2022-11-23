@@ -172,3 +172,16 @@ def quantity_minus(request):
             sub = cart_item.sub_total()
  
     return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
+
+def Gusr(request):
+    
+    if request.user.is_anonymous:
+        response = HttpResponse('Visiting for the first time')
+        p= Products.objects.get(id=10)
+        id = p.id
+        response.set_cookie('Guestuser',request.user,id)
+        
+    return response
+        
+        
+        

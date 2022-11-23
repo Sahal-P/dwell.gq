@@ -53,11 +53,11 @@
        }
       
       </script>
-    <div class="container">
+    <div class="container ">
         <div class="row justify-content-md-center">
             <div class="col-md-4 text-center">
               <div class="row">
-                <div class="col-sm-12 mt-5 bgWhite">
+                <div class="col-sm-12 mt-5 bgWhite ">
                   <div class="title">
                     Verify OTP
                   </div>
@@ -78,7 +78,17 @@
 
                 
                 </div>
-                <button disabled onclick = doSomething() id="resend">resend</button>
+                <button class="mb-5" disabled onclick = doSomething() id="resend">resend</button><br>
+                {% if messages %}
+                {% for message in messages %}
+                  {% comment %} {% if message.tags == 'success' %} {% endcomment %}
+                    <!-- sweetalert js -->
+                   <div class="mb-3">
+                      <span  style="color: rgb(229, 0, 0); font-size: 20px;">{{ message }}</span>
+                  </div>
+                  
+                 {% endfor %}
+               {% endif %}
                 </div>
               </div>
             </div>

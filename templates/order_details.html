@@ -114,7 +114,7 @@
                       {% if order.status == "cancelled" %} 
                       <p class="" style=" color: red;">Order Cancelled </p>
                       {% else %}
-                      <p class="text-muted">Deliver To: <span class="text-body">{{address.address_1}} , {{address.State}} , {{address.zip_code}}</span></p>
+                      <p class="text-muted">Deliver To: <span class="text-body">{{order.address}} , {{address.State}} , {{address.zip_code}}</span></p>
                       {% endif %}
                     </div>
                     <div>

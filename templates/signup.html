@@ -20,6 +20,26 @@
     <title>Sign Up #2</title>
   </head>
   <body>
+
+
+    {% if messages %}
+	{% for message in messages %}
+    {% comment %} {% if message.tags == 'success' %} {% endcomment %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: m,
+			
+		  })
+      </script>
+    
+   {% endfor %}
+ {% endif %}
+
   
 
   <div class="d-lg-flex half">
@@ -247,7 +267,7 @@
           
         }
 
-        function validateForm(){
+        {% comment %} function validateForm(){
           x = document.getElementById("submitf")
           submitError = document.getElementById("submits")
           if(!validatename() && !validateEmail() && !validatephone() && !validateuname() && !verifyPassword() && !validatelname() && !validateuname()){
@@ -256,7 +276,7 @@
               setTimeout(function(){submitError= 'none ';} , 3000)
               return false;
           }
-        }
+        } {% endcomment %}
          
 </script>
     

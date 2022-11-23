@@ -74,7 +74,27 @@
 	    </div>
 	  </nav>
     <!-- END nav -->
-		
+
+
+	{% if messages %}
+	{% for message in messages %}
+    
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+			icon: 'warning',
+			title: 'Oops...',
+			text: m,
+			footer: '<a style ="color :blue;" href="{% url 'user_login' %}">click here to LogIN</a>'
+		  })
+      </script>
+    
+  {% endfor %}
+ {% endif %}
+
+
+
 		<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1_.jpg'%});">
       <div class="overlay"></div>
       <div class="container">

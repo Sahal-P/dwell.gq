@@ -31,7 +31,6 @@ urlpatterns = [
      path("blog",views.blog,name="blog"),
      path("contact",views.contact,name="contact"),
      path("a_tables", views.a_tables, name="a_tables"),
-     path("a_tables2", views.a_tables2, name="a_tables2"),
      path("category", views.category, name="category"),
      path("subcategory", views.subcategory, name="subcategory"),
      path("product", views.product, name="product"),
