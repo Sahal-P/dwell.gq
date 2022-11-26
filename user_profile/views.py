@@ -6,15 +6,15 @@ from django.contrib import messages
 
 
 def user_profile(request):
-    # try:
+    try:
         user = request.user
         user_profile = Account.objects.get(email =user)
         address = Address.objects.filter(user = user)
         
         return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address})
-    # except:
-    #     messages.info(request, 'Please Login to view account detailes')
-    # return redirect(request.META.get('HTTP_REFERER'))
+    except:
+        messages.info(request, 'Please Login to view account detailes')
+    return redirect(request.META.get('HTTP_REFERER'))
 
 def edit_user_profile(request):
     user = request.user
@@ -53,3 +53,4 @@ def remove_address(request,id):
     address.delete()
     
     return redirect(destination)
+

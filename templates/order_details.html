@@ -110,7 +110,7 @@
                       <h5 class="bold">{{order.product.product_name}}</h5>
                       <p class="text-muted"> Qt: {{order.quantity}} item</p>
                       <p class="text-muted"> price: {{order.price}} item</p> 
-                      <h4 class="mb-3">total : $ {{order.sub_total}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
+                      <h4 class="mb-3">total : ₹ {{order.sub_total}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
                       {% if order.status == "cancelled" %} 
                       <p class="" style=" color: red;">Order Cancelled </p>
                       {% else %}

@@ -11,9 +11,10 @@ from django.http import HttpResponse ,JsonResponse
 from .helpers import *
 from .models import Account 
 import datetime 
+from cart.models import GCart, CartItem
 from orders.models import Orders
 from django.db.models import Count,Sum,Q
-
+import ast
 def d_admin(request):
     if request.user.is_superuser:
         today = datetime.datetime.now()
@@ -57,8 +58,37 @@ def user_login(request):
                 if user.is_blocked is True:
                     messages.error(request, 'Sorry, You have been Blocked by admin !!')
                     return redirect(request.META.get('HTTP_REFERER'))
-                login(request,user)
-                return redirect("home")
+                
+                if request.COOKIES.get('Guest_checkout'):
+                    value = request.COOKIES.get('Guest_checkout')
+                    data = ast.literal_eval(value)
+                    dest,id = data.values()
+                    
+                    gcart=GCart.objects.get(Guest_id = id)
+                    if CartItem.objects.filter(Guest_id = gcart).exists():
+                        a =CartItem.objects.filter(Guest_id = gcart)
+                        print(gcart,",<<<<<<<<<<<<<<<<<<<<")
+                        for i in a :
+                            print(i.product.selling_price)
+                            product = i.product
+                            qty = i.Quantity
+                            if CartItem.objects.filter(product=product, user= user).exists():
+                                b=CartItem.objects.get(product=product, user= user)
+                                b.Quantity +=qty
+                                b.save()
+                            else:
+                                cart_item=CartItem.objects.create(product=product,Quantity=qty,user=user)
+                                cart_item.save()
+                        login(request,user)
+                        print(type(dest), dest,"<<<<<<<<<<<<<<<<<<")
+                        a.delete()
+                        response = redirect(dest)
+                        response.delete_cookie('Guest_checkout')
+                        return response
+                    
+                else:
+                    login(request,user)
+                    return redirect("home")
         
             messages.info(request, 'Invalid Password !!')
               

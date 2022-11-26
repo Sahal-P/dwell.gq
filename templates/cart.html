@@ -120,6 +120,8 @@
         }
         }
 </style>
+
+  
 {% if not cart_items %}
 <h2 class="text-center"> Your cart is Empty</h2>
 <div class="text-center mt-5">
@@ -191,7 +193,7 @@
 
                           </div>
                           <div id="sub_t{{ forloop.counter }}" class="col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1" style="margin: 1rem ;">
-                            <h6 class="mb-0"  >$ {{i.sub_total}}  </h6>
+                            <h6 class="mb-0"  >₹ {{i.sub_total}}  </h6>
                           </div>
                           <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 text-end">
                             <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a> <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{i.id}}">x</button>
@@ -207,13 +209,13 @@
                                         <span aria-hidden="true">&times;</span>
                                       </button>
                                     </div>
-                                    <div class="modal-body">
-                                        <div class="col-sm-4 col-md-6 col-lg-6 col-xl-6" style="align-items:center ;">
-
+                                    <div class="modal-body justify-content-center">
+                                        <div class="col-sm-4 col-md-12 col-lg-12 col-xl-12 " style="align-items:center ;">
+                                            <div class="row justify-content-center align-items-center">
                             
-                                            <img style="align-items:center ;"
+                                            <img style="align-items:center ; justify-content:center;"
                                               src="/media/{{i.product.product_img1}}"
-                                              class="img-fluid rounded-3" alt="Cotton T-shirt">
+                                              class="img-fluid rounded-3" alt="Cotton T-shirt"></div>
                                           </div>
                                          {{i.product.product_name}}
                                     </div>
@@ -256,14 +258,14 @@
       
                         <div class="d-flex justify-content-between mb-4">
                           <h5 class="text-uppercase">Total</h5>
-                          <h5 id="total_c">$ {{total}}</h5>
+                          <h5 id="total_c">₹ {{total}}</h5>
                         </div>
       
                         <h5 class="text-uppercase mb-3">Shipping</h5>
       
                         <div class="mb-4 pb-2">
                           <select class="select">
-                            <option value="1">Standard-Delivery- €5.00</option>
+                            <option value="1">Standard-Delivery- ₹5.00</option>
                             <option value="2">Two</option>
                             <option value="3">Three</option>
                             <option value="4">Four</option>
@@ -281,20 +283,20 @@
                         <div class="d-flex justify-content-between mb-4">
 
 							<h6>Tax :</h6>
-							<h5 id="tax_c">$ {{tax}} +</h5>
+							<h5 id="tax_c">₹ {{tax}} +</h5>
 						
 						</div>
 						<div class="d-flex justify-content-between mb-4">
 
 						
 							<h6>Delivery charge :</h6>
-							<h5>$ {{delv}} +</h5>
+							<h5>₹ {{delv}} +</h5>
 						</div>
                         <hr class="my-4">
       
                         <div class="d-flex justify-content-between mb-5">
                           <h5 class="text-uppercase">Total price</h5>
-                          <h5 id="total_g" class="text-success">$ {{g_total}}</h5>
+                          <h5 id="total_g" class="text-success">₹ {{g_total}}</h5>
                         </div>
       
                         <a href="{% url 'checkout' %}" type="button" style="color:white;" class="btn btn-dark btn-block btn-lg"
@@ -356,10 +358,10 @@
             success : function(r) {
 
 				    $(qty).val(r.qty)
-				    $(sub_t).text("$"+r.sub)
-				    $('#tax_c').text("$"+r.tax)
-				    $('#total_c').text("$"+r.total)
-				    $('#total_g').text("$"+r.g_total)
+				    $(sub_t).text("₹"+r.sub)
+				    $('#tax_c').text("₹"+r.tax)
+				    $('#total_c').text("₹"+r.total)
+				    $('#total_g').text("₹"+r.g_total)
                 
             },
             error: function() {

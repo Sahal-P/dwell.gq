@@ -4,7 +4,22 @@
 {% load static %}
 {% block content %}
 
-
+{% if messages %}
+{% for message in messages %}
+  
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      var m = "{{ message }}";
+      Swal.fire({
+    icon: 'success',
+    title: m,
+    
+    
+    })
+    </script>
+  
+{% endfor %}
+{% endif %}
 
 
 
@@ -39,7 +54,7 @@
                         <h3><a href="#">{{i.brand}}</a></h3>
                         <div class="d-flex">
                             <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">${{i.original_price}}.00</span><span class="price-sale">${{i.selling_price}}.00</span></p>
+                                <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
                             </div>
                             <div class="rating">
                                 <p class="text-right">
@@ -53,7 +68,7 @@
                         </div>
                         <hr>
                         <p class="bottom-area d-flex">
-                            <a href="{% url 'cart' %}" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                            <a href="{% url 'add_cart' i.id %} " class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
                             <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
                         </p>
                     </div>

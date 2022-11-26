@@ -32,6 +32,7 @@ urlpatterns = [
         path("return_order/<int:id>",views.return_order , name="return_order") ,
         path("approve_return" ,views.approve_return, name="approve_return"),
         path("order_success" ,views.order_success, name="order_success"),
+        path("guest_checkout", views.guest_checkout, name= "guest_checkout"),
         
                
 ]

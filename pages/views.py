@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.utils.text import slugify
 from accounts.models import Account
 from category.models import Category, Products, SubCategory
-from cart.models import Cart,CartItem
+from cart.models import GCart,CartItem
 
 # Create your views here.
 
@@ -85,11 +85,12 @@ def edit_subcategory(request, id):
             subcategory.subcategory_name = name
             subcategory.Sub_slug = slugify(name)
             subcategory.save()
-        if request.POST['img']:
-            subcategory.Sub_img = request.FILES["img"]
+        if request.FILES.get('img'):
+            subcategory.Sub_img = request.FILES.get("img")
             subcategory.save()
         return redirect("pages:subcategory")
     return render (request, "admin/edit_subcategory.html", {"cata":cata})
+
 
 def edit_product(request,id):
     catg = SubCategory.objects.all()
@@ -125,8 +126,8 @@ def edit_product(request,id):
             subcategory = request.POST.get("p_scatg")
             product.subcategory_id =subcategory
             product.save()
-        if request.POST['img1']:
-            img1 = request.FILES["img1"]
+        if request.FILES.get('img1'):
+            img1 = request.FILES.get("img1")
             product.product_img1 = img1
             product.save()
         if request.POST['img2']:

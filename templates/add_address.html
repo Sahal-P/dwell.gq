@@ -68,6 +68,25 @@
 		}
 				 
 	</style>
+
+
+
+	{% if messages %}
+	{% for message in messages %}
+    
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: m,
+		  })
+      </script>
+    
+  {% endfor %}
+ {% endif %}
+
     
  
     <!-- END nav -->

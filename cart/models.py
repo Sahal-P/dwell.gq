@@ -3,17 +3,17 @@ from category.models import *
 from accounts.models import Account
 # Create your models here.
 
-class Cart(models.Model):
-    cart_id         = models.CharField(max_length = 250, blank=True)
-    date_added      = models.DateField(auto_now_add = True)
+class GCart(models.Model):
+    Guest_id         = models.CharField(max_length = 250, blank=True)
+    date_added      = models.DateTimeField(auto_now_add = True)
     
     def __str__(self):
-        return self.cart_id
+        return self.Guest_id
     
 class CartItem(models.Model):
     user            = models.ForeignKey(Account, on_delete=models.CASCADE ,null =True)
     product         = models.ForeignKey(Products, on_delete = models.CASCADE)
-    cart            = models.ForeignKey(Cart, on_delete = models.CASCADE, null =True)
+    Guest           = models.ForeignKey(GCart, on_delete = models.CASCADE, null =True)
     Quantity        = models.IntegerField()
     is_active       = models.BooleanField(default=True)
     
@@ -26,7 +26,6 @@ class CartItem(models.Model):
 class OldCart(models.Model):
     user            = models.ForeignKey(Account, on_delete=models.CASCADE ,null =True)
     product         = models.ForeignKey(Products, on_delete = models.CASCADE)
-    cart            = models.ForeignKey(Cart, on_delete = models.CASCADE, null =True)
     Quantity        = models.IntegerField()
     date_added      = models.DateField(auto_now_add = True ,null = True)
     

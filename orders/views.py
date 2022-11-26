@@ -1,10 +1,12 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import JsonResponse
 from accounts.models import Address
-from cart.models import CartItem,OldCart
+from cart.models import CartItem,OldCart,GCart
 from orders.models import Orders
 from category.models import Products
 import uuid
+from django.contrib import messages
+
 
 # Create your views here.
 def admin_order_detailes(request):
@@ -34,15 +36,18 @@ def add_address(request):
         zip_code = request.POST.get('zip_code')
         payment = request.POST.get('paymentMethod')
         
-        address = Address.objects.create(user= user, first_name=first_name,
-                                         last_name=last_name ,phone_number_1=phone1, 
-                                         phone_number_2= phone2, address_1 = address1, 
-                                         address_2 = address2, country=country,State=state ,
-                                         zip_code = zip_code , email=email
-                                         )
-        address.save()
-        next1 = PreviousUrl.next1
-        return redirect(next1)
+        if first_name and last_name and address2:
+            address = Address.objects.create(user= user, first_name=first_name,
+                                             last_name=last_name ,phone_number_1=phone1, 
+                                             phone_number_2= phone2, address_1 = address1, 
+                                             address_2 = address2, country=country,State=state ,
+                                             zip_code = zip_code , email=email
+                                             )
+            address.save()
+            next1 = PreviousUrl.next1
+            return redirect(next1)
+        else:
+            messages.error(request,"please fill the required fields")
     PreviousUrl(destination)
     return render(request, "add_address.html")
 
@@ -70,8 +75,11 @@ def order_place(request,total=0,quantity=0,
             tax = (5*total)/100
             delv = 5
             g_total = total+ tax+delv
-    except  :
-        pass
+    except :
+        if not request.user.is_authenticated:
+            messages.info(request ,'You have to login to continue Checkout')
+            return redirect(request.META.get('HTTP_REFERER'))
+            
     payment = request.POST.get('flexRadioDefault')
     paypal = request.POST.get('paypal')
     if request.POST and payment =='cod':
@@ -191,3 +199,12 @@ def approve_return(request):
     orders.save()
     orders = Orders.objects.all().order_by('id')
     return JsonResponse({"id":id})
+
+def guest_checkout(request):
+    id=request.session.session_key
+    if GCart.objects.filter(Guest_id = id).exists():
+        
+        destination = request.META.get('HTTP_REFERER')
+        response = redirect('user_login')
+        response.set_cookie('Guest_checkout', {"destination":destination,"Guest_id":id})
+        return response

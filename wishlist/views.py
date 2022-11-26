@@ -25,5 +25,6 @@ def wishlist(request):
 def delete_wish(request):
     id = request.GET.get("id")
     wish = Wishlist.objects.get(id=id)
+    res = None
     wish.delete()
-    return JsonResponse({None})
+    return JsonResponse({"res":res})
