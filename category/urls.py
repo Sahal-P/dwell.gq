@@ -30,6 +30,6 @@ urlpatterns = [
        
         path("delete_category/<int:id>",views.delete_category,name="delete_category"),
         path("delete_subcategory/<int:id>",views.delete_subcategory,name="delete_subcategory"),
-        path("delete_product/<int:id>",views.delete_product,name="delete_product"),
+        path("delete_product",views.delete_product,name="delete_product"),
                
 ]

@@ -1,0 +1,191 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+
+ <style>
+  .box {
+    transition: box-shadow .5s;
+    
+    border-radius:5px;
+    border: 1px solid #ccc;
+    
+  }
+  .box:hover {
+    box-shadow: 0 0 15px rgb(255, 255, 255); 
+  }
+ </style>
+ <style>
+
+
+    .glow-on-hover {
+        width: 220px;
+        height: 50px;
+        border: none;
+        outline: none;
+        color: #fff;
+        background: #111;
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 10px;
+    }
+    
+    .glow-on-hover:before {
+        content: '';
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        position: absolute;
+        top: -2px;
+        left:-2px;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+        border-radius: 10px;
+    }
+    
+    .glow-on-hover:active {
+        color: #000
+    }
+    
+    .glow-on-hover:active:after {
+        background: transparent;
+    }
+    
+    .glow-on-hover:hover:before {
+        opacity: 1;
+    }
+    
+    .glow-on-hover:after {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+    
+    @keyframes glowing {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
+    }
+    </style>
+ <div class="body flex-grow-1 px-3">
+  <div class="container bcontent box">
+
+  <table class="table" style="background-color: #1c2e4a;">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col"></th>
+        <th scope="col">Category</th>
+        <th scope="col">subcategory</th>
+        <th scope="col">orginal Price</th>
+        <th scope="col">selling price</th>
+        <th scope="col">Applay</th>
+        <th scope="col"></th>
+        
+      </tr>
+    </thead>
+    <tbody style="color: white;">
+      {% for i in products %}
+      <tr>
+        <td>{{i.product_name}}</td>
+
+        <td><img src="/media/{{i.product_img1}}" alt="" border=3 height=150 width=150></img></td>
+        <td>{{i.category}}</td>
+        <td>{{i.subcategory}}</td>
+        <td>{{i.original_price}}</td>
+        <td>{{i.selling_price}}</td>
+
+        {% if i.offer is not None and i.offer is not 0 %}
+          
+    
+        <td>  <button onclick = del_product_offer({{i.id}}) class="glow-on-hover btn" type="button" style="margin-bottom: 1rem; padding: 12px;">Remove Offer</button>
+          <td>  <a  class="glow-on-hover btn" type="button" style="margin-bottom: 1rem; padding: 12px;">Offer - {{i.offer}}%</a>
+          {% else %}
+        <td>  <a href="{% url 'add_Product_offer' i.id %}" class="glow-on-hover btn" type="button" style="margin-bottom: 1rem; padding: 12px;">Add Offer</a>
+        </td>
+        {% endif %}
+
+      </tr>
+      {% endfor %}
+       
+     
+       
+   
+    
+     
+    </tbody>
+  </table>
+
+</div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function del_product_offer(id){
+        
+
+    var url = "{% url 'remove_product_offer' %}"
+    Swal.fire({
+      title: 'Are you sure you want to Delete the Offer?',
+      
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes'
+    }).then((result) => {
+      if (result.isConfirmed) {
+      
+        $.ajax({
+          type:"GET",
+          url : url,
+          data : {"id" : id},
+          success : function(response) {
+
+            window.location.href = '{% url 'product_offer' %}';
+              
+          },
+          error: function() {
+              alert('Error occured');
+          }
+      });
+        
+  
+      }
+    })
+    
+}
+</script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

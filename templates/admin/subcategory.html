@@ -5,12 +5,26 @@
 
  {% block content %}
 
+ <style>
+  .box {
+    transition: box-shadow .5s;
+    
+    border-radius:5px;
+    border: 1px solid #ccc;
+    
+  }
+  .box:hover {
+    box-shadow: 0 0 15px rgb(255, 255, 255); 
+  }
+ </style>
+
  <div class="body flex-grow-1 px-3">
-  <a href= {% url 'pages:add_subcategory' %} class="btn btn-success btn-lg active" role="button" aria-pressed="true">Add SubCategory</a>
+  <a href= {% url 'pages:add_subcategory' %} class="btn btn-success btn-lg active" style="margin-bottom: 1rem;" role="button" aria-pressed="true">Add SubCategory</a>
 
+  <div class="container bcontent box">
 
-  <table class="table table-dark">
-    <thead>
+  <table class="table" style="background-color: #1c2e4a;">
+    <thead class="table-light">
       <tr>
         <th scope="col">Id</th>
         <th scope="col">Name</th>
@@ -20,7 +34,7 @@
         <th scope="col">Delete</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="color: white;">
       {% for i in cata %}
       <tr>
         <th scope="row">{{i.id}}</th>
@@ -46,7 +60,7 @@
 
 </div>
 
-
+</div>
 
 
 

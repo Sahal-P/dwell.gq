@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from django.conf import settings
 import os
 from django.contrib import messages
+from django.http import JsonResponse
 
 
 
@@ -141,7 +142,8 @@ def delete_subcategory(request,id):
         subcategory.delete()
         return redirect("pages:subcategory")
     
-def delete_product(request, id ):
+def delete_product(request):
+    id = request.GET.get('id')
     product = Products.objects.get(pk=id)
     
     if product.product_img1:
@@ -153,7 +155,7 @@ def delete_product(request, id ):
     if product.product_img4:
         os.remove(os.path.join(settings.MEDIA_ROOT, str(product.product_img4)))
     product.delete()
-    return redirect ("pages:product")
+    return JsonResponse({"id":id})
 
 def dropdown_P(request):
     category = request.GET.get("category")

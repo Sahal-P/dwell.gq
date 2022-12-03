@@ -18,8 +18,19 @@ class CartItem(models.Model):
     is_active       = models.BooleanField(default=True)
     
     def sub_total(self):
-        return self.product.selling_price *self.Quantity
-    
+        if self.product.offer_price is not None:
+            return self.product.offer_price *self.Quantity
+        else:
+            return self.product.selling_price *self.Quantity
+    def sub_total_c(self,coupen_didected):
+        if self.product.offer_price is not None:
+            if coupen_didected is not 0:
+                return self.product.offer_price *self.Quantity-coupen_didected 
+            else:
+                return self.product.offer_price *self.Quantity
+        else:
+            return self.product.selling_price *self.Quantity
+        
     def __str__(self):
         return self.product
     

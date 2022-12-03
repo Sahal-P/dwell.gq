@@ -13,7 +13,6 @@ from munch import DefaultMunch
 
 def create(request):
     cart=request.session.session_key
-    print(cart,"<<<<<<<<<<<<<<<<<<<")
     if not cart:
         cart=request.session.create()
     return cart
@@ -70,7 +69,10 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
         
 
         for cart_item in cart_items:
-            total += (cart_item.product.selling_price * cart_item.Quantity)
+            if cart_item.product.offer_price is not None:
+                total += (cart_item.product.offer_price * cart_item.Quantity)
+            else:
+                total += (cart_item.product.selling_price * cart_item.Quantity)
             quantity += cart_item.Quantity
             tax = (5*total)/100
             delv = 5
@@ -82,7 +84,10 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
             cart_items=CartItem.objects.filter(Guest_id=id,is_active=True)
             
             for cart_item in cart_items:
-                total += (cart_item.product.selling_price * cart_item.Quantity)
+                if cart_item.product.offer_price is not None:
+                    total += (cart_item.product.offer_price * cart_item.Quantity)
+                else:
+                    total += (cart_item.product.selling_price * cart_item.Quantity)
                 quantity += cart_item.Quantity
                 tax = (5*total)/100
                 delv = 5
@@ -130,19 +135,30 @@ def delete_cart(request,id):
     return redirect('cart')
     
 def checkout(request,total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0,payment=None):
-    
-    try :
+    try :   
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user,is_active=True)
-           
+        num = 0
         for cart_item in cart_items:
-            total += (cart_item.product.selling_price * cart_item.Quantity)
+            
+            if cart_item.product.offer_price is not None:
+                total += (cart_item.product.offer_price * cart_item.Quantity)
+            else:
+                total += (cart_item.product.selling_price * cart_item.Quantity)
             quantity += cart_item.Quantity
             tax = (5*total)/100
             delv = 5
             g_total = total+ tax+delv
         address = Address.objects.filter(user = request.user)
-    
+        applied = None
+        coupen = None
+        if 'new_price' in request.session:
+            new_price = request.session['new_price']
+            coupen = request.session['coupen']
+
+            if new_price is not None:
+                g_total = new_price
+                applied = True
         client = razorpay.Client(auth=(settings.RAZOR_ID, settings.RAZOR_SECRET))
         payment = client.order.create({'amount':int(g_total),'currency':'INR' ,'payment_capture' : 1})
         return render(request, "checkout.html", {
@@ -151,18 +167,24 @@ def checkout(request,total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0,p
         "cart_items":cart_items,
         "delv":delv,
         "tax":tax,
+        "coupen":coupen,
+        "applied":applied,
         "g_total":g_total,
         "address" : address,
-        "payment": payment,
-    })    
-    except  :
+        "payment": payment,})  
+          
+    except :
+        
+        if not request.user.is_authenticated:
             Guest_id = GCart.objects.get(Guest_id = create(request))
             
             cart_items = CartItem.objects.filter(Guest_id = Guest_id, is_active=True)
             
-            
             for cart_item in cart_items:
-                total += (cart_item.product.selling_price * cart_item.Quantity)
+                if cart_item.product.offer_price is not None:
+                    total += (cart_item.product.offer_price * cart_item.Quantity)
+                else:
+                    total += (cart_item.product.selling_price * cart_item.Quantity)
                 quantity += cart_item.Quantity
                 tax = (5*total)/100
                 delv = 5
@@ -180,9 +202,8 @@ def checkout(request,total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0,p
             "g_total":g_total,
             "address" : address,
             "payment": payment,})    
-            
+        
     return redirect ('cart')
-    
     
     
 def quantity_edit(request):
@@ -196,16 +217,22 @@ def quantity_edit(request):
         
     if cart_item.Quantity :
             qty = cart_item.Quantity + 1
-            cart_item.Quantity +=1
-            cart_item.save()
-            total = (cart_item.product.selling_price * cart_item.Quantity)
-            tax = (5*total)/100
-            delv = 5
-            g_total = total+ tax+delv
-            cart_item.save()
-            sub = cart_item.sub_total()
-    
-    return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
+            print(qty,"<<<<<<<<<<<")
+            print(cart_item.product.quantity,"<<<<<<<<<<")
+            if cart_item.product.quantity >=qty:
+                cart_item.Quantity +=1
+                cart_item.save()
+                if cart_item.product.offer_price is not None:
+                    total = (cart_item.product.offer_price * cart_item.Quantity)
+                else:
+                    total = (cart_item.product.selling_price * cart_item.Quantity)
+                tax = (5*total)/100
+                delv = 5
+                g_total = total+ tax+delv
+                cart_item.save()
+                sub = cart_item.sub_total()
+
+                return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
 
 def quantity_minus(request):
     id = request.GET.get('id')
@@ -218,15 +245,21 @@ def quantity_minus(request):
         cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id)
     
     if cart_item.Quantity :
+        if cart_item.Quantity is not 1:
             qty = cart_item.Quantity - 1
             cart_item.Quantity -=1
             cart_item.save()
-            total = (cart_item.product.selling_price * cart_item.Quantity)
+            if cart_item.product.offer_price is not None:
+                total = (cart_item.product.offer_price * cart_item.Quantity)
+            else:
+                total = (cart_item.product.selling_price * cart_item.Quantity)
             tax = (5*total)/100
             delv = 5
             g_total = total+ tax+delv
             cart_item.save()
             sub = cart_item.sub_total()
+    
+            
  
     return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
 

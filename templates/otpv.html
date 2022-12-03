@@ -72,13 +72,13 @@
                     <input class="otp" type="text" name ="otp4" oninput='digitValidate(this)' tabindex="4" maxlength=1 >
                     
                   <hr class="mt-4">
-                  <button type="submit" class='btn btn-primary btn-block mt-4 mb-4 customBtn'>Verify</button>
+                  <button type="submit" class='btn btn-lg btn-primary btn-block mt-4 mb-4 customBtn'>Verify</button>
                 </form>
-                <div id="some_div">
+                <div id="some_div" style="font-size: 40px;">
 
                 
                 </div>
-                <button class="mb-5" disabled onclick = doSomething() id="resend">resend</button><br>
+                <button class=" mb-5" style="color: white; background-color: rgb(0, 81, 255);" onclick = doSomething() id="resnd" disabled>resend</button><br>
                 {% if messages %}
                 {% for message in messages %}
                   {% comment %} {% if message.tags == 'success' %} {% endcomment %}
@@ -101,21 +101,25 @@
      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
      <script>
 
-    var timeLeft = 10;
+    var timeLeft = 30;
     var elem = document.getElementById('some_div');
     var timerId = setInterval(countdown, 1000);
     
     function countdown() {
       
-        if (timeLeft <=-1 ) {
+        if (timeLeft <= -1 ) {
             clearTimeout(timerId);
             document.getElementById("resnd").innerHTML = "resend"  
             document.getElementById('resnd').removeAttribute('disabled')
             
-        } else {
-            elem.innerHTML = timeLeft + ' seconds remaining';
+        } else if (timeLeft == 0) {
+            elem.innerHTML = '';
             timeLeft--;
         }
+        else{
+          elem.innerHTML = timeLeft;
+          timeLeft--;
+      }
     }
     
     function doSomething() {
@@ -126,10 +130,10 @@
             url: "{% url 'resendotp' %}",
             data: { 1 : 1},
             success: function (data) {
-              var timeLeft = 10;
+              var timeLeft = 60;
     var elem = document.getElementById('some_div');
     var timerId = setInterval(countdown, 1000);
-    
+    var timeLeft = 20
     function countdown() {
       
         if (timeLeft <=-1 ) {
@@ -138,7 +142,7 @@
             document.getElementById('resnd').removeAttribute('disabled')
             
         } else {
-            elem.innerHTML = timeLeft + ' seconds remaining';
+            elem.innerHTML = timeLeft;
             timeLeft--;
         }
     }

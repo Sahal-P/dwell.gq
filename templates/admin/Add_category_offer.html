@@ -1,0 +1,139 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+ <style>
+
+
+    .glow-on-hover {
+        width: 220px;
+        height: 50px;
+        border: none;
+        outline: none;
+        color: #fff;
+        background: #111;
+        cursor: pointer;
+        position: relative;
+        z-index: 0;
+        border-radius: 10px;
+    }
+    
+    .glow-on-hover:before {
+        content: '';
+        background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+        position: absolute;
+        top: -2px;
+        left:-2px;
+        background-size: 400%;
+        z-index: -1;
+        filter: blur(5px);
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        animation: glowing 20s linear infinite;
+        opacity: 0;
+        transition: opacity .3s ease-in-out;
+        border-radius: 10px;
+    }
+    
+    .glow-on-hover:active {
+        color: #000
+    }
+    
+    .glow-on-hover:active:after {
+        background: transparent;
+    }
+    
+    .glow-on-hover:hover:before {
+        opacity: 1;
+    }
+    
+    .glow-on-hover:after {
+        z-index: -1;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #111;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+    }
+    
+    @keyframes glowing {
+        0% { background-position: 0 0; }
+        50% { background-position: 400% 0; }
+        100% { background-position: 0 0; }
+    }
+    </style>
+ <script>
+  $("#checkbox1").is(':checked', function(){
+    $("#checkbox1").prop('checked', true);
+  });
+  </script>  
+   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+
+ <div class="body flex-grow-1 px-3">
+    <div class="container bcontent box">
+
+  <form action= "{% url 'add_category_offer' category.id %}" method="POST" enctype="multipart/form-data">
+    <!-- 2 column grid layout with text inputs for the first and last names -->
+    {% csrf_token %}
+    <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <input type="text" value="{{category.category_name}}" id="form6Example1" class="form-control" disabled/>
+          <label style="color: WHITE;" class="form-label" for="form6Example1" >Category Name</label>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="form-outline">
+          <input name="Discount" type="number" id="form6Example2" min="0" max="70" placeholder="0-70 in Percentage" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example2">Discount %</label>
+        </div>
+      </div>
+    </div>
+  
+  
+    <!-- Submit button -->
+    <button class="glow-on-hover btn" type="submit">Add Offer</button>>
+  </form>
+
+
+</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+      $("#category").change(function (){
+        var url = "{% url 'category:dropdown_PE' %}"
+        var category_id = $(this).val();
+
+        $.ajax({
+          url : url,
+          data :{"category":category_id},
+          success: function(data){
+            $("#subcategory1").html(data);
+          }
+
+        });
+
+      });
+ </script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

@@ -3,7 +3,9 @@ from django.utils.text import slugify
 from accounts.models import Account
 from category.models import Category, Products, SubCategory
 from cart.models import GCart,CartItem
-
+from django.db.models import Count,Sum,Q,F
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 # Create your views here.
 
 def index(request):
@@ -23,12 +25,36 @@ def mensSC(request,id):
 
 def MshirtsP(request,id):
     id = id
-    product= Products.objects.filter(subcategory_id=id)
-    return render(request,"MshirtsP.html",{"product":product})
+    product= Products.objects.filter(subcategory_id=id).annotate(mrp=F('selling_price')+300).order_by('id')
+    
+    for i in product:
+        if i.category.discount<i.offer:
+         if i.offer is not None and i.offer is not 0 :
+            i.offer_price = int(i.original_price - i.original_price * i.offer/100)
+            i.save()
+            continue
+        if i.category.discount is not None:
+            i.category_offer = i.category.discount
+            if i.category.discount is not 0:
+                i.offer_price = int(i.original_price - i.original_price * i.category.discount/100)
+            else:
+                 i.offer_price = i.category.discount
+            i.save()
+    # product= Products.objects.get(subcategory_id=id).annotate(mrp=F('selling_price')+300)
+    
+    page = Paginator(product,4)
+    page_list = request.GET.get('page')
+    page = page.get_page(page_list)
+    
+    return render(request,"MshirtsP.html",{"product":page})
 
 def signle_P(request, id):
     id = id 
-    obj = Products.objects.filter(id=id)
+    obj = Products.objects.filter(id=id).annotate(mrp=F('selling_price')+300)
+    # for i in obj:
+    #     if i.offer is not None or i.category_offer is not None:
+    #         i.offer_price = i.original_price - i.original_price * i.offer/100
+    #         i.save()  
     return render (request, "product-single.html",{"obj":obj})
 
 def productsingle(request):
@@ -130,16 +156,16 @@ def edit_product(request,id):
             img1 = request.FILES.get("img1")
             product.product_img1 = img1
             product.save()
-        if request.POST['img2']:
-            img2 = request.FILES["img2"]
+        if request.FILES.get('img2'):
+            img2 = request.FILES.get("img2")
             product.product_img2 = img2
             product.save()
-        if request.POST['img3']:
-            img3 = request.FILES["img3"]
+        if request.FILES.get('img3'):
+            img3 = request.FILES.get("img3")
             product.product_img3 = img3 
             product.save()
-        if request.POST['img4']:
-            img4 = request.FILES["img4"]
+        if request.FILES.get('img4'):
+            img4 = request.FILES.get("img4")
             product.product_img4 = img4
             product.save()
         if request.POST['p_disc']:
@@ -154,15 +180,16 @@ def edit_product(request,id):
     
     return render (request, "admin/edit_product.html",  {"catg":catg ,"Scata":Scata })
 
-def user_block(request, id):
-    id=id
-    val = request.GET.get('bl')
-    val2 = request.GET.get('ubl')
+def user_block(request):
+    id= request.GET.get('id')
+    val = request.GET.get('value')
+    print(id ,"vanunnuuuuuuuuuuuuuuuuuuu" ,val)
+    
     person = Account.objects.get(pk=id)
-    if val is not None:
+    if val =="True":
         person.is_blocked = True
         person.save()
-    if val2 is not None:
+    if val =="False":
         person.is_blocked = False
         person.save()
-    return redirect('pages:a_tables')
+    return JsonResponse({"val":val})

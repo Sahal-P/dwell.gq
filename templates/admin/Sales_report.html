@@ -1,0 +1,528 @@
+
+{% extends 'admin/base.html' %} 
+
+ 
+{% block content %}
+<style>
+    .monthPicker {
+        background: #33a0a0;
+        box-shadow: 0 1px 5px #696969;
+    }
+    
+    .monthPicker-top {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 20px 20px;
+        border-bottom: 1px solid #fff;
+        -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+    }
+    
+    .monthPicker-top-action {
+        font-size: 2rem;
+        position: relative;
+        width: 45px;
+        height: 45px;
+        color: #fff;
+        border-radius: 50%;
+        background: none;
+    }
+    
+    .monthPicker-top-action span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    
+    .monthPicker-top-action:hover {
+        background: rgba(0, 0, 0, .1);
+    }
+    
+    .monthPicker-top-current {
+        color: #008080;
+        background: #fff;
+    }
+    
+    .monthPicker-top-current .selectYear {
+        display: none;
+    }
+    
+    .monthPicker-top-current:hover .currentYear {
+        display: none;
+    }
+    
+    .monthPicker-top-current:hover .selectYear {
+        display: inline;
+    }
+    
+    .monthPicker-body {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        padding: 1rem;
+        text-align: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-pack: distribute;
+        justify-content: space-around;
+    }
+    
+    .monthPicker-body-month {
+        line-height: 35px;
+        height: 35px;
+        margin: 5px;
+        vertical-align: middle;
+        text-decoration: none;
+        color: #008080;
+        color: #fff;
+        border-radius: 3px;
+        background: #fff;
+        background: none;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc(100% / 3 - 10px);
+        flex: 0 0 calc(100% / 3 - 10px);
+    }
+    
+    .monthPicker-body-month:hover {
+        text-decoration: none;
+        color: #008080;
+        background: #fff;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, .34);
+    }
+</style>
+
+<style>
+    body {
+        color: #566787;
+		background: #f5f5f5;
+		font-family: 'Varela Round', sans-serif;
+		font-size: 13px;
+	}
+    .table-responsive {
+        margin: 30px 0;
+    }
+	.table-wrapper {
+        min-width: 1000px;
+        background: #fff;
+        padding: 20px 25px;
+		border-radius: 3px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+	.table-title {
+		padding-bottom: 15px;
+		background: #299be4;
+		color: #fff;
+		padding: 16px 30px;
+		margin: -20px -25px 10px;
+		border-radius: 3px 3px 0 0;
+    }
+    .table-title h2 {
+		margin: 5px 0 0;
+		font-size: 24px;
+	}
+	.table-title .btn {
+		color: #566787;
+		float: right;
+		font-size: 13px;
+		background: #fff;
+		border: none;
+		min-width: 50px;
+		border-radius: 2px;
+		border: none;
+		outline: none !important;
+		margin-left: 10px;
+	}
+	.table-title .btn:hover, .table-title .btn:focus {
+        color: #566787;
+		background: #f2f2f2;
+	}
+	.table-title .btn i {
+		float: left;
+		font-size: 21px;
+		margin-right: 5px;
+	}
+	.table-title .btn span {
+		float: left;
+		margin-top: 2px;
+	}
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+		padding: 12px 15px;
+		vertical-align: middle;
+    }
+	table.table tr th:first-child {
+		width: 60px;
+	}
+	table.table tr th:last-child {
+		width: 100px;
+	}
+    table.table-striped tbody tr:nth-of-type(odd) {
+    	background-color: #fcfcfc;
+	}
+	table.table-striped.table-hover tbody tr:hover {
+		background: #f5f5f5;
+	}
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }	
+    table.table td:last-child i {
+		opacity: 0.9;
+		font-size: 22px;
+        margin: 0 5px;
+    }
+	table.table td a {
+		font-weight: bold;
+		color: #566787;
+		display: inline-block;
+		text-decoration: none;
+	}
+	table.table td a:hover {
+		color: #2196F3;
+	}
+	table.table td a.settings {
+        color: #2196F3;
+    }
+    table.table td a.delete {
+        color: #F44336;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+	table.table .avatar {
+		border-radius: 50%;
+		vertical-align: middle;
+		margin-right: 10px;
+	}
+	.status {
+		font-size: 30px;
+		margin: 2px 2px 0 0;
+		display: inline-block;
+		vertical-align: middle;
+		line-height: 10px;
+	}
+    .text-success {
+        color: #10c469;
+    }
+    .text-info {
+        color: #62c9e8;
+    }
+    .text-warning {
+        color: #FFC107;
+    }
+    .text-danger {
+        color: #ff5b5b;
+    }
+    .pagination {
+        float: right;
+        margin: 0 0 5px;
+    }
+    .pagination li a {
+        border: none;
+        font-size: 13px;
+        min-width: 30px;
+        min-height: 30px;
+        color: #999;
+        margin: 0 2px;
+        line-height: 30px;
+        border-radius: 2px !important;
+        text-align: center;
+        padding: 0 6px;
+    }
+    .pagination li a:hover {
+        color: #666;
+    }	
+    .pagination li.active a, .pagination li.active a.page-link {
+        background: #03A9F4;
+    }
+    .pagination li.active a:hover {        
+        background: #0397d6;
+    }
+	.pagination li.disabled i {
+        color: #ccc;
+    }
+    .pagination li i {
+        font-size: 16px;
+        padding-top: 6px
+    }
+    .hint-text {
+        float: left;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+</style>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+        </script>
+
+        <script>
+            function validateDate() {
+
+                start = document.getElementById('start').value
+                document.getElementById('end').setAttribute("min", start);
+              }
+              function validateEnd() {
+
+                end = document.getElementById('end').value
+                document.getElementById('start').setAttribute("max", end);
+              }
+
+
+        </script>
+
+        {% if messages %}
+        {% for message in messages %}
+          
+            <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            {% if message.tags == 'success' %}
+            <script>
+              var m = "{{ message }}";
+              Swal.fire({
+              icon: 'success',
+            
+              text: m,
+            })
+            </script>
+            {% else %}
+            <script>
+              var m = "{{ message }}";
+              Swal.fire({
+              icon: 'error',
+            
+              text: m,
+            })
+            </script>
+            {% endif %}
+          
+        {% endfor %}
+       {% endif %}
+        
+<div class="body flex-grow-1 px-3">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <!-- <div class="row">
+                    <div class="col-12 col-md-6 col-lg-4 col-xl-3">
+                        <div class="monthPicker">
+                            <div class="monthPicker-top">
+                               
+                                <button class="monthPicker-top-current btn">
+                                    <span class="currentYear">Year 2022</span>
+                                    <span class="selectYear">Jump Years</span>
+                                </button>
+                                
+                            </div>
+                            <div class="monthPicker-body">
+                                <a href="#" class="monthPicker-body-month"><span>Jan.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Feb.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Mar.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Apr.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>May</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>June</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>July</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Aug.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Sep.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Oct.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Nov.</span></a>
+                                <a href="#" class="monthPicker-body-month"><span>Dec.</span></a>
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div> -->
+                <form action="{% url 'sales_report' %}" method="GET">
+
+                <div class="row">
+                    
+                    <div class="col-md-6">
+                        <h2>Sales <b>Report</b></h2>
+                    </div>
+                    <div class="col-md-3">
+                    <select name="Month" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option value="0">Select by Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                    </div>
+                    <div class="col-md-3" style="margin-bottom: 1rem;">
+                        <a onclick = DoAction()  class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Export to pdf</span></a>
+                        <a href="#" class="btn btn-primary"><i class="material-icons">&#xE24D;</i> <span>Export to Excel</span></a>						
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="row">
+                      <div class="col-sm col-md-6">
+                        <div class=" md-form md-outline input-with-post-icon datepicker">
+                            <input name="from_date" onchange= validateDate() placeholder="Select date" max="" type="date" id="start" class="form-control">
+                            <label><b>Frome</b></label>
+                          </div>
+                      </div>
+                      <div class="col-sm col-md-6">
+                        <div class="" class="md-form md-outline input-with-post-icon datepicker">
+                            <input name="to_date" onchange= validateEnd() placeholder="Select date" type="date" id="end" min="" class="form-control">
+                            <label><b>To</b></label>
+                          </div>
+                      </div>
+                        <div class="" >
+                            <button type="submit" class="btn btn-block">Filter</button>
+                          </div>
+                    </div>
+                  </div>
+
+                </form>
+                <div class="row">
+                    
+                      
+                      </div>
+                      
+
+                
+                
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th> Date </th>
+                        <th>User</th>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Sell Price</th>
+                        <th>Profit</th>
+                        <th>Margin</th>
+                        <th>Revenue</th>
+                        
+                    </tr>
+                </thead>
+                {% comment %} <img src="/examples/images/avatar/1.jpg" class="avatar" alt="Avatar"> {% endcomment %}
+                <tbody>
+                    {% for i in orders %}
+                    <tr>
+                        <td>{{i.orderd_date}}</td>
+                        <td>{{i.user.first_name}}</td>
+                        <td>{{i.product}}</td>
+                        <td>{{i.quantity}}</td>
+                        <td>{{i.product.selling_price}}</td>
+                        <td>{{i.profit}}</td>
+                        <td>{{i.margin_total}}</td>
+                        <td>{{i.sub_total}}</td>
+                        
+                    
+                    </tr>
+                
+                     {% endfor %}
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <div class="hint-text">Showing <b>{{orders.number}}</b> out of <b>{{orders.paginator.num_pages}}</b> entries</div>
+                <ul class="pagination">
+                    {% if orders.has_previous %}
+
+                    <li class="page-item disabled"><a href="{% url 'sales_report' %}?page={{page.previous_page_number}}">Previous</a></li>
+                      
+                    {% endif %}
+                    {% for i in orders.paginator.page_range %}
+              
+                    {% if orders.number == i %}
+
+                    <li class="page-item active"><a href="{% url 'sales_report' %}?page={{i}}" class="page-link">{{i}}</a></li>
+
+                     {% else %}
+                     <li class="page-item"><a href="{% url 'sales_report' %}?page={{i}}" class="page-link">{{i}}</a></li>
+
+                     {% endif %}
+
+                     {% endfor %}
+
+                     {% if orders.has_next %}
+                    <li class="page-item"><a href="{% url 'sales_report' %}?page={{page.next_page_number}}" class="page-link">Next</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>        
+</div> 
+<script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function blockuser(){
+        
+        
+
+
+                Swal.fire({
+                  title: 'Are you sure you want to remove address?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                      var url = $("#unblock").attr("data-url");
+                    location.href = url;
+                    
+        
+              }
+        
+                  }
+                )}
+
+
+                function unblockuser(){
+        
+        
+
+
+                    Swal.fire({
+                      title: 'Are you sure you want to remove address?',
+                      icon: 'warning',
+                      showCancelButton: true,
+                      confirmButtonColor: '#3085d6',
+                      cancelButtonColor: '#d33',
+                      confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                      if (result.isConfirmed) {
+                          var url = $("#Url").attr("data-url");
+                        location.href = url;
+                        
+            
+                  }
+            
+                      }
+                    )}
+            
+
+              
+
+                function DoAction(){
+
+                    var f_date=$("input[name ='from_date']").val();
+                    var t_date=$("input[name ='to_date']").val();
+                        window.location.href = "{% url 'generatesalesReportPdf' %}"  +'?date='+ f_date +','+t_date;
+                        }
+        
+        </script>
+
+{% endblock %}

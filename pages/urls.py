@@ -39,7 +39,7 @@ urlpatterns = [
      path("add_product", views.add_product, name="add_product"),
      path("edit_subcategory/<int:id>", views.edit_subcategory, name="edit_subcategory"),
      path("edit_product/<int:id>",views.edit_product,name="edit_product"),
-     path("user_block/<int:id>",views.user_block, name="user_block"),
+     path("user_block",views.user_block, name="user_block"),
 
                
 ]

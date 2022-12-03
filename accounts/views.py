@@ -10,26 +10,82 @@ from django.http import HttpResponse ,JsonResponse
 # Create your views here.
 from .helpers import *
 from .models import Account 
-import datetime 
+from datetime import datetime, timedelta
+from django.http import HttpResponseRedirect
 from cart.models import GCart, CartItem
-from orders.models import Orders
-from django.db.models import Count,Sum,Q
+from orders.models import Orders,Products
+from category.models import Offer_product
+from django.db.models import Count,Sum,Q,F
 import ast
+from django.http import FileResponse
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from django.core.paginator import Paginator
+from dateutil.relativedelta import relativedelta
+
+def product_offer(request):
+    product = Products.objects.all()
+    return render(request, 'admin/Product_offer.html',{'products':product})
+
+def add_Product_offer(request,id):
+    if request.POST:
+        product = Products.objects.get(id = id)
+        offer = Offer_product()
+        Discount = request.POST.get('Discount')
+        offer.discount = Discount
+        offer.product = product
+        offer.save()
+        product.offer = Discount
+        product.save()
+        return redirect('product_offer')
+    product = Products.objects.get(id=id)
+    return render(request, "admin/add_Product_offer.html",{"product":product})
+
+def sales_report(request):
+    
+    orders   = Orders.objects.annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
+
+    if request.GET.get('Month'):
+        currentMonth = datetime.now().month
+        
+        month1 = request.GET.get('Month')
+        month = int(month1)
+       
+        # today   = datetime.now()- relativedelta(months=1)
+        orders      = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
+
+    elif request.GET.get('from_date'):
+        from_date   = request.GET.get('from_date')
+        date_to     = request.GET.get('to_date')
+        if not from_date or not date_to:
+            messages.info(request,"Please fill from and to date")
+            return redirect(request.META.get('HTTP_REFERER')) 
+        to_date     = datetime.strptime(date_to , "%Y-%m-%d")
+        to_date11   = to_date + timedelta(1)
+        orders      = Orders.objects.filter(orderd_date__range=[from_date, to_date11]).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
+    else:
+        messages.info(request,"Please input date or month to filter")
+        return redirect(request.META.get('HTTP_REFERER')) 
+        
+        
+    page            = Paginator(orders, 6)
+    page_list       = request.GET.get('page')
+    page            = page.get_page(page_list)
+    
+    return render(request , "admin/Sales_report.html", {"orders":page})
+
+
 def d_admin(request):
     if request.user.is_superuser:
-        today = datetime.datetime.now()
+        today   = datetime.now() # - relativedelta(months=1)
+        
         current = today.strftime("%B %d, %Y")
+        date    = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(orderd_items=Count('id')).order_by("orderd_date__date")
+        sales   = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(sales=Count('id',filter=Q(status ="Deliverd")),cancelled=Count('id' , filter=Q(status ="cancelled")),returns=Count('id' , filter=(Q(status ="Refund In Progress")|Q(status ="Return Aproved")))).order_by("orderd_date__date")
         
-        date = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(orderd_items=Count('id')).order_by(
-            "orderd_date__date")
-        sales = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(
-            sales=Count('id',filter=Q(status ="Deliverd")),cancelled=Count('id' , filter=Q(status ="cancelled")),returns=Count('id' , filter=(Q(
-                status ="Refund In Progress")|Q(status ="Return Aproved")))).order_by("orderd_date__date")
-        
-        
-        
-        
-        return render(request, "admin/index.html" ,{'date':date, 'sales':sales , 'current':current})
+        return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current})
     return redirect("adminlogin")
 
 def home(request):
@@ -175,7 +231,8 @@ def user_otp(request):
     try: 
         if request.POST:
             phone_number = request.POST.get("phone_number")
-            phone=Account.objects.filter(phone_number=phone_number).exists()
+            phone = Account.objects.filter(phone_number=phone_number).exists()
+            
             if phone is True:
                 user = Account.objects.get(phone_number=phone_number)
                 request.user = user
@@ -188,6 +245,7 @@ def user_otp(request):
 def otp_v(request):
     if request.user.is_authenticated:
          return redirect("home")
+     
     phone = otphandler.phone_number
     user = Account.objects.get(phone_number=phone)
     request.user = user

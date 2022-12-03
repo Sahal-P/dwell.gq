@@ -110,7 +110,7 @@
                       <h5 class="bold">{{order.product.product_name}}</h5>
                       <p class="text-muted"> Qt: {{order.quantity}} item</p>
                       <p class="text-muted"> price: {{order.price}} item</p> 
-                      <h4 class="mb-3">total : ₹ {{order.sub_total}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
+                      <h4 class="mb-3">total : ₹ {{order.total_price}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
                       {% if order.status == "cancelled" %} 
                       <p class="" style=" color: red;">Order Cancelled </p>
                       {% else %}
@@ -129,10 +129,10 @@
                     
                     
                     <div class="border-start h-100"></div> 
-                     {% if order.status == "placed" or order.status == "Shipped" %}
-                    <a href="{% url 'ordercancell' order.id %}" class="btn btn-secondary mb-0 btn-lg" style="color: white;">Cancel</a>
-                    {% elif order.status == "Deliverd" %}
-                    <a href="{% url 'return_order' order.id %}" class="btn btn-secondary mb-0" style="color: white;">Return</a>
+                     {% if order.status == "placed" %}
+                    <a onclick= cancell_order() class="btn btn-secondary mb-0 btn-lg" style="color: white;">Cancel</a>
+                    {% elif order.status == "Deliverd" or order.status == "Out for delivery" or order.status == "Shipped"%}
+                    <a onclick= return_order() class="btn btn-secondary mb-0 btn-lg" style="color: white;">Return</a>
                     {% elif order.status == "cancelled" %}
                     <h5 style="color: rgb(247, 0, 0);">Order cancelled</h5>
                     {% elif order.status == "Return Requested waiting for approval" %}
@@ -235,6 +235,65 @@
   <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
   <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
   <script src="{% static "js/scrollax.min.js" %}"></script>
+<script>
 
+  function cancell_order(){
+        
+    Swal.fire({
+      title: 'Are you sure you want to cancell the order?',
+      icon: 'warning',
+      showCancelButton: true,   
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          
+
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'ordercancell' order.id %}",
+            data: { 'value' : "True" },
+            success: function (data) {
+                location.reload();
+            }
+        })
+        
+
+  }
+
+      }
+    )}
+
+
+    function return_order(){
+        
+      Swal.fire({
+        title: 'Are you sure you want to return the order?',
+        icon: 'warning',
+        showCancelButton: true,   
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes !'
+      }).then((result) => {
+        if (result.isConfirmed) {
+            
+  
+          $.ajax({
+              type: 'GET',
+              url: "{% url 'return_order' order.id %}",
+              data: { 'value' : "True" },
+              success: function (data) {
+                  location.reload();
+              }
+          })
+          
+  
+    }
+  
+        }
+      )}
+
+</script>
 
     {% endblock %}

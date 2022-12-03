@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'orders',
     'wishlist',
     'user_profile',
+    'offer',
+    'coupen',
 ]
 
 MIDDLEWARE = [
@@ -154,8 +156,8 @@ MEDIA_ROOT =  BASE_DIR/'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_SID="AC85fdeaad04ced9b3d69c6db3cbea2621"
-AUTH_TOKEN ="3410f8c9db89eecb7ece1a554c817aa4"
+SID_TWILIO = "AC85fdeaad04ced9b3d69c6db3cbea2621"
+TOKEN_TWILIO = "03f12fd95abd9b10936f7e10778cf97a"
 
 RAZOR_ID = "rzp_test_U3hCafDNlYy1xe"
 RAZOR_SECRET = "gUGeShTN3x0JX8COyS9Mpki6"

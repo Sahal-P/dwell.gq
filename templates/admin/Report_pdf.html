@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dwell Sales Report</title>
+    <style>
+
+        .content-info {
+            background: #000000;
+            padding: 40px 0;
+            background-size: cover!important;
+            background-position: top center!important;
+            background-repeat: no-repeat!important;
+            position: relative;
+           padding-bottom:100px;
+        }
+        
+        table {
+            width: 100%;
+            background: rgb(0, 0, 0);
+            border: 1px solid #141414;
+        }
+        
+        table thead tr th {
+            padding: 20px;
+            border: 1px solid #1f1f1f;
+            color: rgb(255, 255, 255);
+        }
+        
+        table.table-striped tbody tr:nth-of-type(odd) {
+            background: #000000;
+        }
+        
+        table.result-point tr td.number {color: rgb(255, 255, 255);
+            width: 100px;
+            position: relative;
+        } 
+        
+        .text-left {
+            text-align: left!important;
+        }
+        
+        table tr td {
+            padding: 10px 20px;
+            border: 1px solid #dedede;
+            color: rgb(255, 255, 255);
+        }
+        table.result-point tr td .fa.fa-caret-up {
+            color: green;
+        }
+        
+        table.result-point tr td .fa {
+            font-size: 20px;
+            position: absolute;
+            right: 20px;
+        }
+        
+        table tr td {
+            padding: 10px 40px;
+            border: 1px solid #dedede;
+        }
+        
+        table tr td img {
+            max-width: 32px;
+            float: left;
+            margin-right: 11px;
+            margin-top: 1px;
+            border: 1px solid #dedede;
+        }
+        
+        
+    </style>
+</head>
+<body>
+
+    <section class="content-info">
+        <div class="container paddings-mini">
+           <div class="row">
+              <div class="col-lg-12">
+                <h1 style="color: white; text-align: center;">Sales-Report from -{{fro}} to -{{to}}</h1>
+                 <table class="table-striped table-responsive table-hover result-point">
+                    <thead class="point-table-head">
+                       <tr>
+                          <th class="text-left">Date</th>
+                          <th class="text-left">User</th>
+                          <th class="text-left">product</th>
+                          <th class="text-center">Quantity</th>
+                          <th class="text-center">Sell price</th>
+                          <th class="text-center">Profit</th>
+                          <th class="text-center">Margin</th>
+                          <th class="text-center">Revenue</th>
+                          
+                       </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        {% for i in Report %}
+                            {% for j in i %}
+                                
+                            
+                       <tr>
+                        
+                          
+                          <td>{{j.Date}}</td>
+                          <td>{{j.User}}</td>
+                          <td>{{j.Product}}</td>
+                          <td>{{j.Quantity}}</td>
+                          <td>{{j.Sell_price}}</td>
+                          <td>{{j.Profit}}</td>
+                          <td>{{j.Margin}}</td>
+                          <td>{{j.Revenue}}</td>
+                          
+                       </tr>
+                       {% endfor %}
+                       {% endfor %}
+                  
+             
+                    </tbody>
+                 </table>
+                 <h1 style="color: white; text-align: center;">Total Revenue = {{total_rev}}</h1>
+
+              </div>
+           </div>
+        </div>
+        
+     </section>
+    
+</body>
+</html>

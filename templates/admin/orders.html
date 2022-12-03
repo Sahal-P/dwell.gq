@@ -5,12 +5,88 @@
 
  {% block content %}
 
+ <style>
+  .box {
+    transition: box-shadow .5s;
+    
+    border-radius:5px;
+    border: 1px solid #ccc;
+    
+  }
+  .box:hover {
+    box-shadow: 0 0 15px rgb(255, 255, 255); 
+  }
+ </style>
+
+ <style>
+
+
+  .glow-on-hover {
+      
+      border: none;
+      outline: none;
+      color: #fff;
+      background: rgb(255, 0, 0);
+      cursor: pointer;
+      position: relative;
+      z-index: 0;
+      border-radius: 10px;
+  }
+  
+  .glow-on-hover:before {
+      content: '';
+      background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+      position: absolute;
+      top: -2px;
+      left:-2px;
+      background-size: 400%;
+      z-index: -1;
+      filter: blur(5px);
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      animation: glowing 20s linear infinite;
+      opacity: 0;
+      transition: opacity .3s ease-in-out;
+      border-radius: 10px;
+  }
+  
+  .glow-on-hover:active {
+      color: rgb(255, 255, 255)
+  }
+  
+  .glow-on-hover:active:after {
+      background: transparent;
+  }
+  
+  .glow-on-hover:hover:before {
+      opacity: 1;
+  }
+  
+  .glow-on-hover:after {
+      z-index: -1;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgb(255, 0, 0);
+      left: 0;
+      top: 0;
+      border-radius: 10px;
+  }
+  
+  @keyframes glowing {
+      0% { background-position: 0 0; }
+      50% { background-position: 400% 0; }
+      100% { background-position: 0 0; }
+  }
+  </style>
+
  <div class="body flex-grow-1 px-3">
   {% comment %} <a href= "" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Edit Orders</a> {% endcomment %}
 
-
-  <table class="table table-dark">
-    <thead>
+  <div class="container bcontent ">
+  <table class="table" style="background-color: #1c2e4a;">
+    <thead class="table-light">
       <tr>
         <th scope="col">Product</th>
         <th scope="col">user</th>
@@ -20,10 +96,9 @@
         <th scope="col">Price</th>
         <th scope="col">Status</th>
         <th scope="col">Cancel</th>
-        <th scope="col"></th>
       </tr>
     </thead>
-    <tbody>
+    <tbody style="color: white;">
      {% for order in orders  %}
        
     
@@ -31,7 +106,7 @@
         <td>{{order.user}}</td>
         <td>{{order.orderd_date}}</td>
         <td>{{order.quantity}}</td>
-        <td>{{order.sub_total}}</td>
+        <td>{{order.total_price}}</td>
         <td>{% if order.status == "Return Requested waiting for approval"  %}
 
             <button onclick = approve_or({{order.id}}) class="btn btn-light">Approve return request</button>
@@ -57,16 +132,21 @@
 
                 <option selected>{{order.status}}</option>
                 <option value="Shipped">Shipped</option>
+                <option value="Out for delivery">Out for delivery</option>
                 <option value="Deliverd">Deliverd</option>
                 <option value="Refund In Progress">Refund In Progress</option>
 
                 <option value="Refund Initiated">Refund Initiated</option>
                {% elif order.status == "Shipped" %}
                <option selected>{{order.status}}</option>
+                <option value="Out for delivery">Out for delivery</option>
                 <option value="Deliverd">Deliverd</option>
                 <option value="Refund In Progress">Refund In Progress</option>
 
-                <option value="Refund Initiated">Refund Initiated</option>
+                {% elif order.status == "Out for delivery" %}
+                <option selected>{{order.status}}</option>
+                 <option value="Deliverd">Deliverd</option>
+ 
                 {% elif order.status == "Deliverd" %}
                 <option selected>{{order.status}}</option>
 
@@ -94,8 +174,11 @@
         </td>
         
         {% comment %} <td><a href="" type="button" class="btn btn-success btn-sm">Edit</a></td> {% endcomment %}
-        {% if order.status == "placed" or order.status == "Shipped" %}
-        <td><a onclick=ordercancell_a({{order.id}}) type="button" class="btn btn-danger btn-sm">Cancell</a></td>
+        {% if order.status == "placed" %}
+        <td><button onclick=ordercancell_a({{order.id}}) type="button" class="glow-on-hover btn btn-md">Cancell</button></td>
+        {% else %}
+        <td><a></a></td>
+
         {% endif %}
 
       </tr>
@@ -108,7 +191,7 @@
   </table>
 
 </div>
-
+</div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>

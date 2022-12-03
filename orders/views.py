@@ -6,7 +6,7 @@ from orders.models import Orders
 from category.models import Products
 import uuid
 from django.contrib import messages
-
+from coupen.models import Coupens
 
 # Create your views here.
 def admin_order_detailes(request):
@@ -14,6 +14,9 @@ def admin_order_detailes(request):
     return render(request,"admin/orders.html", {"orders": orders})
 
 def add_address(request):
+    if not request.user.is_authenticated:
+            messages.info(request ,'You have to login to continue Checkout')
+            return redirect(request.META.get('HTTP_REFERER'))
     user = request.user
     destination = request.META.get('HTTP_REFERER')
     if request.POST:
@@ -50,7 +53,6 @@ def add_address(request):
             messages.error(request,"please fill the required fields")
     PreviousUrl(destination)
     return render(request, "add_address.html")
-
 class PreviousUrl:
      next1 = None
      def __init__(self,next1) -> None:
@@ -69,35 +71,67 @@ def order_place(request,total=0,quantity=0,
                 minus =i.product.quantity-get_minus_prod  
                 product.quantity = minus
                 product.save()   
+        num = 0
         for cart_item in cart_items:
-            total += (cart_item.product.selling_price * cart_item.Quantity)
+            num = num+1
+            if cart_item.product.offer_price is not None:
+                total += (cart_item.product.offer_price * cart_item.Quantity)
+            else:
+                total += (cart_item.product.selling_price * cart_item.Quantity)     
             quantity += cart_item.Quantity
+            
             tax = (5*total)/100
             delv = 5
             g_total = total+ tax+delv
+            
+        new_total=0
+        coupen = None
+        coupen_didected = 0
+        if 'new_price' in request.session:
+            
+            new_price = request.session['new_price']
+            coupen = request.session['coupen']
+            if Coupens.objects.filter(coupen_code = coupen).exists():
+                coup = Coupens.objects.get(coupen_code = coupen)
+
+            if new_price is not None:
+                new_total = new_price
+                coupen_price = g_total-new_total
+                coupen_didected = coupen_price/num
+                print(g_total,num,"<<<<<<<<<<",new_total)
+                print(coupen_didected,">>>>>>>>>>")
     except :
         if not request.user.is_authenticated:
             messages.info(request ,'You have to login to continue Checkout')
             return redirect(request.META.get('HTTP_REFERER'))
             
-    payment = request.POST.get('flexRadioDefault')
+    payment = request.POST.get('payment')
     paypal = request.POST.get('paypal')
     if request.POST and payment =='cod':
         
-        adrs_id = request.POST.get('address')
+        adrs_id = request.POST.get('add_id')
         to = Address.objects.get(id=adrs_id)
         address_to=to.address_1
         order_id =uuid.uuid4()
         if payment and adrs_id is not None:
             for item in cart_items:
                 Orders(product = item.product ,user = request.user , 
-                       address= address_to ,total_price = item.sub_total(),
+                       address= address_to ,total_price = item.sub_total_c(coupen_didected),
                        payment=payment, status = "placed" ,
                        price = item.product.selling_price , 
-                       quantity = item.Quantity,order_id = order_id).save()
+                       quantity = item.Quantity,order_id = order_id,grand_price = g_total,offered_price = new_total,coupen_applied = coupen).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
-            CartItem.objects.filter(user=request.user,is_active=True).delete()
-            return render(request , "order_success.html" ,{"user":user,"g_total":g_total})
+            status = True
+            if coupen_didected is not 0:
+                coup.is_active = False
+                coup.save()
+                request.session.pop('coupen',None)
+                request.session.pop('new_price',None)
+                request.session.modified = True
+                return render(request , "order_success.html" ,{"user":user,"g_total":new_total})
+            else:
+                return JsonResponse({'status': status})
+
             
     if request.POST and payment =='razorpay':
         order_id = request.POST.get('order_id')
@@ -142,7 +176,10 @@ def order_success(request,total=0,quantity=0,
     user = request.user
     cart_items = CartItem.objects.filter(user=request.user,is_active=True)
     for cart_item in cart_items:
-            total += (cart_item.product.selling_price * cart_item.Quantity)
+            if cart_item.product.offer_price is not None:
+                total += (cart_item.product.offer_price * cart_item.Quantity)
+            else:
+                total += (cart_item.product.selling_price * cart_item.Quantity)
             quantity += cart_item.Quantity
             tax = (5*total)/100
             delv = 5
@@ -172,15 +209,21 @@ def admin_orderedit(request):
     obj.save()
     return JsonResponse({"order":order_id})
 
-def ordercancell(request ,id):
+def ordercancell(request, id):
     order = Orders.objects.get(id=id)
+    product = Products.objects.get(id = order.product.id)
     order.status = "cancelled"
+    product.quantity += order.quantity
+    product.save()
     order.save()
-    return render(request, "order_details.html",{"order":order})
+    return redirect('order_status')
 
 def admin_order_cancell(request):
     id = request.GET.get('id')
     orders = Orders.objects.get(id=id)
+    product = Products.objects.get(id = orders.product.id)
+    product.quantity += orders.quantity
+    product.save()
     orders.status = "cancelled"
     orders.save()
     orders = Orders.objects.all().order_by('id')
@@ -190,11 +233,14 @@ def return_order(request,id):
     order = Orders.objects.get(id=id)
     order.status="Return Requested waiting for approval"
     order.save()
-    return render(request, "order_details.html",{"order":order})
+    return redirect('order_status')
     
 def approve_return(request):
     id = request.GET.get('id')
     orders = Orders.objects.get(id=id)
+    product = Products.objects.get(id = orders.product.id)
+    product.quantity += orders.quantity
+    product.save()
     orders.status="Return Aproved"
     orders.save()
     orders = Orders.objects.all().order_by('id')

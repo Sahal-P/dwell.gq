@@ -13,6 +13,7 @@ class Category(models.Model):
     category_name       = models.CharField(max_length = 50, unique=True)
     slug                = models.CharField(max_length=100, unique=True)
     cata_img            = models.ImageField(upload_to ='imgs/category_img',blank =True, null = True)
+    discount            = models.IntegerField(null = True , blank = True , default=0)
    
     def __str__(self):
         return self.category_name
@@ -33,7 +34,7 @@ class Products(models.Model):
     description         = models.TextField(max_length = 255, blank = True)
     quantity            = models.IntegerField(null= False , blank = True)
     original_price      = models.FloatField(null= False, blank = True )
-    selling_price       = models.FloatField(null= False , blank = True) 
+    selling_price       = models.FloatField(null= False , blank = True)
     product_img1        = models.ImageField(upload_to ='imgs/product_img',blank =True, null = True)
     product_img2        = models.ImageField(upload_to ='imgs/product_img',blank =True, null = True)
     product_img3        = models.ImageField(upload_to ='imgs/product_img',blank =True, null = True)
@@ -42,6 +43,24 @@ class Products(models.Model):
     status              = models.BooleanField(default=False)
     category            = models.ForeignKey(Category, on_delete =models.CASCADE)
     subcategory         = models.ForeignKey(SubCategory, on_delete = models.CASCADE)
-  
+    offer               = models.IntegerField(null= True , blank = True , default=0)
+    category_offer      = models.IntegerField(null= True , blank = True ,default=0)
+    offer_price         = models.IntegerField(null= True , blank = True ,default=0)
     def __str__(self):
         return self.product_name
+    
+    
+class Offer_product(models.Model):
+    product             = models.OneToOneField(Products, on_delete=models.CASCADE)
+    discount            = models.IntegerField()
+    created_at          = models.DateTimeField(auto_now=True)
+    updated_at          = models.DateTimeField(auto_now=True)
+    validity            = models.BooleanField(default=True)
+    
+
+class Offer_category(models.Model):
+    category            = models.OneToOneField(Category, on_delete=models.CASCADE)
+    discount            = models.IntegerField()
+    created_at          = models.DateTimeField(auto_now=True)
+    updated_at          = models.DateTimeField(auto_now=True)
+    validity            = models.BooleanField(default=True)

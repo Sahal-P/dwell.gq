@@ -23,6 +23,133 @@
 
 
 
+<style>
+  /****** Bootstrap Colors ******/
+.primary {
+  min-height: 800px;
+}
+/*** Accordion Toggles ***/
+.panel-heading {
+  position: relative;
+}
+.panel-heading .accordion-toggle:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e260";
+  position: absolute;
+  right: 16px;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e259";
+}
+/*** Filter Menu ***/
+/* Panels */
+.filter-menu .panel {
+  border-radius: 0;
+  border: 1px solid #eeeeee;
+}
+.filter-menu .panel-heading {
+  background: #fff;
+  padding: 0;
+}
+.filter-menu .panel-title {
+  color: #333333;
+  font-weight: bold;
+  display: block;
+  padding: 16px;
+}
+.filter-menu a.panel-title {
+  color: #333333;
+}
+.filter-menu a.panel-title:hover,
+.filter-menu a.panel-title:focus {
+  color: #333333;
+  text-decoration: none;
+}
+.filter-menu .panel-body {
+  padding: 16px;
+}
+/* Inner Panels */
+.filter-menu .panel-group {
+  margin: -16px;
+}
+.filter-menu .panel-group .panel-title {
+  background: #eee;
+  transition: color, 0.5s, ease;
+}
+.filter-menu .panel-group .panel-title:hover {
+  color: #333333;
+  text-decoration: none;
+  background: #777777;
+}
+.filter-menu .panel-group .panel + .panel {
+  margin-top: 0;
+}
+/*** Filter Menu - Mobile ***/
+/* Panels - Mobile */
+.filter-menu.mobile .btn-link {
+  color: #f9f9f9;
+}
+.filter-menu.mobile hr {
+  margin-top: 0;
+  border-top-color: #ffffff;
+}
+.filter-menu.mobile .panel-group .panel-heading + .panel-collapse > .panel-body {
+  border-color: #ffffff;
+}
+.filter-menu.mobile .panel {
+  border-color: #ffffff;
+  background: #b3b5b6;
+  color: #f9f9f9;
+}
+.filter-menu.mobile .panel-heading {
+  background: #a7aeb3;
+}
+.filter-menu.mobile a.panel-title {
+  color: #f9f9f9;
+}
+.filter-menu.mobile a.panel-title:hover {
+  color: #f9f9f9;
+}
+.filter-menu.mobile .panel-group .panel {
+  border-color: #a5afb6;
+}
+.filter-menu.mobile .panel-group .panel-title {
+  background: #a4aeb4;
+}
+.filter-menu.mobile .panel-group .panel-title:hover {
+  color: #f9f9f9;
+  background: #c2cbd1;
+}
+/****** Footer ******/
+.footer {
+  background-color: #eeeeee;
+}
+.footer p {
+  margin: 20px 0;
+  text-align: center;
+  color: #888888;
+}
+.footer .glyphicon-heart {
+  color: pink;
+}
+/*** Sticky Footer ***/
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+}
+
+</style>
+
 
 
 
@@ -38,24 +165,79 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+   <div class="container">
+    <div class="row justify-content-center">
+
+<div class="col-xs-12 col-md-12 mt-5 justify-content-center">
+  <form action="" method="GET" class="form-main  form-inline nofloat-xs pull-right pull-left-sm justify-content-center">
+
+    <div class="form-group form-input-fields form-group-lg has-feedback">
+
+      <label class="sr-only" for="search">Search</label>
+      <div class="input-group">
+        <input type="text" class="form-control input-search" name="q" id="search" placeholder="Search">
+        <span class="input-group-addon group-icon"> <span class="glyphicon glyphicon-user"></span>
+        </span>
+
+      <button type="submit" class="btn btn-md  btn-submit">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search 
+        </button>
+      </div>
+
+
+
+    </div>
+
+
+  </form>
+</div>
+</div>
+</div>
+
+
+
+
+
     
     <section class="ftco-section bg-light">
     <div class="container-fluid">
         <div class="row justify-content-center">
 
             {% for i in product  %}
-            <div class="col-sm col-md-6 col-lg-3 ftco-animate">
-                <div class="product">
-                    <a href={% url 'pages:signle_P' i.id %} class="img-prod"><img class="img-fluid" src="/media/{{i.product_img1}}" alt="Colorlib Template">
-                        <span class="status">30%</span>
+            <div class="col-sm col-xs-3 col-md-6 col-lg-3 ftco-animate ">
+                <div class="product ">
+                    <a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " src="/media/{{i.product_img1}}" alt="Colorlib Template">
+                      
+                      {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span class="status">{{i.offer}}%</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span class="status">{{i.category_offer}}%</span>
+                      {% endif %}
+                        
                     </a>
                     <div class="text py-3 px-3">
                         <h3><a href="#">{{i.product_name}}</a></h3>
                         <h3><a href="#">{{i.brand}}</a></h3>
                         <div class="d-flex">
+                          
+                          {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
+                          <div class="pricing">
+                            <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
+                        </div>
+                      
+                          
+              
+                            {% else %}
                             <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
+                                <p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
                             </div>
+
+                            {% endif %}
                             <div class="rating">
                                 <p class="text-right">
                                     <span class="ion-ios-star-outline"></span>
@@ -66,11 +248,27 @@
                                 </p>
                             </div>
                         </div>
+                        {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
+
+                      {% else %}
+                      <span class="status">No Offer Yet</span>
+
+                      {% endif %}
                         <hr>
+                        {% if i.quantity <= 0 %}
+                        <p class="bottom-area d-flex">
+                          <a ><span style="font-size: 18px; color: red;">Out of Stock</span></a>
+                          
+                      </p>
+                        {% else %}
                         <p class="bottom-area d-flex">
                             <a href="{% url 'add_cart' i.id %} " class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
                             <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
                         </p>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -85,13 +283,27 @@
       <div class="col text-center">
         <div class="block-27">
           <ul>
-            <li><a href="#">&lt;</a></li>
-            <li class="active"><span>1</span></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li><a href="#">&gt;</a></li>
+            
+            {% if product.has_previous %}
+            <li><a href="?page={{ product.previous_page_number}}">&lt;</a></li>
+                  
+              {% endif %}
+                {% for i in product.paginator.page_range %}
+                  
+              {% if product.number == i %}
+            <li class="active"><a href="?page={{i}}">{{i}}</a></li>
+
+            {% else %}
+            <li><a href="?page={{i}}">{{i}}</a></li>
+          
+            {% endif %}
+          
+            {% endfor %}
+            
+            {% if product.has_next %}
+            <li><a href="?page={{ product.next_page_number}}">&gt;</a></li>
+            
+            {% endif %}
           </ul>
         </div>
       </div>

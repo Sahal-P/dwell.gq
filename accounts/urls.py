@@ -16,6 +16,7 @@ Including another URLconf
 
 from django.urls import path
 from . import views
+from . import helpers
 
 urlpatterns = [ 
      path("",views.home,name="home"),
@@ -30,4 +31,7 @@ urlpatterns = [
      path("resendotp",views.resendotp, name="resendotp"),
      path("adminlogin",views. adminlogin,name="adminlogin"),
      path("adminlogout",views. adminlogout,name="adminlogout"),
+     path("sales_report" , views.sales_report , name="sales_report"),
+     path("generatesalesReportPdf/",helpers.generatesalesReportPdf,name="generatesalesReportPdf"),
+  
 ]
