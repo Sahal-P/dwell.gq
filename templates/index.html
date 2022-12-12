@@ -27,6 +27,11 @@
     <link rel="stylesheet" href="{% static "css/flaticon.css" %}">
     <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
     <link rel="stylesheet" href="{% static "css/style.css" %}">
+	<script src="https://unpkg.com/htmx.org@1.8.4"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.js" 
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+	  crossorigin="anonymous"></script>
+
 	<!-- CSS only -->
   </head>
   <body>
@@ -78,8 +83,17 @@
 
 	{% if messages %}
 	{% for message in messages %}
-    
-      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	{% if message.tags == 'info' %}
+	<script>
+	  var m = "{{ message }}";
+	  Swal.fire({
+		  icon: 'success',
+		  title: m,
+		})
+	</script>
+	{% else %}
       <script>
         var m = "{{ message }}";
         Swal.fire({
@@ -89,6 +103,7 @@
 			footer: '<a style ="color :blue;" href="{% url 'user_login' %}">click here to LogIN</a>'
 		  })
       </script>
+	  {% endif %}
     
   {% endfor %}
  {% endif %}
@@ -106,7 +121,7 @@
             <h2><span>Wear Your Dress</span></h2>
           </div>
           <div class="mouse">
-						<a href="#" class="mouse-icon">
+						<a href="" class="mouse-icon">
 							<div class="mouse-wheel"><span class="ion-ios-arrow-down"></span></div>
 						</a>
 					</div>
@@ -115,8 +130,10 @@
     </div>
 
     <div class="goto-here"></div>
+
+	
     
-    <section class="ftco-section ftco-product">
+    <section class="mt-5 ftco-product">
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
@@ -126,8 +143,9 @@
         </div>
     		<div class="row">
     			<div class="col-md-12">
-    				<div class="product-slider owl-carousel ftco-animate">
-    					<div class="item">
+    				<div class="product-slider owl-carousel ftco-animate" >
+
+    					<!-- <div class="item">
 		    				<div class="product">
 		    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-1.jpg" %}" alt="Colorlib Template">
 		    						<span class="status">30%</span>
@@ -151,125 +169,81 @@
 		    					</div>
 		    				</div>
 	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-2.jpg" %}" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
+	    				 -->
+	    		
+
+						{% for i in trending  %}
+
+	    				<div class="item" >
+
+								
+							
+		    			<div class="product " >
+                    <a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " src="/media/{{i.product_img1}}" alt="Colorlib Template">
+                      
+                      {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span class="status">{{i.offer}}%</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span class="status">{{i.category_offer}}%</span>
+                      {% endif %}
+                        
+                    </a>
+                    <div class="text py-3 px-3">
+                        <h3><a href="#">{{i.product_name}}</a></h3>
+                        <h3><a href="#">{{i.brand}}</a></h3>
+                        <div class="d-flex">
+                          
+                          {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
+                          <div class="pricing">
+                            <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
+                        </div>
+                      
+                          
+              
+                            {% else %}
+                            <div class="pricing">
+                                <p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
+                            </div>
+
+                            {% endif %}
+                            <div class="rating">
+                                <p class="text-right">
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                </p>
+                            </div>
+                        </div>
+                        {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
+
+                      {% else %}
+                      <span class="status">No Offer Yet</span>
+
+                      {% endif %}
+                        <hr>
+                       
+                       
+                    </div>
+                </div>
+
+
 	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-3.jpg" %}" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-4.jpg" %}" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="{% static "images/product-5.jpg" %}" alt="Colorlib Template">
-			    					<span class="status">30%</span>
-			    				</a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-			    						</div>
-			    						<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-		    						</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="{% static "images/product-6.jpg" %}" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
+						{% endfor %}
+
+
+
     				</div>
     			</div>
     		</div>
     	</div>
     </section>
 
-    <section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
+    <section class=" mt-4 ftco-section ftco-no-pb ftco-no-pt bg-light">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static "images/bg_2.jpg" %});">
@@ -280,7 +254,7 @@
 					<div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
 	          <div class="heading-section-bold mb-5 mt-md-5">
 	          	<div class="ml-md-0">
-		            <h2 class="mb-4">Modist <br>Online <br> <span>Fashion Shop</span></h2>
+		            <h2 class="mb-4">Dwell <br>Online <br> <span>Fashion Shop</span></h2>
 	            </div>
 	          </div>
 	          <div class="pb-md-5">
@@ -292,7 +266,55 @@
 			</div>
 		</section>
 
-    <section class="ftco-section bg-light">
+		<section  class=" bg-light">
+				<div id="carouselExampleIndicators" class="carousel slide" data-interval="2000" data-ride="carousel">
+					<ol class="carousel-indicators">
+					  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+					  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+					  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+					</ol>
+					
+					<div class="carousel-inner">
+						
+					  <div class="carousel-item active">
+						<a href="{% url 'pages:MshirtsP' id2 %}">
+						<img class="d-block w-100" src="/media/images/banner1.2.jpg" alt="First slide">
+						</a>
+					  </div>
+					  {% for i in banner1 %}
+						{% if i.wise == "Product" %}
+						<div class="carousel-item">
+							<a href="{% url 'pages:signle_P' i.selected %}">
+							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+							</a>
+						  </div>
+						{% elif i.wise == "Category" %}
+						<div class="carousel-item">
+							<a href="{% url 'pages:MshirtsP' i.selected %}">
+							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+							</a>
+						  </div>
+							
+						{% endif %}
+					  
+					  {% endfor %}
+					 
+
+					</div>
+					
+					</div>
+					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+					  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					  <span class="sr-only">Previous</span>
+					</a>
+					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+					  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+					  <span class="sr-only">Next</span>
+					</a>
+			</div>
+		</section>
+
+    <section class="  mt-5 bg-light">
     	<div class="container">
 				<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
@@ -303,114 +325,67 @@
     	</div>
     	<div class="container-fluid">
     		<div class="row">
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-1.jpg" %}" alt="Colorlib Template"></a>
-    					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-		    					<div class="rating">
-	    							<p class="text-right">
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    							</p>
-	    						</div>
-	    					</div>
-	    					<hr>
-    						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
-    						</p>
-    					</div>
-    				</div>
+    		
+				{% for i in our %}
+					
+    			<div class="col-6 col-md-6 col-lg ftco-animate">
+					<div class="product ">
+						<a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " class="img-responsive" src="/media/{{i.product_img1}}" alt="Colorlib Template">
+						  
+						  {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+						  <span class="status">{{i.offer}}%</span>
+						  {% elif i.category_offer is not 0 and i.category_offer is not None %}
+						  <span class="status">{{i.category_offer}}%</span>
+						  {% endif %}
+							
+						</a>
+						<div class="text py-3 px-3">
+							<h3><a href="#">{{i.product_name}}</a></h3>
+							<h3><a href="#">{{i.brand}}</a></h3>
+							<div class="d-flex">
+							  
+							  {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
+							  <div class="pricing">
+								<p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
+							</div>
+						  
+							  
+				  
+								{% else %}
+								<div class="pricing">
+									<p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
+								</div>
+	
+								{% endif %}
+								<div class="rating">
+									<p class="text-right">
+										<span class="ion-ios-star-outline"></span>
+										<span class="ion-ios-star-outline"></span>
+										<span class="ion-ios-star-outline"></span>
+										<span class="ion-ios-star-outline"></span>
+										<span class="ion-ios-star-outline"></span>
+									</p>
+								</div>
+							</div>
+							{% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+						  <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
+						  {% elif i.category_offer is not 0 and i.category_offer is not None %}
+						  <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
+	
+						  {% else %}
+						  <span class="status">No Offer Yet</span>
+	
+						  {% endif %}
+							<hr>
+							
+							
+						</div>
+					</div>
+					
     			</div>
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-2.jpg" %}" alt="Colorlib Template"></a>
-    					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-		    					<div class="rating">
-	    							<p class="text-right">
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    							</p>
-	    						</div>
-	    					</div>
-	    					<hr>
-    						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
-    						</p>
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-3.jpg" %}" alt="Colorlib Template"></a>
-    					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-		    					<div class="rating">
-	    							<p class="text-right">
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    							</p>
-	    						</div>
-	    					</div>
-	    					<hr>
-    						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
-    						</p>
-    					</div>
-    				</div>
-    			</div>
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
-    				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-4.jpg" %}" alt="Colorlib Template"></a>
-    					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
-		    					</div>
-		    					<div class="rating">
-	    							<p class="text-right">
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    							</p>
-	    						</div>
-	    					</div>
-	    					<hr>
-    						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
-    						</p>
-    					</div>
-    				</div>
-    			</div>
+				{% endfor %}
+
+
     		</div>
     	</div>
     </section>
@@ -418,12 +393,73 @@
     <section class="ftco-section ftco-section-more img" style="background-image: url({% static "images/bg_5.jpg" %});">
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
+
           <div class="col-md-12 heading-section ftco-animate">
           	<h2>Summer Sale</h2>
           </div>
         </div>
     	</div>
     </section>
+
+
+
+	
+
+
+	<section  class="mb-4 bg-light">
+		<div id="carouselExampleIndicators" class="carousel slide" data-interval="2100" data-ride="carousel">
+			<ol class="carousel-indicators">
+			  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+			  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+			  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+			</ol>
+			<div class="carousel-inner">
+			  <div class="carousel-item active">
+				<a href="{% url 'pages:MshirtsP' id2 %}">
+				<img class="d-block w-100" src="/media/images/banner2.1.jpg" alt="First slide">
+			</a>
+			  </div>
+			  {% for i in banner2 %}
+						{% if i.wise == "Product" %}
+						<div class="carousel-item">
+							<a href="{% url 'pages:signle_P' i.selected %}">
+							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+							</a>
+						  </div>
+						{% elif i.wise == "Category" %}
+						<div class="carousel-item">
+							<a href="{% url 'pages:MshirtsP' i.selected %}">
+							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+							</a>
+						  </div>
+							
+						{% endif %}
+					  
+					  {% endfor %}
+					 
+			  
+			 
+			</div>
+			
+			</div>
+			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			  <span class="sr-only">Previous</span>
+			</a>
+			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+			  <span class="sr-only">Next</span>
+			</a>
+		</div>
+	</section>
+
+
+
+
+
+
+
+<!-- 
 
     <section class="ftco-section testimony-section bg-light">
       <div class="container">
@@ -515,8 +551,16 @@
       </div>
     </section>
 
+ -->
 
-    <section class="ftco-section">
+
+
+
+
+
+
+
+    <section class="mt-5">
       <div class="container">
         <div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
@@ -659,6 +703,7 @@
         </div>
     	</div>
     </section>
+
 		
 		<section class="ftco-section-parallax">
       <div class="parallax-img d-flex align-items-center">
@@ -669,12 +714,17 @@
               <h2>Subcribe to our Newsletter</h2>
               <div class="row d-flex justify-content-center mt-5">
                 <div class="col-md-8">
-                  <form action="#" class="subscribe-form">
+					
+
+                  <form action="" class="subscribe-form" id="subscribe">
+					{% csrf_token %}
                     <div class="form-group d-flex">
-                      <input type="text" class="form-control" placeholder="Enter email address">
+                      <input type="text" class="form-control" id="task" placeholder="Enter email address">
                       <input type="submit" value="Subscribe" class="submit px-3">
                     </div>
                   </form>
+
+
                 </div>
               </div>
             </div>
@@ -770,5 +820,33 @@
   <script src="{% static "js/scrollax.min.js" %}"></script>
   <script src="{% static "js/main.js" %}"></script>
     <!-- JavaScript Bundle with Popper -->
+
+
+	<script type="text/javascript">
+		$(document).on('submit','#subscribe',function(e){
+			e.preventDefault();
+			$.ajax({
+				type:'POST',
+				url:'{% url "home3" %}',
+				data:
+				{
+					task:$("#task").val(),
+					csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
+				},
+				success:function(r){
+
+					if (r.status ==false){
+						alert('Saved');
+					}
+					else{
+						alert('Saved66666666');
+
+					}
+						}
+				})
+			});
+		</script>
+
+
   </body>
 </html>

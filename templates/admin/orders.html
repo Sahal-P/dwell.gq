@@ -85,7 +85,7 @@
   {% comment %} <a href= "" class="btn btn-success btn-lg active" role="button" aria-pressed="true">Edit Orders</a> {% endcomment %}
 
   <div class="container bcontent ">
-  <table class="table" style="background-color: #1c2e4a;">
+  <table id= "order_table" class="table" style="background-color: #1c2e4a;">
     <thead class="table-light">
       <tr>
         <th scope="col">Product</th>
@@ -238,11 +238,7 @@
         
 
         var url = "{% url 'admin_order_cancell' %}"
-        $.ajax({
-            type:"GET",
-            url : url,
-            data : {"id" : id},
-            success : function(response) {
+        
                 Swal.fire({
                     title: 'Are you sure you want to change the status?',
                     
@@ -253,19 +249,23 @@
                     confirmButtonText: 'Yes'
                   }).then((result) => {
                     if (result.isConfirmed) {
+                      $.ajax({
+                        type:"GET",
+                        url : url,
+                        data : {"id" : id},
+                        success : function(data) {
                     
-                    
-                      window.location.href = 'admin_order_detailes';
-                
+                          $("#order_table").html(data);
+                    },
+                    error: function() {
+                        alert('Error occured');
+                    }
+                });
+            }
+        
                     }
                   })
-            },
-            error: function() {
-                alert('Error occured');
-            }
-        });
-    }
-
+    
 
     function approve_or(id){
         

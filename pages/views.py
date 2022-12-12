@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.utils.text import slugify
 from accounts.models import Account
 from category.models import Category, Products, SubCategory
+from variation.models import Variation
 from cart.models import GCart,CartItem
 from django.db.models import Count,Sum,Q,F
 from django.core.paginator import Paginator
@@ -46,7 +47,7 @@ def MshirtsP(request,id):
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
     
-    return render(request,"MshirtsP.html",{"product":page})
+    return render(request,"MshirtsP.html",{"product":page,"id_1":id})
 
 def signle_P(request, id):
     id = id 
@@ -55,7 +56,14 @@ def signle_P(request, id):
     #     if i.offer is not None or i.category_offer is not None:
     #         i.offer_price = i.original_price - i.original_price * i.offer/100
     #         i.save()  
-    return render (request, "product-single.html",{"obj":obj})
+    variaiton1 = None
+    variaiton2 = None
+    prod = Products.objects.get(id=id)
+    if Variation.objects.filter(product=prod).exists():
+        variaiton1 = Variation.objects.filter(product=prod).values('color').distinct()
+        variaiton2 = Variation.objects.filter(product=prod).values('size').distinct()
+        print("<<<<<<<<<<")
+    return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2})
 
 def productsingle(request):
     return render (request,"product-single.html")

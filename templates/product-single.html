@@ -36,6 +36,54 @@
 	  });
  </script>
  <style>
+
+
+select {
+	/* Reset Select */
+	appearance: none;
+	outline: 0;
+	border: 1;
+	box-shadow: none;
+	/* Personalize */
+	flex: 1;
+	padding: 0 1em;
+	color: #000;
+	background-color: var(--darkgray);
+	background-image: none;
+	cursor: pointer;
+  }
+  /* Remove IE arrow */
+  select::-ms-expand {
+	display: none;
+  }
+  /* Custom Select wrapper */
+  .select {
+	position: relative;
+	display: flex;
+	
+	height: 3em;
+	border-radius: 0.25em;
+	overflow: hidden;
+  }
+  /* Arrow */
+  .select::after {
+	content: "\25BC";
+	position: absolute;
+	top: 0;
+	right: 0;
+	padding: 1em;
+	background-color: #000;
+	transition: 0.25s all ease;
+	pointer-events: none;
+  }
+  /* Transition */
+  .select:hover::after {
+	color: #f39c12;
+  }
+  
+  /* Other styles*/
+  
+  
 	
 	  .carousel-item {
 		padding: 15px;
@@ -83,6 +131,53 @@
 		right: -50px;
 		margin: 0 -25px;
 	  }
+
+
+
+	  .iz {
+		position: relative;
+		display: block;
+		margin: 0;
+		cursor: zoom-in;
+	  }
+	  .iz:hover {
+		overflow: visible;
+	  }
+	  .iz:hover .iz__zoom {
+		opacity: 1;
+	  }
+	  .iz:hover .iz__zoom-pic {
+		will-change: margin-top, margin-right, margin-bottom, margin-left;
+		transform: translate3d(0, 0, 0);
+		background: #eee;
+	  }
+	  .iz__zoom {
+		position: absolute;
+		opacity: 0;
+		background: #ddd;
+		transition: opacity 0.4s;
+		/*set dimensions of zoom-window */
+		width: 300px;
+		height: 400px;
+		overflow: hidden;
+		margin-left: 10px;
+		pointer-events: none;
+	  }
+	  .iz__zoom-pic {
+		display: block;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		will-change: auto;
+	  }
+	  
+	  .global {
+		font: 0.9em/1.4 sans-serif;
+		color: #666;
+	  }
+	  .global body {
+		padding: 20px;
+	  }
  </style>
 		
 		<div class="hero-wrap hero-bread" style="background-image: url('images/bg_6.jpg');">
@@ -113,7 +208,7 @@
 						</ol>
 						<div class="carousel-inner">
 						  <div class="carousel-item active"  >
-							<img src="/media/{{i.product_img1}}" class="d-block w-100" alt="...">
+							<img src="/media/{{i.product_img1}}"  class="d-block w-100 my-foto" alt="...">
 						  </div>
 						  <div class="carousel-item" >
 							<img src="/media/{{i.product_img2}}" class="d-block w-100" alt="...">
@@ -145,9 +240,9 @@
     			</div>
     			<div class="col-lg-6 product-details pl-md-5 ftco-animate">
     				<h3>{{i.product_name}}</h3>
-					{% if i.offer_price is not None and i.offer is not 0 or i.category_offer is not None %}
+					{% if i.offer_price is not None and i.offer is not 0 or i.category_offer is not None and i.category.discount is not 0 %}
 				
-    				<p class="price"><span>₹ {{i.offer_price}}</span></p>
+    				<p class="price" ><span class="v_price">₹ {{i.offer_price}}</span></p>
 					<span style="text-decoration: line-through;" class="mr-2 price-dc">₹ {{i.original_price}}</span>
 					
 							{% if i.offer is not None and i.offer is not 0 %}
@@ -157,29 +252,61 @@
 							{% endif %}
 
 					{% else %}
-    				<p class="price"><span>₹ {{i.selling_price}}</span></p>
+    				<p class="price"><span class="v_price">₹ {{i.selling_price}}</span></p>
 					{% endif %}
     				<p>{{i.description}}</p>
     				<p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.
 						</p>
+
+						<div class="row mt-4 justify-content-evenly " >
+					
+					  </div>
+
             
-						<div class="row mt-4">
+						<div class="row mt-4 mb-3">
+
+							{% if var is not None %}
+							
 							<div class="col-md-6">
 								<div class="form-group d-flex">
 		              <div class="select-wrap">
 	                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-	                  <select name="" id="" class="form-control">
-	                  	<option value="">Small</option>
-	                    <option value="">Medium</option>
-	                    <option value="">Large</option>
-	                    <option value="">Extra Large</option>
+	                  <select name="" id="v_color" class="form-control">
+	                  	<option value="">Color</option>
+						{% for i in var %}
+						<option value="{{i.color}}">{{i.color}}</option>
+							
+						{% endfor %}
+	                   
 	                  </select>
 	                </div>
 		            </div>
 							</div>
+							<div class="col-md-6">
+								<div class="form-group d-flex">
+		              <div class="select-wrap">
+	                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
+	                  <select name="" id="v_size" class="form-control">
+	                  	<option value="">Size</option>
+						  {% for i in var2 %}
+						  <option value="{{i.size}}">{{i.size}}</option>
+							  
+						  {% endfor %}
+	                    
+	                  </select>
+	                </div>
+		            </div>
+							</div>
+							{% endif %}
+
+						
+
 							<div class="w-100"></div>
-							<div class="input-group col-md-6 d-flex mb-3">
-	             	<span class="input-group-btn mr-2">
+							<div class="input-group col-md-6 d-flex mt-4">
+
+								<p><a onclick=addWish({{i.id}}) class="btn btn-lg btn-outline-light ms-1 ml-2 ">Add to wish <i class="ion-ios-heart-empty"></i></a></p>
+						
+	             	<!-- <span class="input-group-btn mr-2">
 	                	<button type="button" class="quantity-left-minus btn"  data-type="minus" data-field="">
 	                   <i class="ion-ios-remove"></i>
 	                	</button>
@@ -189,21 +316,32 @@
 	                	<button type="button" class="quantity-right-plus btn" data-type="plus" data-field="">
 	                     <i class="ion-ios-add"></i>
 	                 </button>
-	             	</span>
+	             	</span> -->
+					
 	          	</div>
           	</div>
+			
 			  {% if i.quantity <= 0 %}
                         <p class="bottom-area d-flex">
                           <a ><span style="font-size: 25px; color: red;">Out of Stock !</span></a>
                           
                       </p>
                         {% else %}
-          	<p><a href="{% url 'add_cart' i.id %}" class="btn btn-primary py-3 px-5">Add to Cart</a></p>
+						<div id="cartdiv">
+          	<p><a onclick= addcat({{i.id}}) style="color: white;" id="addcart"  class="btn btn-primary py-3 px-5">Add to Cart</a></p>
+		</div>
+			{% endif %}
+			<span id="v_error" style="font-size: 20px; color: red;"></span>
+			{% if i.quantity < 10 and i.quantity > 0 %}
+			<div class="input-group col-md-6 d-flex mt-4">
+			<span style=" color: rgb(255, 0, 0);">Only {{i.quantity}} Left !!</span>
+			</div>
 			{% endif %}
     			</div>
     		</div>
     	</div>
 		{% endfor %}
+
     </section>
 
 	
@@ -293,6 +431,7 @@
   <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
   <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
   <script src="{% static "js/scrollax.min.js" %}"></script>
+  <script src="{% static "js/imagezoom.js" %}"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="{% static "js/google-map.js" %}"></script>
   <script src="{% static "js/main.js" %}"></script>
@@ -333,5 +472,141 @@
 		    
 		});
 	</script>
-    
+    <script>
+
+		function addWish(id){
+			  
+		  
+			  var url = "{% url 'add_to_wishlist' %}"
+			  $.ajax({
+				  type:"GET",
+				  url : url,
+				  data : {"id" : id},
+				  success : function(r) {
+	  
+					Swal.fire(
+					  'Product Added To Wishlist!',
+					  '!',
+					  'success'
+					)
+					  
+				  },
+				  error: function() {
+					Swal.fire('Product Already Added')
+				  }
+			  });
+		  }
+	  
+	  
+function addcat(id){
+	color = $("#v_color").val()
+	size  = $("#v_size").val()
+	
+	if (color !='' && size !=''){
+		console.log("true")
+	}
+	else{
+		color = 0
+		size = 0
+	}
+    $.ajax({
+      type:"GET",
+      url : "{% url 'add_cart' %}",
+      data : {"id" : id ,"color":color,"size":size},
+      success : function(r) {
+        
+        if (r.status==true){
+
+          Swal.fire('Product already added ','!',
+          'success')
+        
+        }
+        else{
+
+          Swal.fire(
+          'Product Added To Wishlist!',
+          '!',
+          'success'
+        )
+        }
+      },
+      error: function() {
+        Swal.fire('error occured during ')
+      }
+  });
+}
+		$("#v_color").change(function (){
+			console.log("<<<<<<<")
+			color = $("#v_color").val()
+			size  = $("#v_size").val()
+			$.ajax({
+				type:"GET",
+				url : "{% url 'check_variation' %}",
+				data : {"color" : color,"size":size},
+				success : function(r) {
+				  
+				  if (r.status==true){
+					$("#cartdiv").show();
+					$("#v_error").text("");
+					$(".v_price").text("₹"+ r.price);
+					alertify.set('notifier','position', 'top-right');
+              		alertify.success('Available.!');
+
+				
+				  }
+				  else{
+					$("#cartdiv").hide();
+					$("#v_error").text("Selected variation not available.!");
+					alertify.set('notifier','position', 'top-right');
+              		alertify.error('Not Available.!');
+				  }
+				},
+				error: function() {
+				  Swal.fire('error occured during ')
+				}
+			});
+
+		});
+		$("#v_size").change(function (){
+			console.log("<<<<<<<")
+			color = $("#v_color").val()
+			size  = $("#v_size").val()
+			$.ajax({
+				type:"GET",
+				url : "{% url 'check_variation' %}",
+				data : {"color" : color,"size":size},
+				success : function(r) {
+				  
+				  if (r.status==true){
+					$("#cartdiv").show();
+					$("#v_error").text("");
+					$(".v_price").text("₹"+ r.price);
+					alertify.set('notifier','position', 'top-right');
+              		alertify.success('Available.!');
+
+
+		  
+					
+				  }
+				  else{
+					$("#cartdiv").hide();
+					$("#v_error").text("Selected variation not available.!");
+					alertify.set('notifier','position', 'top-right');
+              		alertify.error('Not Available.!');
+					
+				
+				  }
+				},
+				error: function() {
+				  Swal.fire('error occured during ')
+				}
+			});
+
+		});
+
+
+	  
+	  
+	  </script>
+
 	{% endblock %}

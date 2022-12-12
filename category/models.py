@@ -46,6 +46,8 @@ class Products(models.Model):
     offer               = models.IntegerField(null= True , blank = True , default=0)
     category_offer      = models.IntegerField(null= True , blank = True ,default=0)
     offer_price         = models.IntegerField(null= True , blank = True ,default=0)
+    product_id          = models.CharField(max_length=100,null= True , blank = True , default=0)
+    
     def __str__(self):
         return self.product_name
     

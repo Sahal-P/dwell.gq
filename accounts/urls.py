@@ -33,5 +33,12 @@ urlpatterns = [
      path("adminlogout",views. adminlogout,name="adminlogout"),
      path("sales_report" , views.sales_report , name="sales_report"),
      path("generatesalesReportPdf/",helpers.generatesalesReportPdf,name="generatesalesReportPdf"),
+     path("GenerateInvoicePdf",helpers.GenerateInvoicePdf,name="GenerateInvoicePdf"),
+     path("banner", views.banner, name="banner"),
+     path("add_banner", views.add_banner, name="add_banner"),
+     path("home3", views.home3, name="home3"),
+     path("BannerSelect", views.BannerSelect, name="BannerSelect"),
+     path("Remove_banner", views.Remove_banner, name="Remove_banner"),
+     path("searchproduct", views.searchproduct, name="searchproduct"),
   
 ]

@@ -174,17 +174,17 @@ body {
     <div class="row justify-content-center">
 
 <div class="col-xs-12 col-md-12 mt-5 justify-content-center">
-  <form action="" method="GET" class="form-main  form-inline nofloat-xs pull-right pull-left-sm justify-content-center">
+  <form  class="form-main  form-inline nofloat-xs pull-right pull-left-sm justify-content-center">
 
     <div class="form-group form-input-fields form-group-lg has-feedback">
 
       <label class="sr-only" for="search">Search</label>
       <div class="input-group">
-        <input type="text" class="form-control input-search" name="q" id="search" placeholder="Search">
+        <input type="text" class="form-control input-search" name="searched" id="search" placeholder="Search">
         <span class="input-group-addon group-icon"> <span class="glyphicon glyphicon-user"></span>
         </span>
 
-      <button type="submit" class="btn btn-md  btn-submit">
+      <button onclick=searchbox("{{id_1}}") type="button" class="btn btn-md  btn-submit">
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search 
         </button>
       </div>
@@ -204,9 +204,9 @@ body {
 
 
     
-    <section class="ftco-section bg-light">
-    <div class="container-fluid">
-        <div class="row justify-content-center">
+    <section class="ftco-section bg-light" >
+    <div class="container-fluid" >
+        <div class="row justify-content-center" id="ProductSection">
 
             {% for i in product  %}
             <div class="col-sm col-xs-3 col-md-6 col-lg-3 ftco-animate ">
@@ -248,6 +248,12 @@ body {
                                 </p>
                             </div>
                         </div>
+                        {% if i.quantity < 10 and i.quantity > 0 %}
+                       
+                        <span style="font-size: 80x ; color: rgb(255, 0, 0);">Only {{i.quantity}} Left !!</span>
+  
+                        {% endif %}
+                        <br>
                         {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
                       <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
                       {% elif i.category_offer is not 0 and i.category_offer is not None %}
@@ -265,12 +271,14 @@ body {
                       </p>
                         {% else %}
                         <p class="bottom-area d-flex">
-                            <a href="{% url 'add_cart' i.id %} " class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                            <a onclick= addcat({{i.id}}) class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
                             <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
                         </p>
                         {% endif %}
                     </div>
                 </div>
+
+                
             </div>
 
 
@@ -405,6 +413,13 @@ body {
 
 <script>
 
+  function searchbox(id){
+    var searched = $("#search").val()
+    console.log(id,">>>>>>>>>>>>.")
+    window.location.href = "{% url 'searchproduct' %}"  +'?searched='+ searched+'&id_subc='+ id;
+   
+  }
+
   function addWish(id){
         
     
@@ -427,6 +442,36 @@ body {
             }
         });
     }
+
+function addcat(id){
+
+    $.ajax({
+      type:"GET",
+      url : "{% url 'add_cart' %}",
+      data : {"id" : id},
+      success : function(r) {
+        
+        if (r.status==true){
+
+          Swal.fire('Product already added '
+          )
+        
+        }
+        else{
+
+          Swal.fire(
+          'Product Added To Cart!',
+          '!',
+          'success'
+        )
+        }
+      },
+      error: function() {
+        Swal.fire('error occured during ')
+      }
+  });
+}
+
 
 
 

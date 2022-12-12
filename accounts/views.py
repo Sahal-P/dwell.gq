@@ -9,12 +9,12 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse ,JsonResponse
 # Create your views here.
 from .helpers import *
-from .models import Account 
+from .models import Account ,ReferalSection,Banner
 from datetime import datetime, timedelta
 from django.http import HttpResponseRedirect
 from cart.models import GCart, CartItem
 from orders.models import Orders,Products
-from category.models import Offer_product
+from category.models import Offer_product,SubCategory
 from django.db.models import Count,Sum,Q,F
 import ast
 from django.http import FileResponse
@@ -24,6 +24,14 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from django.core.paginator import Paginator
 from dateutil.relativedelta import relativedelta
+from wallet.models import Wallet
+import uuid
+
+def home3(request):
+    email = request.POST.get('task')
+    print(email,"LKKKKKKKKKKKJJJJJJJJJJJUUUUUUUUUUbbbbbbbb")
+    status = False
+    return JsonResponse({"status":status})
 
 def product_offer(request):
     product = Products.objects.all()
@@ -44,30 +52,29 @@ def add_Product_offer(request,id):
     return render(request, "admin/add_Product_offer.html",{"product":product})
 
 def sales_report(request):
-    
     orders   = Orders.objects.annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-
-    if request.GET.get('Month'):
+    
+    if  request.GET.get('Month') != "0":
         currentMonth = datetime.now().month
-        
-        month1 = request.GET.get('Month')
-        month = int(month1)
+        month1 = request.GET.get('Month') 
+        if month1 is not None and month1 !="0":
+            month = int(month1)
        
-        # today   = datetime.now()- relativedelta(months=1)
-        orders      = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-
+            # today   = datetime.now()- relativedelta(months=1)
+            orders      = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
+        
     elif request.GET.get('from_date'):
         from_date   = request.GET.get('from_date')
         date_to     = request.GET.get('to_date')
         if not from_date or not date_to:
             messages.info(request,"Please fill from and to date")
             return redirect(request.META.get('HTTP_REFERER')) 
+        
         to_date     = datetime.strptime(date_to , "%Y-%m-%d")
         to_date11   = to_date + timedelta(1)
+        
         orders      = Orders.objects.filter(orderd_date__range=[from_date, to_date11]).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-    else:
-        messages.info(request,"Please input date or month to filter")
-        return redirect(request.META.get('HTTP_REFERER')) 
+   
         
         
     page            = Paginator(orders, 6)
@@ -89,11 +96,18 @@ def d_admin(request):
     return redirect("adminlogin")
 
 def home(request):
-    if request.user.is_authenticated:
-        return render(request, "index.html")
+    id = 16
+    id2 = 19
+    trending = Products.objects.all().order_by('?')[:6]
+    our = Products.objects.filter(subcategory_id =16).order_by('?')[:4]
+    banner = Banner.objects.all()[:3]
+    banner2 = Banner.objects.all()[3:6]
+
    
+    if request.user.is_authenticated:
         
-    return render(request, "index.html")
+        return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2})
+    return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2})
 
 def user_login(request):
     if request.user.is_authenticated:
@@ -157,6 +171,16 @@ def user_signup(request,*args, **kwargs):
         return redirect("home")
     try:
             if request.POST:
+                amount = 0
+                if request.POST.get('Referal'):
+                    referal_id = request.POST.get('Referal')
+                    
+                    if ReferalSection.objects.filter(referal_id=referal_id).exists():
+                        amount = 500
+                    else:
+                        messages.error(request,'Enterd Referal id is Invalid')
+                        return redirect(request.META.get('HTTP_REFERER'))
+                        
                 first_name= request.POST.get("first_name")
                 last_name= request.POST.get("last_name")
                 email = request.POST.get("email")
@@ -178,10 +202,14 @@ def user_signup(request,*args, **kwargs):
                     messages.info(request, 'An account with this email is already exist')
                     return redirect ('user_signup')
                 user = Account.objects.create_user(first_name=first_name,last_name=last_name,
-                                                   email=email,username= username,
-                                                   phone_number=phone_number,
-                                                   password=password)
+                                                email=email,username= username,
+                                                phone_number=phone_number,
+                                                password=password)
                 user.save()
+                
+                if amount is not 0:
+                    wallet = Wallet.objects.create(user=user,amount = amount)
+                    wallet.save()
                 user = Account.objects.get(email=email,username=username)
                 user1 = authenticate(request,email=email,password=password)
                 if user1 is not None:
@@ -189,7 +217,6 @@ def user_signup(request,*args, **kwargs):
                     signupgetuser(email)
                     return redirect("signup_otp_v")
                 
-            
     except:
         messages.info(request,'Invalid credentials')
     return render(request,"signup.html")
@@ -216,6 +243,12 @@ def signup_otp_v(request):
             user = Account.objects.get(email=email)
             if otp == otp5:
                 login(request,user)
+                credit = 100
+                wallet = Wallet.objects.create(user=user,amount = credit)
+                wallet.save()
+                refer_id = str(user.first_name) + str(uuid.uuid4())[:8]
+                referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
+                referal.save()
                 return render(request,"index.html")
             else:
                 messages.error(request,'Invalid otp, make sure it is correct !!')
@@ -297,3 +330,100 @@ def log_out(request):
 
 def log_in(request):
     return redirect('user_login')
+
+def banner(request):
+    banner = Banner.objects.all()
+    return render(request, "admin/banner.html",{"banner":banner})
+
+def add_banner(request):
+    count = len(Banner.objects.all())
+    if count >= 6:
+        messages.error(request,"6 Banners Added Please Remove one to add New")
+        return redirect(request.META.get('HTTP_REFERER')) 
+    if request.POST.get('banner_name'):    
+        name = request.POST.get('banner_name')
+    else:
+        messages.error(request,"Banner name is required ")
+        return redirect('banner') 
+    if request.FILES.get('ban_img1'):    
+        img = request.FILES.get('ban_img1')
+    else:
+        messages.error(request,"Banner Image is required ")
+        return redirect('banner') 
+    
+    if request.POST.get('banner_validity'):    
+        validity = request.POST.get('banner_validity')
+    else:
+        messages.error(request,"Banner Validity date is required ")
+        return redirect('banner') 
+    
+    if request.POST.get('Select1'):    
+        select1 = request.POST.get('Select1')
+    else:
+        messages.error(request,"Select Banner wise required")
+        return redirect('banner') 
+    
+    if request.POST.get('Select1'):    
+        select2 = request.POST.get('Select2')
+    else:
+        messages.error(request,"Select Banner wise Product or Category")
+        return redirect('banner') 
+    banner_id = str(uuid.uuid4())
+    banner = Banner.objects.create(banner_name=name,image = img , validity_upto = validity,wise = select1,selected = select2,banner_id = banner_id)
+    banner.save()
+    messages.info(request,"Banner added ")
+    return redirect('banner') 
+
+
+def BannerSelect(request):
+    selected = request.GET.get('selected')
+    if selected == "Product":
+        item = Products.objects.all()
+        wise = "Product"
+    if selected == "Category":
+        item = SubCategory.objects.all()
+        wise = "Cata"
+        
+    return render (request,"admin/bannerselect.html",{"item":item,"wise":wise})
+
+def Remove_banner(request):
+    id = request.GET.get('id')
+    banner = Banner.objects.get(id = id)
+    banner.delete()
+    status = True
+    messages.info(request,"Banner Removed ")
+    return redirect(request.META.get('HTTP_REFERER'))   
+
+
+def searchproduct(request):
+    data = request.GET.get('searched')
+    id =0
+    if request.GET.get('id_subc'):
+        id = request.GET.get('id_subc')
+        if id is not None and id != "0":
+            subcat = SubCategory.objects.get(id = id )
+            product = Products.objects.filter(product_name__icontains = data,subcategory=subcat).annotate(mrp=F('selling_price')+300).order_by('id')
+        else:    
+            product = Products.objects.filter(product_name__icontains = data).annotate(mrp=F('selling_price')+300).order_by('id')
+    else:    
+            product = Products.objects.filter(product_name__icontains = data).annotate(mrp=F('selling_price')+300).order_by('id')
+    
+    for i in product:
+        if i.category.discount<i.offer:
+         if i.offer is not None and i.offer is not 0 :
+            i.offer_price = int(i.original_price - i.original_price * i.offer/100)
+            i.save()
+            continue
+        if i.category.discount is not None:
+            i.category_offer = i.category.discount
+            if i.category.discount is not 0:
+                i.offer_price = int(i.original_price - i.original_price * i.category.discount/100)
+            else:
+                 i.offer_price = i.category.discount
+            i.save()
+    # product= Products.objects.get(subcategory_id=id).annotate(mrp=F('selling_price')+300)
+    
+    page = Paginator(product,4)
+    page_list = request.GET.get('page')
+    page = page.get_page(page_list)
+    return render(request,"searchprod.html",{"searched":page,"id_1":id})

@@ -1,0 +1,482 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+  
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      var m = "{{ message }}";
+      Swal.fire({
+    icon: 'success',
+    title: m,
+    
+    
+    })
+    </script>
+  
+{% endfor %}
+{% endif %}
+
+
+
+<style>
+  /****** Bootstrap Colors ******/
+.primary {
+  min-height: 800px;
+}
+/*** Accordion Toggles ***/
+.panel-heading {
+  position: relative;
+}
+.panel-heading .accordion-toggle:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e260";
+  position: absolute;
+  right: 16px;
+}
+.panel-heading .accordion-toggle.collapsed:after {
+  font-family: 'Glyphicons Halflings';
+  content: "\e259";
+}
+/*** Filter Menu ***/
+/* Panels */
+.filter-menu .panel {
+  border-radius: 0;
+  border: 1px solid #eeeeee;
+}
+.filter-menu .panel-heading {
+  background: #fff;
+  padding: 0;
+}
+.filter-menu .panel-title {
+  color: #333333;
+  font-weight: bold;
+  display: block;
+  padding: 16px;
+}
+.filter-menu a.panel-title {
+  color: #333333;
+}
+.filter-menu a.panel-title:hover,
+.filter-menu a.panel-title:focus {
+  color: #333333;
+  text-decoration: none;
+}
+.filter-menu .panel-body {
+  padding: 16px;
+}
+/* Inner Panels */
+.filter-menu .panel-group {
+  margin: -16px;
+}
+.filter-menu .panel-group .panel-title {
+  background: #eee;
+  transition: color, 0.5s, ease;
+}
+.filter-menu .panel-group .panel-title:hover {
+  color: #333333;
+  text-decoration: none;
+  background: #777777;
+}
+.filter-menu .panel-group .panel + .panel {
+  margin-top: 0;
+}
+/*** Filter Menu - Mobile ***/
+/* Panels - Mobile */
+.filter-menu.mobile .btn-link {
+  color: #f9f9f9;
+}
+.filter-menu.mobile hr {
+  margin-top: 0;
+  border-top-color: #ffffff;
+}
+.filter-menu.mobile .panel-group .panel-heading + .panel-collapse > .panel-body {
+  border-color: #ffffff;
+}
+.filter-menu.mobile .panel {
+  border-color: #ffffff;
+  background: #b3b5b6;
+  color: #f9f9f9;
+}
+.filter-menu.mobile .panel-heading {
+  background: #a7aeb3;
+}
+.filter-menu.mobile a.panel-title {
+  color: #f9f9f9;
+}
+.filter-menu.mobile a.panel-title:hover {
+  color: #f9f9f9;
+}
+.filter-menu.mobile .panel-group .panel {
+  border-color: #a5afb6;
+}
+.filter-menu.mobile .panel-group .panel-title {
+  background: #a4aeb4;
+}
+.filter-menu.mobile .panel-group .panel-title:hover {
+  color: #f9f9f9;
+  background: #c2cbd1;
+}
+/****** Footer ******/
+.footer {
+  background-color: #eeeeee;
+}
+.footer p {
+  margin: 20px 0;
+  text-align: center;
+  color: #888888;
+}
+.footer .glyphicon-heart {
+  color: pink;
+}
+/*** Sticky Footer ***/
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+}
+
+</style>
+
+
+
+
+<!-- END nav -->
+    
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
+  <div class="container">
+    <div class="row no-gutters slider-text align-items-center justify-content-center">
+      <div class="col-md-9 ftco-animate text-center">
+        <h1 class="mb-0 bread">Products</h1>
+        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Product</span></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+   <div class="container">
+    <div class="row justify-content-center">
+
+<div class="col-xs-12 col-md-12 mt-5 justify-content-center">
+  <form  class="form-main  form-inline nofloat-xs pull-right pull-left-sm justify-content-center">
+
+    <div class="form-group form-input-fields form-group-lg has-feedback">
+
+      <label class="sr-only" for="search">Search</label>
+      <div class="input-group">
+        <input type="text" class="form-control input-search" name="searched" id="search" placeholder="Search">
+        <span class="input-group-addon group-icon"> <span class="glyphicon glyphicon-user"></span>
+        </span>
+
+      <button onclick= searchbox1({{id_1}}) type="button" class="btn btn-md  btn-submit">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search 
+        </button>
+      </div>
+
+
+
+    </div>
+
+
+  </form>
+</div>
+</div>
+</div>
+
+
+
+
+
+    
+    <section class="ftco-section bg-light" >
+    <div class="container-fluid" >
+        <div class="row justify-content-center" id="ProductSection">
+
+            {% for i in searched  %}
+            <div class="col-sm col-xs-3 col-md-6 col-lg-3 ftco-animate ">
+                <div class="product ">
+                    <a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " src="/media/{{i.product_img1}}" alt="Colorlib Template">
+                      
+                      {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span class="status">{{i.offer}}%</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span class="status">{{i.category_offer}}%</span>
+                      {% endif %}
+                        
+                    </a>
+                    <div class="text py-3 px-3">
+                        <h3><a href="#">{{i.product_name}}</a></h3>
+                        <h3><a href="#">{{i.brand}}</a></h3>
+                        <div class="d-flex">
+                          
+                          {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
+                          <div class="pricing">
+                            <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
+                        </div>
+                      
+                          
+              
+                            {% else %}
+                            <div class="pricing">
+                                <p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
+                            </div>
+
+                            {% endif %}
+                            <div class="rating">
+                                <p class="text-right">
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                    <span class="ion-ios-star-outline"></span>
+                                </p>
+                            </div>
+                        </div>
+                        {% if i.quantity < 10 and i.quantity > 0 %}
+                       
+                        <span style="font-size: 80x ; color: rgb(255, 0, 0);">Only {{i.quantity}} Left !!</span>
+  
+                        {% endif %}
+                        <br>
+                        {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                      <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
+                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                      <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
+
+                      {% else %}
+                      <span class="status">No Offer Yet</span>
+
+                      {% endif %}
+                        <hr>
+                        {% if i.quantity <= 0 %}
+                        <p class="bottom-area d-flex">
+                          <a ><span style="font-size: 18px; color: red;">Out of Stock</span></a>
+                          
+                      </p>
+                        {% else %}
+                        <p class="bottom-area d-flex">
+                            <a onclick= addcat({{i.id}}) class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+                            <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                
+            </div>
+
+
+
+            {% endfor %}
+
+
+        </div>
+        <div class="row mt-5">
+      <div class="col text-center">
+        <div class="block-27">
+          <ul>
+            
+            {% if product.has_previous %}
+            <li><a href="?page={{ product.previous_page_number}}">&lt;</a></li>
+                  
+              {% endif %}
+                {% for i in product.paginator.page_range %}
+                  
+              {% if product.number == i %}
+            <li class="active"><a href="?page={{i}}">{{i}}</a></li>
+
+            {% else %}
+            <li><a href="?page={{i}}">{{i}}</a></li>
+          
+            {% endif %}
+          
+            {% endfor %}
+            
+            {% if product.has_next %}
+            <li><a href="?page={{ product.next_page_number}}">&gt;</a></li>
+            
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    </div>
+</section>
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+<footer class="ftco-footer bg-light ftco-section">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4">
+          <h2 class="ftco-heading-2">Modist</h2>
+          <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
+            <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
+            <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
+            <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4 ml-md-5">
+          <h2 class="ftco-heading-2">Menu</h2>
+          <ul class="list-unstyled">
+            <li><a href="#" class="py-2 d-block">Shop</a></li>
+            <li><a href="#" class="py-2 d-block">About</a></li>
+            <li><a href="#" class="py-2 d-block">Journal</a></li>
+            <li><a href="#" class="py-2 d-block">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-4">
+         <div class="ftco-footer-widget mb-4">
+          <h2 class="ftco-heading-2">Help</h2>
+          <div class="d-flex">
+              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
+                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
+                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
+                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
+                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
+              </ul>
+              <ul class="list-unstyled">
+                <li><a href="#" class="py-2 d-block">FAQs</a></li>
+                <li><a href="#" class="py-2 d-block">Contact</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="ftco-footer-widget mb-4">
+            <h2 class="ftco-heading-2">Have a Questions?</h2>
+            <div class="block-23 mb-3">
+              <ul>
+                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
+                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
+                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+
+        <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                      Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                      <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+
+<!-- loader -->
+<div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+
+  function searchbox1(id){
+    var searched = $("#search").val()
+    console.log(id,">>>>>>>>>>>>.")
+    window.location.href = "{% url 'searchproduct' %}"  +'?searched='+ searched+'&id_subc='+ id;
+   
+  
+  }
+
+  function addWish(id){
+        
+    
+        var url = "{% url 'add_to_wishlist' %}"
+        $.ajax({
+            type:"GET",
+            url : url,
+            data : {"id" : id},
+            success : function(r) {
+
+              Swal.fire(
+                'Product Added To Wishlist!',
+                '!',
+                'success'
+              )
+                
+            },
+            error: function() {
+              Swal.fire('Product Already Added')
+            }
+        });
+    }
+
+function addcat(id){
+
+    $.ajax({
+      type:"GET",
+      url : "{% url 'add_cart' %}",
+      data : {"id" : id},
+      success : function(r) {
+        
+        if (r.status==true){
+
+          Swal.fire('Product already added '
+          )
+        
+        }
+        else{
+
+          Swal.fire(
+          'Product Added To Cart!',
+          '!',
+          'success'
+        )
+        }
+      },
+      error: function() {
+        Swal.fire('error occured during ')
+      }
+  });
+}
+
+
+
+
+
+</script>
+
+{% endblock %}

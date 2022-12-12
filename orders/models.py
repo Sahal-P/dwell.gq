@@ -20,6 +20,7 @@ class Orders(models.Model):
     orderd_date     = models.DateTimeField(auto_now_add=True)
     status          = models.CharField(max_length=50, default='Pending')
     order_id        = models.CharField(max_length=500, null=True)
+    variation_id    = models.CharField(max_length=500, null=True,default=0)
     payment_id      = models.CharField(max_length=500, null=True, blank=True)
     expected_date   = models.DateTimeField(null = True)
     delivered_date  = models.DateTimeField(null=True)

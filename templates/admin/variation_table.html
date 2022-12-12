@@ -1,0 +1,36 @@
+<table id= "v_table" class="table" style="background-color: #1c2e4a;">
+    <thead class="table-light">
+      <tr>
+        <th scope="col">Variation id</th>
+        <th scope="col">color</th>
+
+        <th scope="col">size</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+        
+      </tr>
+    </thead>
+    <tbody style="color: white;">
+     {% for i in var  %}
+       <tr>
+    
+        <td>{{i.variation_id}}</td>
+        <td>{{i.color}}</td>
+        <td>{{i.size}}</td>
+        <td>{{i.quantity}}</td>
+        <td>{{i.price}}</td>
+        
+       
+                
+      
+       
+
+
+      </tr>
+
+       
+      {% endfor %}
+    
+     
+    </tbody>
+  </table>

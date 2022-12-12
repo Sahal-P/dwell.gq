@@ -31,6 +31,8 @@ urlpatterns = [
     path('user_profile/', include("user_profile.urls")),
     path('user_profile/offer', include("offer.urls")),
     path('user_profile/coupen', include("coupen.urls")),
+    path('user_profile/wallet', include("wallet.urls")),
+    path('variations/', include("variation.urls")),
 
 
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -89,4 +89,19 @@ class Wishlist(models.Model):
     quantity        = models.IntegerField(null=True,blank=True)
     added_date      = models.DateTimeField(auto_now_add=True)
     
-   
+class Banner(models.Model):
+    banner_name     = models.CharField(max_length=100, null=True)
+    image           = models.ImageField(upload_to ='images/banners',blank =True, null = True)
+    wise            = models.CharField(max_length=100, null=True)
+    selected        = models.CharField(max_length=100, null=True)
+    validity_upto   = models.DateField(null=True)
+    banner_id       = models.CharField(max_length=150,default=0)
+    trending        = models.BooleanField(default=True)
+    is_active       = models.BooleanField(default=True)
+
+class ReferalSection(models.Model):
+    user            = models.ForeignKey(Account,on_delete=models.CASCADE)
+    referal_id      = models.CharField(max_length=200,default=0)
+    is_used         = models.BooleanField(default=False)
+    used_count      = models.IntegerField(default=0)
+    

@@ -119,7 +119,7 @@ def order_place(request,total=0,quantity=0,
                        address= address_to ,total_price = item.sub_total_c(coupen_didected),
                        payment=payment, status = "placed" ,
                        price = item.product.selling_price , 
-                       quantity = item.Quantity,order_id = order_id,grand_price = g_total,offered_price = new_total,coupen_applied = coupen).save()
+                       quantity = item.Quantity,order_id = order_id,grand_price = g_total,offered_price = new_total,coupen_applied = coupen,variation_id =item.varient_id).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
             status = True
             if coupen_didected is not 0:
@@ -146,7 +146,7 @@ def order_place(request,total=0,quantity=0,
                        address= address_to ,total_price = item.sub_total(),
                        payment=payment, status = "placed" ,
                        price = item.product.selling_price , 
-                       quantity = item.Quantity, order_id=order_id, payment_id=payment_id).save()
+                       quantity = item.Quantity, order_id=order_id, payment_id=payment_id,variation_id =item.varient_id).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
                 status = True
             return JsonResponse({'status': status})
@@ -163,7 +163,7 @@ def order_place(request,total=0,quantity=0,
                        address= address_to ,total_price = item.sub_total(),
                        payment=paypal, status = "placed" ,
                        price = item.product.selling_price , 
-                       quantity = item.Quantity, order_id=order_id, payment_id=payment_id).save()
+                       quantity = item.Quantity, order_id=order_id, payment_id=payment_id ,variation_id =item.varient_id).save()
                 OldCart(product = item.product,user = request.user , Quantity = item.Quantity).save()
                 status = True
             return JsonResponse({'status': status})
@@ -184,6 +184,8 @@ def order_success(request,total=0,quantity=0,
             tax = (5*total)/100
             delv = 5
             g_total = total+ tax+delv
+    if g_total is 0:
+        return redirect('order_status')
     CartItem.objects.filter(user=request.user,is_active=True).delete()
     return render(request , "order_success.html" ,{"user":user,"g_total":g_total})
 
@@ -254,3 +256,8 @@ def guest_checkout(request):
         response = redirect('user_login')
         response.set_cookie('Guest_checkout', {"destination":destination,"Guest_id":id})
         return response
+    
+def order_invoice(request,id):
+    orders = Orders.objects.filter(order_id = id)
+    id_= id
+    return render(request, "order_invoice.html",{"orders":orders,"id_":id_}) 

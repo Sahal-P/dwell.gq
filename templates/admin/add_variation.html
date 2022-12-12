@@ -1,0 +1,207 @@
+{% extends 'admin/base.html' %} 
+
+
+{% load static %}
+
+ {% block content %}
+ <script>
+  $("#checkbox1").is(':checked', function(){
+    $("#checkbox1").prop('checked', true);
+  });
+  </script>  
+   
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  
+
+ <div class="body flex-grow-1 px-3">
+  <form  enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row mb-4">
+      <div class="col">
+        <div class="form-outline">
+          <input type="text" value="{{name}}" id="form6Example1" class="form-control" />
+          <label style="color: WHITE;" class="form-label" for="form6Example1">Product Name</label>
+        </div>
+      </div>
+      
+    </div>
+  
+ 
+  
+    <!-- Text input -->
+    
+  
+    <!-- Number input -->
+    
+     <div class="row mb-4">
+        <div class="col">
+            <div class="form-outline">
+              <select name="value2" class="form-control" id ="value2">
+                <option value="">Size</option>
+                <option value="sm">Small</option>
+                <option value="md">Medium</option>
+                <option value="lg">Large</option>
+                <option value="xl">XL</option>
+                <option value="xxl">XXL</option>
+                <option value="xxxl">XXXL</option>
+
+    
+    
+    
+              </select>
+              <label style="color: WHITE;" class="form-label" for="form6Example2">Size</label>
+            </div>
+            <br>
+          </div> 
+      <div class="col">
+        <div class="form-outline">
+          <select name="varient" class="form-control" id="varient1">
+            <option value="">---select---</option>
+           <option value="color">Color</option>
+          </select>
+          <label style="color: WHITE;" class="form-label" for="form6Example1">Varient</label>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-outline">
+          <select name="value1" class="form-control" id ="value1">
+            <option value="">---select---</option>
+
+
+
+          </select>
+          <label style="color: WHITE;" class="form-label" for="form6Example2">select</label>
+        </div>
+        <br>
+      </div> 
+      
+      <div class="row mb-4">
+       
+        <div class="col">
+          <div class="form-outline">
+            <input name="v_price" type="number" id="form6Example2" class="form-control" />
+            <label style="color: WHITE;" class="form-label" for="form6Example2">price</label>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-outline">
+            <input name="v_quantity" type="number" id="form6Example2" class="form-control" />
+            <label style="color: WHITE;" class="form-label" for="form6Example2">Quantity</label>
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+  
+   
+    <!-- Checkbox -->
+   
+    <!-- Submit button -->
+    
+  </form>
+  <button onclick= AddVariant({{id}}) class="btn btn-success btn-lg btn-block mb-4">ADD</button>
+
+  <div class="container bcontent ">
+    <table id= "v_table" class="table" style="background-color: #1c2e4a;">
+      <thead class="table-light">
+        <tr>
+          <th scope="col">Variation id</th>
+          <th scope="col">color</th>
+  
+          <th scope="col">size</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Price</th>
+          
+        </tr>
+      </thead>
+      <tbody style="color: white;">
+       {% for i in var  %}
+         <tr>
+      
+          <td>{{i.variation_id}}</td>
+          <td>{{i.color}}</td>
+          <td>{{i.size}}</td>
+          <td>{{i.quantity}}</td>
+          <td>{{i.price}}</td>
+  
+        </tr>
+  
+         
+        {% endfor %}
+      
+       
+      </tbody>
+    </table>
+  
+  </div>
+
+  <a href="{% url 'pages:product' %}" class="btn btn-success btn-lg btn-block mb-4">ADD VARIATION</a>
+
+
+</div>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+      $("#varient1").change(function (){
+        var url = "{% url 'types' %}"
+        var varient = $(this).val();
+
+        $.ajax({
+          url : url,
+          data :{"varient":varient},
+          success: function(data){
+            $("#value1").html(data);
+          }
+
+        });
+
+      });
+      $("#varient2").change(function (){
+        var url = "{% url 'types' %}"
+        var varient = $(this).val();
+
+        $.ajax({
+          url : url,
+          data :{"varient":varient},
+          success: function(data){
+            $("#value2").html(data);
+          }
+
+        });
+
+      });
+
+      function AddVariant(id){
+        var varient=$("#varient1 option:selected").val();
+        var type=$("#value1 option:selected").val();
+        var size=$("#value2 option:selected").val();
+        var price=$("input[name='v_price']").val();
+        var quantity=$("input[name='v_quantity']").val();
+        console.log(varient,type,price,quantity,size)
+        $.ajax({
+            url : "{% url 'addTypes' %}",
+            data :{"varient":varient,"type":type,"size":size,"price":price,"quantity":quantity,"id":id},
+            success: function(data){
+            alertify.message('variation added');
+              $("#v_table").html(data);
+            }
+  
+          });
+      }
+
+ </script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

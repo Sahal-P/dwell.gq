@@ -7,7 +7,7 @@ from django.conf import settings
 import os
 from django.contrib import messages
 from django.http import JsonResponse
-
+from uuid import uuid4
 
 
 
@@ -121,6 +121,7 @@ def add_product(request):
         product.status = status
         product.category_id =category
         product.subcategory_id =subcategory
+        product.product_id = str(uuid4())[:12]
         product.save()
         return redirect("pages:product")
     return render (request, "admin/add_product.html")

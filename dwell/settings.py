@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'user_profile',
     'offer',
     'coupen',
+    'variation',
+    'wallet',
 ]
 
 MIDDLEWARE = [

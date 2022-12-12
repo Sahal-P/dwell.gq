@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect
-from accounts.models import Account, Address
+from accounts.models import Account, Address , ReferalSection
 from django.contrib.auth.views import PasswordChangeView , PasswordResetDoneView
 from django.contrib import messages
+
 # Create your views here.
 
 
@@ -10,10 +11,13 @@ def user_profile(request):
         user = request.user
         user_profile = Account.objects.get(email =user)
         address = Address.objects.filter(user = user)
-        
-        return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address})
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!",user)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        referal = ReferalSection.objects.get(user=user)
+        id = referal.referal_id
+        return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address,"referal_id":id})
     except:
-        messages.info(request, 'Please Login to view account detailes')
+        messages.error(request, 'Please Login to view account detailes')
     return redirect(request.META.get('HTTP_REFERER'))
 
 def edit_user_profile(request):

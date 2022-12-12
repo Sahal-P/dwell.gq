@@ -1,0 +1,15 @@
+
+
+{% if wise == "Product" %}
+    
+{% for i  in item %}
+<option value="{{i.id}}">{{i.product_name}}</option>
+{% endfor %}
+
+{% elif wise == "Cata" %}
+
+{% for i  in item %}
+<option value="{{i.id}}">{{i.subcategory_name}}</option>
+{% endfor %}
+
+{% endif %}

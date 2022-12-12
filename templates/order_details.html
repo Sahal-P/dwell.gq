@@ -100,7 +100,7 @@
                       <p class="text-muted mb-0"> Place On <span class="fw-bold text-body">{{order.orderd_date}}</span> </p>
                     </div>
                     <div>
-                      <h6 class="mb-0"><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">View Detailes</button></h6>
+                      <h6 class="mb-0"><a href="{% url 'order_invoice' order.order_id %}" type="button" class="btn btn-secondary" >View Invoice</a></h6>
                     </div>
                   </div>
                 </div>
@@ -110,7 +110,7 @@
                       <h5 class="bold">{{order.product.product_name}}</h5>
                       <p class="text-muted"> Qt: {{order.quantity}} item</p>
                       <p class="text-muted"> price: {{order.price}} item</p> 
-                      <h4 class="mb-3">total : ₹ {{order.total_price}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h4>
+                      <h5 class="mb-3">total : ₹ {{order.total_price}}<br> <span class="small text-muted"> via ({{order.payment}}) </span></h5>
                       {% if order.status == "cancelled" %} 
                       <p class="" style=" color: red;">Order Cancelled </p>
                       {% else %}
@@ -159,28 +159,6 @@
       <!-- Button trigger modal -->
 
   
-  <!-- Modal -->
-  <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
 
 
 
