@@ -28,12 +28,12 @@
  <div class="form-group p-3">
     
     <label style="color: white;" for="usr">Category Name</label>
-    <input name="category_name" type="text" class="form-control " id="usr">
+    <input name="category_name" value="{{category.category_name}}" type="text" class="form-control " id="usr">
   </div>
 
   <div class="form-group p-3">
     <label style="color: white;" for="exampleFormControlFile1">Upload Image</label> <br>
-    <input name="img" type="file" class="form-control" id="exampleFormControlFile1">
+    <input oninput=checker(this.id) name="img" value="{{category.cata_img}}" type="file" class="form-control" id="exampleFormControlFile1">
   </div>
 
   <div class="p-3">
@@ -42,6 +42,23 @@
 </form>
 
 </div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  function checker(id){
+    var img = document.getElementById(id).value
+    console.log(img,"LLLLLLLLLL")
+    var allowedExtensions =
+    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if(!allowedExtensions.exec(img)){
+      console.log("in")
+      Swal.fire("image should be jpg , jpeg , png")
+      document.getElementById(id).value = "";
+  }
+
+
+}
+</script>
 {% endblock %}
 
 

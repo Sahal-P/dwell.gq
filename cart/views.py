@@ -32,20 +32,17 @@ def add_cart(request):
             varient  = Variation.objects.get(product=product,color=color,size=size)
             v_id_ = varient.variation_id
 
-    print(varient,v_id_,"9999999999999999999999999")
     if user.is_authenticated:
         try:
             if varient is not 0:
                 cart_item = CartItem.objects.get(product=product,user=user,varient_id=v_id_)
-                print("firstpart222222222222222222222222")
                 if cart_item.varient_id == v_id_:
                     cart_item.Quantity +=1
                     cart_item.save()
                     status = True
                     return JsonResponse({"status":status})
                 else:
-                    print("secondpart222222222222222222222222")
-                    
+                                        
                     cart_item = CartItem.objects.create(product=product, Quantity = 1, user= user ,varient_id=varient.variation_id ,varient_price=varient.price)
                     cart_item.save()
                     status = False
@@ -53,7 +50,6 @@ def add_cart(request):
             else:
                 cart_item = CartItem.objects.get(product=product,user=user,varient_id=0)
                 
-                print("second222222222222222222222222")
                 cart_item.Quantity +=1
                 cart_item.save()
                 status = True
@@ -147,26 +143,7 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
         "g_total":g_total
     })
     
-# def decrement_cart(request,id):
-    
-#     product = get_object_or_404(Products, id=id)
 
-#     try:
-#         if request.user.is_authenticated:
-#             cart_item = CartItem.objects.get(product=product, user= request.user)
-#         else:
-#             cart = Cart.objects.get(cart_id= _cart_id(request))
-#             cart_item = CartItem.objects.get(product=product, cart=cart)
-            
-#         if cart_item.Quantity >1:
-#                 cart_item.Quantity -= 1
-#                 cart_item.save()
-#         else:
-#             cart_item.delete()
-#     except:
-#         pass
-    
-#     return redirect ("cart")
 def cartrefresh(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0):
     try :
         if request.user.is_authenticated:

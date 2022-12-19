@@ -45,12 +45,12 @@
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="{% url "home" %}" style="font-size: 23px;"class="nav-link">Home</a></li>
-	          <li class="nav-item active"><a href="{% url "user_profile" %}" style="font-size: 23px;"class="nav-link">Account</a></li>
+	          <li class="nav-item active"><a href="{% url "home" %}" class="nav-link">Home</a></li>
+	          <li class="nav-item active"><a href="{% url "user_profile" %}" class="nav-link">Account</a></li>
 	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" style="font-size: 23px;" aria-expanded="false">Shop</a>
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="{% url "pages:c_category" %}">Shop</a>
+              	<a class="dropdown-item" href="{% url "pages:c_category" %}">Category</a>
                 <a class="dropdown-item" href="{% url "cart" %}">Cart</a>
                 <a class="dropdown-item" href="{% url "order_status" %}">Orders</a>
 				<a class="dropdown-item" href="{% url "wishlist" %}">Wishlist</a>
@@ -58,7 +58,7 @@
               </div>
             </li>
 			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" style="font-size: 23px;" aria-expanded="false">More</a>
+				<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">More</a>
 				<div class="dropdown-menu" aria-labelledby="dropdown04">
 					<a class="dropdown-item" href="{% url "pages:about" %}">About</a>
 				  <a class="dropdown-item" href="{% url "pages:contact" %}">Contact</a>
@@ -68,7 +68,7 @@
 	         
 	          <li class="nav-item cta cta-colored"><a href="{% url "cart" %}" class="nav-link" style="font-size: 23px;"><span class="icon-shopping_cart"></span>[0]</a></li>
 			  {% if request.user.is_authenticated %}
-			  <li class="nav-item "><a href="{% url "log_out" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">LOG OUT<span  class="icon-exit_to_app"></span></a></li>
+			  <li class="nav-item "><a href="{% url "log_out" %}" class="nav-link" >LOG OUT<span  class="icon-exit_to_app"></span></a></li>
 			  {% else %}
 			  <li class="nav-item "><a href="{% url "log_in" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">LOG IN<span  class="icon-exit_to_app"></span></a></li>
 
@@ -275,12 +275,13 @@
 					</ol>
 					
 					<div class="carousel-inner">
-						
+						{% if banner1 %}
 					  <div class="carousel-item active">
 						<a href="{% url 'pages:MshirtsP' id2 %}">
-						<img class="d-block w-100" src="/media/images/banner1.2.jpg" alt="First slide">
+						<img class="d-block w-100" src="/media/images/banner2.1.jpg" alt="First slide">
 						</a>
 					  </div>
+					  {% endif %}
 					  {% for i in banner1 %}
 						{% if i.wise == "Product" %}
 						<div class="carousel-item">
@@ -318,8 +319,10 @@
     	<div class="container">
 				<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
+
           	<h1 class="big">Products</h1>
             <h2 class="mb-4">Our Products</h2>
+			 
           </div>
         </div>    		
     	</div>
@@ -413,12 +416,14 @@
 			  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 			  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
 			</ol>
+			{% if banner2 %}
 			<div class="carousel-inner">
 			  <div class="carousel-item active">
 				<a href="{% url 'pages:MshirtsP' id2 %}">
 				<img class="d-block w-100" src="/media/images/banner2.1.jpg" alt="First slide">
 			</a>
 			  </div>
+			  {% endif %}
 			  {% for i in banner2 %}
 						{% if i.wise == "Product" %}
 						<div class="carousel-item">

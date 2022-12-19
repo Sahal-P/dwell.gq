@@ -163,3 +163,11 @@ TOKEN_TWILIO = "03f12fd95abd9b10936f7e10778cf97a"
 
 RAZOR_ID = "rzp_test_U3hCafDNlYy1xe"
 RAZOR_SECRET = "gUGeShTN3x0JX8COyS9Mpki6"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = 'smpt.gmail.com'
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

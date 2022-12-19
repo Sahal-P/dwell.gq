@@ -28,8 +28,8 @@ urlpatterns = [
         path("add_subcategory",views.add_subcategory,name="add_subcategory"),
         path("edit_category/<int:id>",views.edit_category,name="edit_category"),
        
-        path("delete_category/<int:id>",views.delete_category,name="delete_category"),
-        path("delete_subcategory/<int:id>",views.delete_subcategory,name="delete_subcategory"),
+        path("delete_category",views.delete_category,name="delete_category"),
+        path("delete_subcategory",views.delete_subcategory,name="delete_subcategory"),
         path("delete_product",views.delete_product,name="delete_product"),
                
 ]

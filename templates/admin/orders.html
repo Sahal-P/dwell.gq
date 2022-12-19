@@ -175,7 +175,7 @@
         
         {% comment %} <td><a href="" type="button" class="btn btn-success btn-sm">Edit</a></td> {% endcomment %}
         {% if order.status == "placed" %}
-        <td><button onclick=ordercancell_a({{order.id}}) type="button" class="glow-on-hover btn btn-md">Cancell</button></td>
+        <td><button onclick = ordercancell_a({{order.id}}) type="button" class="glow-on-hover btn btn-md">Cancell</button></td>
         {% else %}
         <td><a></a></td>
 
@@ -206,11 +206,7 @@
         var value = $("#"+id).val();
 
         var url = "{% url 'admin_orderedit' %}"
-        $.ajax({
-            type:"GET",
-            url : url,
-            data : {"value" : value, "oid" : oid},
-            success : function(i) {
+       
                 Swal.fire({
                     title: 'Are you sure you want to change the status?',
                     
@@ -221,17 +217,34 @@
                     confirmButtonText: 'Yes'
                   }).then((result) => {
                     if (result.isConfirmed) {
+
+                      $.ajax({
+                        type:"GET",
+                        url : url,
+                        data : {"value" : value, "oid" : oid},
+                        success : function(data) {
+
+                          $("#order_table").html(data);
+                      
+                          Swal.fire({
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Order status changed',
+                            showConfirmButton: false,
+                            timer: 1500
+                          })
+
+                        },
+                        error: function() {
+                            alert('Error occured');
+                        }
+                    });
                     
                     
-                      window.location.href = 'admin_order_detailes';
                 
                     }
                   })
-            },
-            error: function() {
-                alert('Error occured');
-            }
-        });
+           
     }
 
     function ordercancell_a(id){
@@ -263,8 +276,10 @@
                 });
             }
         
-                    }
+                    
                   })
+                }
+                
     
 
     function approve_or(id){

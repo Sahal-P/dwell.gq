@@ -8,9 +8,11 @@ import os
 from django.contrib import messages
 from django.http import JsonResponse
 from uuid import uuid4
+from django.contrib.auth.decorators import login_required
 
 
 
+@login_required(login_url='adminlogin')
 def add_category(request):
     if request.POST:
         name = request.POST.get("category_name")
@@ -33,10 +35,11 @@ def add_category(request):
         return redirect('pages:category')
     return render (request, "admin/add_category.html")
 
+@login_required(login_url='adminlogin')
 def edit_category(request,id):
     
+    category =Category.objects.get(pk=id)
     if request.POST:
-        category =Category.objects.get(pk=id)
         if request.POST['category_name']:
             name = request.POST.get("category_name")
             if Category.objects.filter(category_name=name).exists():
@@ -50,9 +53,11 @@ def edit_category(request,id):
             category.cata_img = image
         category.save()
         return redirect('pages:category')
-    return render(request, "admin/edit_category.html" )
+    return render(request, "admin/edit_category.html" ,{"category":category} )
 
-def delete_category(request,id):
+@login_required(login_url='adminlogin')
+def delete_category(request):
+        id = request.GET.get('id')
         category = Category.objects.get(pk=id)
         img_path=category.cata_img
         prod_img_path = Products.objects.filter(category_id=id)
@@ -73,7 +78,8 @@ def delete_category(request,id):
         os.remove(os.path.join(settings.MEDIA_ROOT, str(img_path)))
         category.delete()
         return redirect("pages:category")
-        
+
+@login_required(login_url='adminlogin')
 def add_subcategory(request):
     if request.POST:
         subcategory= SubCategory()
@@ -88,6 +94,7 @@ def add_subcategory(request):
         return redirect("pages:subcategory")
     return render(request , "admin/add_subcategory.html")
 
+@login_required(login_url='adminlogin')
 def add_product(request):
     if request.POST:
         product = Products()
@@ -126,7 +133,9 @@ def add_product(request):
         return redirect("pages:product")
     return render (request, "admin/add_product.html")
 
-def delete_subcategory(request,id):
+@login_required(login_url='adminlogin')
+def delete_subcategory(request):
+        id = request.GET.get('id')
         subcategory = SubCategory.objects.get(pk=id)
         prod_img = Products.objects.filter(subcategory_id = id)
         for i in prod_img:
@@ -143,6 +152,7 @@ def delete_subcategory(request,id):
         subcategory.delete()
         return redirect("pages:subcategory")
     
+@login_required(login_url='adminlogin')
 def delete_product(request):
     id = request.GET.get('id')
     product = Products.objects.get(pk=id)
@@ -158,11 +168,13 @@ def delete_product(request):
     product.delete()
     return JsonResponse({"id":id})
 
+@login_required(login_url='adminlogin')
 def dropdown_P(request):
     category = request.GET.get("category")
     subcat1 = SubCategory.objects.filter(category_id=category).all()
     return render(request, "admin/P_dropdown.html",{"subcat1":subcat1})
 
+@login_required(login_url='adminlogin')
 def dropdown_PE(request):
     category = request.GET.get("category")
     subcat = SubCategory.objects.filter(category_id=category).all()

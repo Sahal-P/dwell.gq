@@ -84,25 +84,25 @@
       </div> <div class="row mb-4">
         <div class="col">
           <div class="form-outline">
-            <input name="img1" type="file" class="form-control" id="exampleFormControlFile1">
+            <input oninput="checker(this.id)" name="img1" type="file" class="form-control" id="image1">
             <label style="color: white;" for="exampleFormControlFile1">Upload Image 1</label> <br>
           </div>
         </div>
         <div class="col">
           <div class="form-outline">
-            <input name="img2" type="file" class="form-control" id="exampleFormControlFile1">
+            <input oninput="checker(this.id)" name="img2" type="file" class="form-control" id="image2">
             <label style="color: white;" for="exampleFormControlFile1">Upload Image 2</label> <br>
           </div>
         </div>
         <div class="col">
           <div class="form-outline">
-            <input name="img3" type="file" class="form-control" id="exampleFormControlFile1">
+            <input oninput="checker(this.id)" name="img3" type="file" class="form-control" id="image2">
             <label style="color: white;" for="exampleFormControlFile1">Upload Image 3</label> <br>
           </div>
         </div>
         <div class="col">
           <div class="form-outline">
-            <input name="img4" type="file" class="form-control" id="exampleFormControlFile1">
+            <input oninput="checker(this.id)" name="img4" type="file" class="form-control" id="image3">
             <label style="color: white;" for="exampleFormControlFile1">Upload Image 4</label> <br>
           </div>
         </div>
@@ -125,14 +125,31 @@
     <!-- Submit button -->
     <button type="submit" class="btn btn-success btn-lg btn-block mb-4">ADD PRODUCT</button>
   </form>
- 
- 
 
 </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+ <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script defer src="https://cdn.crop.guide/loader/l.js?c=TCRBTD"></script>
 <script>
+
+  function checker(id){
+    var img = document.getElementById(id).value
+    console.log(img,"LLLLLLLLLL")
+    var allowedExtensions =
+    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if(!allowedExtensions.exec(img)){
+      console.log("in")
+      Swal.fire("image should be jpg , jpeg , png")
+      document.getElementById(id).value = "";
+  }
+
+
+}
 
       $("#category1").change(function (){
         var url = "{% url 'category:dropdown_P' %}"

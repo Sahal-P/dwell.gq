@@ -7,7 +7,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse ,JsonResponse
-# Create your views here.
+from django.views.decorators.cache import never_cache
+
+from django.contrib.auth.decorators import login_required
 from .helpers import *
 from .models import Account ,ReferalSection,Banner
 from datetime import datetime, timedelta
@@ -26,6 +28,8 @@ from django.core.paginator import Paginator
 from dateutil.relativedelta import relativedelta
 from wallet.models import Wallet
 import uuid
+from django.core.mail import send_mail
+
 
 def home3(request):
     email = request.POST.get('task')
@@ -33,10 +37,12 @@ def home3(request):
     status = False
     return JsonResponse({"status":status})
 
+@login_required(login_url='adminlogin')
 def product_offer(request):
     product = Products.objects.all()
     return render(request, 'admin/Product_offer.html',{'products':product})
 
+@login_required(login_url='adminlogin')
 def add_Product_offer(request,id):
     if request.POST:
         product = Products.objects.get(id = id)
@@ -51,6 +57,7 @@ def add_Product_offer(request,id):
     product = Products.objects.get(id=id)
     return render(request, "admin/add_Product_offer.html",{"product":product})
 
+@login_required(login_url='adminlogin')
 def sales_report(request):
     orders   = Orders.objects.annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
     
@@ -83,7 +90,7 @@ def sales_report(request):
     
     return render(request , "admin/Sales_report.html", {"orders":page})
 
-
+@login_required(login_url='adminlogin')
 def d_admin(request):
     if request.user.is_superuser:
         today   = datetime.now() # - relativedelta(months=1)
@@ -91,8 +98,8 @@ def d_admin(request):
         current = today.strftime("%B %d, %Y")
         date    = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(orderd_items=Count('id')).order_by("orderd_date__date")
         sales   = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(sales=Count('id',filter=Q(status ="Deliverd")),cancelled=Count('id' , filter=Q(status ="cancelled")),returns=Count('id' , filter=(Q(status ="Refund In Progress")|Q(status ="Return Aproved")))).order_by("orderd_date__date")
-        
-        return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current})
+        best_moving = Orders.objects.filter(orderd_date__year = today.year).annotate(moving = Count('product_id' )).filter(moving__gt = 2)
+        return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current,"best_moving":best_moving})
     return redirect("adminlogin")
 
 def home(request):
@@ -102,7 +109,7 @@ def home(request):
     our = Products.objects.filter(subcategory_id =16).order_by('?')[:4]
     banner = Banner.objects.all()[:3]
     banner2 = Banner.objects.all()[3:6]
-
+    
    
     if request.user.is_authenticated:
         
@@ -137,7 +144,6 @@ def user_login(request):
                     gcart=GCart.objects.get(Guest_id = id)
                     if CartItem.objects.filter(Guest_id = gcart).exists():
                         a =CartItem.objects.filter(Guest_id = gcart)
-                        print(gcart,",<<<<<<<<<<<<<<<<<<<<")
                         for i in a :
                             print(i.product.selling_price)
                             product = i.product
@@ -150,7 +156,6 @@ def user_login(request):
                                 cart_item=CartItem.objects.create(product=product,Quantity=qty,user=user)
                                 cart_item.save()
                         login(request,user)
-                        print(type(dest), dest,"<<<<<<<<<<<<<<<<<<")
                         a.delete()
                         response = redirect(dest)
                         response.delete_cookie('Guest_checkout')
@@ -165,7 +170,6 @@ def user_login(request):
     return render(request,"login.html")
 
 def user_signup(request,*args, **kwargs):
-    
     user = request.user
     if user.is_authenticated:
         return redirect("home")
@@ -244,7 +248,12 @@ def signup_otp_v(request):
             if otp == otp5:
                 login(request,user)
                 credit = 100
-                wallet = Wallet.objects.create(user=user,amount = credit)
+                if Wallet.objects.filter(user=user).exists():
+                    wallet = Wallet.objects.get(user=user)
+                    wallet.amount += credit
+                    wallet.save()
+                else:
+                    wallet = Wallet.objects.create(user=user,amount = credit)
                 wallet.save()
                 refer_id = str(user.first_name) + str(uuid.uuid4())[:8]
                 referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
@@ -322,7 +331,7 @@ def adminlogin(request):
 
 def adminlogout(request):
     logout(request)
-    return redirect(adminlogin)
+    return redirect("adminlogin")
 
 def log_out(request):
     logout(request)
@@ -331,10 +340,12 @@ def log_out(request):
 def log_in(request):
     return redirect('user_login')
 
+@login_required(login_url='adminlogin')
 def banner(request):
     banner = Banner.objects.all()
     return render(request, "admin/banner.html",{"banner":banner})
 
+@login_required(login_url='adminlogin')
 def add_banner(request):
     count = len(Banner.objects.all())
     if count >= 6:
@@ -374,7 +385,7 @@ def add_banner(request):
     messages.info(request,"Banner added ")
     return redirect('banner') 
 
-
+@login_required(login_url='adminlogin')
 def BannerSelect(request):
     selected = request.GET.get('selected')
     if selected == "Product":
@@ -386,6 +397,7 @@ def BannerSelect(request):
         
     return render (request,"admin/bannerselect.html",{"item":item,"wise":wise})
 
+@login_required(login_url='adminlogin')
 def Remove_banner(request):
     id = request.GET.get('id')
     banner = Banner.objects.get(id = id)

@@ -27,3 +27,7 @@ class Orders(models.Model):
 
     def sub_total(self):
         return self.product.selling_price *self.quantity
+    
+    def name(self):
+        a = Products.objects.get(id =self.product)
+        return a.product_name

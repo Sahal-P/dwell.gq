@@ -1,89 +1,102 @@
-    {% for order in orders  %}
+  <thead class="table-light">
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">user</th>
+
+      <th scope="col">Orderd Date</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Status</th>
+      <th scope="col">Cancel</th>
+    </tr>
+  </thead>
+  <tbody style="color: white;">
+   {% for order in orders  %}
+     
+  
+      <td><img src="/media/{{order.product.product_img1}}" alt="" border=3 height=150 width=150></img></td>
+      <td>{{order.user}}</td>
+      <td>{{order.orderd_date}}</td>
+      <td>{{order.quantity}}</td>
+      <td>{{order.total_price}}</td>
+      <td>{% if order.status == "Return Requested waiting for approval"  %}
+
+          <button onclick = approve_or({{order.id}}) class="btn btn-light">Approve return request</button>
+
+                
+          
+          {% elif order.status == "cancelled" %}
+              <h5 style="color: red;">Order cancelled</h5>
+
+          
       
-   
-       <td><img src="/media/{{order.product.product_img1}}" alt="" border=3 height=150 width=150></img></td>
-       <td>{{order.user}}</td>
-       <td>{{order.orderd_date}}</td>
-       <td>{{order.quantity}}</td>
-       <td>{{order.total_price}}</td>
-       <td>{% if order.status == "Return Requested waiting for approval"  %}
+              
+                
+          {% else %}
+                
+              
+              
+      
+          <select id="selectbox{{ forloop.counter }}" onchange=idc("selectbox{{ forloop.counter }}",{{order.id}}) class="form-select" aria-label="Default select example">
+              
 
-           <button onclick = approve_or({{order.id}}) class="btn btn-light">Approve return request</button>
+              {% if order.status == "placed" %}
 
-                 
-           
-           {% elif order.status == "cancelled" %}
-               <h5 style="color: red;">Order cancelled</h5>
-
-           
-       
-               
-                 
-           {% else %}
-                 
-               
-               
-       
-           <select id="selectbox{{ forloop.counter }}" onchange=idc("selectbox{{ forloop.counter }}",{{order.id}}) class="form-select" aria-label="Default select example">
-               
-
-               {% if order.status == "placed" %}
-
-               <option selected>{{order.status}}</option>
-               <option value="Shipped">Shipped</option>
-               <option value="Out for delivery">Out for delivery</option>
-               <option value="Deliverd">Deliverd</option>
-               <option value="Refund In Progress">Refund In Progress</option>
-
-               <option value="Refund Initiated">Refund Initiated</option>
-              {% elif order.status == "Shipped" %}
               <option selected>{{order.status}}</option>
-               <option value="Out for delivery">Out for delivery</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Out for delivery">Out for delivery</option>
+              <option value="Deliverd">Deliverd</option>
+              <option value="Refund In Progress">Refund In Progress</option>
+
+              <option value="Refund Initiated">Refund Initiated</option>
+             {% elif order.status == "Shipped" %}
+             <option selected>{{order.status}}</option>
+              <option value="Out for delivery">Out for delivery</option>
+              <option value="Deliverd">Deliverd</option>
+              <option value="Refund In Progress">Refund In Progress</option>
+
+              {% elif order.status == "Out for delivery" %}
+              <option selected>{{order.status}}</option>
                <option value="Deliverd">Deliverd</option>
-               <option value="Refund In Progress">Refund In Progress</option>
 
-               {% elif order.status == "Out for delivery" %}
-               <option selected>{{order.status}}</option>
-                <option value="Deliverd">Deliverd</option>
+              {% elif order.status == "Deliverd" %}
+              <option selected>{{order.status}}</option>
 
-               {% elif order.status == "Deliverd" %}
-               <option selected>{{order.status}}</option>
+              
+              {% elif order.status == "Refund In Progress" %}
+              <option selected>{{order.status}}</option>
 
-               
-               {% elif order.status == "Refund In Progress" %}
-               <option selected>{{order.status}}</option>
+              <option value="Refund Initiated">Refund Initiated</option>
+              {% elif order.status == "Refund Initiated" %}
+              <option selected>{{order.status}}</option>
+              
 
-               <option value="Refund Initiated">Refund Initiated</option>
-               {% elif order.status == "Refund Initiated" %}
-               <option selected>{{order.status}}</option>
-               
+              <option value="Refund In Progress">Refund In Progress</option>
 
-               <option value="Refund In Progress">Refund In Progress</option>
+              {% elif order.status == "Return Aproved" %}
+              <option selected>{{order.status}}</option>
+              <option value="Refund Initiated">Refund Initiated</option>
+              <option value="Refund In Progress">Refund In Progress</option>
 
-               {% elif order.status == "Return Aproved" %}
-               <option selected>{{order.status}}</option>
-               <option value="Refund Initiated">Refund Initiated</option>
-               <option value="Refund In Progress">Refund In Progress</option>
-
-               
-               {% endif %}
-             </select>
-        {% endif %}
-           
-       </td>
-       
-       {% comment %} <td><a href="" type="button" class="btn btn-success btn-sm">Edit</a></td> {% endcomment %}
-       {% if order.status == "placed" %}
-       <td><button onclick=ordercancell_a({{order.id}}) type="button" class="glow-on-hover btn btn-md">Cancell</button></td>
-       {% else %}
-       <td><a></a></td>
-
+              
+              {% endif %}
+            </select>
        {% endif %}
-
-     </tr>
-
+          
+      </td>
       
-     {% endfor %}
+      {% comment %} <td><a href="" type="button" class="btn btn-success btn-sm">Edit</a></td> {% endcomment %}
+      {% if order.status == "placed" %}
+      <td><button onclick = ordercancell_a({{order.id}}) type="button" class="glow-on-hover btn btn-md">Cancell</button></td>
+      {% else %}
+      <td><a></a></td>
+
+      {% endif %}
+
+    </tr>
+
+     
+    {% endfor %}
+  
    
-    
-   </tbody>
+  </tbody>

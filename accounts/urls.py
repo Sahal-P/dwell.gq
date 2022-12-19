@@ -34,6 +34,7 @@ urlpatterns = [
      path("sales_report" , views.sales_report , name="sales_report"),
      path("generatesalesReportPdf/",helpers.generatesalesReportPdf,name="generatesalesReportPdf"),
      path("GenerateInvoicePdf",helpers.GenerateInvoicePdf,name="GenerateInvoicePdf"),
+     path("GenerateCSV",helpers.GenerateCSV,name="GenerateCSV"),
      path("banner", views.banner, name="banner"),
      path("add_banner", views.add_banner, name="add_banner"),
      path("home3", views.home3, name="home3"),

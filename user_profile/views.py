@@ -11,8 +11,6 @@ def user_profile(request):
         user = request.user
         user_profile = Account.objects.get(email =user)
         address = Address.objects.filter(user = user)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!",user)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!")
         referal = ReferalSection.objects.get(user=user)
         id = referal.referal_id
         return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address,"referal_id":id})

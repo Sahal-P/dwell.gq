@@ -3,15 +3,18 @@ from orders.models import Orders,Products
 from category.models import Offer_product, Category , Offer_category
 from django.http import HttpResponse ,JsonResponse
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 
 
-
+@login_required(login_url='adminlogin')
 def product_offer(request):
     product = Products.objects.all()
     return render(request, 'admin/Product_offer.html',{'products':product})
 
+@login_required(login_url='adminlogin')
 def add_Product_offer(request,id):
     if request.POST:
         product = Products.objects.get(id = id)
@@ -36,11 +39,13 @@ def add_Product_offer(request,id):
     product = Products.objects.get(id=id)
     return render(request, "admin/add_Product_offer.html",{"product":product})
 
+@login_required(login_url='adminlogin')
 def category_offer(request):
     categorys = Category.objects.all()
 
     return render(request, 'admin/Category_offer.html',{"category":categorys})
 
+@login_required(login_url='adminlogin')
 def add_category_offer(request, id):
     if request.POST:
         category = Category.objects.get(id=id)
@@ -64,6 +69,7 @@ def add_category_offer(request, id):
     category = Category.objects.get(id = id)
     return render(request, 'admin/Add_category_offer.html',{"category":category})
    
+@login_required(login_url='adminlogin')
 def remove_category_offer(request):
     try:
         id = request.GET.get('id')
@@ -83,6 +89,7 @@ def remove_category_offer(request):
     except:
         return redirect('category_offer')
 
+@login_required(login_url='adminlogin')
 def remove_product_offer(request):
     id = request.GET.get('id')
     product = Products.objects.get(id =id)

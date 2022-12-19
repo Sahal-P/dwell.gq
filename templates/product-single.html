@@ -213,6 +213,11 @@ select {
 						  <div class="carousel-item" >
 							<img src="/media/{{i.product_img2}}" class="d-block w-100" alt="...">
 						  </div>
+						 
+						  <div class="carousel-item" >
+							<img src="/media/{{i.product_img2}}" class="d-block w-100" alt="...">
+						  </div>
+
 						  <div class="carousel-item" >
 							<img src="/media/{{i.product_img3}}" class="d-block w-100" alt="...">
 						  </div>
@@ -229,11 +234,6 @@ select {
 						  <span class="sr-only">Next</span>
 						</a>
 					  </div>
-
-
-
-
-
 
 
 
@@ -403,10 +403,8 @@ select {
         <div class="row">
           <div class="col-md-12 text-center">
 
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						</p>
+            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart color-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+			</p>
           </div>
         </div>
       </div>
@@ -524,7 +522,7 @@ function addcat(id){
         else{
 
           Swal.fire(
-          'Product Added To Wishlist!',
+          'Product Added To Cart!',
           '!',
           'success'
         )
@@ -560,9 +558,6 @@ function addcat(id){
 					alertify.set('notifier','position', 'top-right');
               		alertify.error('Not Available.!');
 				  }
-				},
-				error: function() {
-				  Swal.fire('error occured during ')
 				}
 			});
 
@@ -571,10 +566,11 @@ function addcat(id){
 			console.log("<<<<<<<")
 			color = $("#v_color").val()
 			size  = $("#v_size").val()
+			id = {{id}}
 			$.ajax({
 				type:"GET",
 				url : "{% url 'check_variation' %}",
-				data : {"color" : color,"size":size},
+				data : {"color" : color,"size":size,"id":id},
 				success : function(r) {
 				  
 				  if (r.status==true){

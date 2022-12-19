@@ -122,7 +122,7 @@
             
             <div class="col-6">
               <div class="form-outline">
-                <input name="ban_img1" type="file" class="form-control" id="exampleFormControlFile1">
+                <input oninput=checker(this.id) name="ban_img1" type="file" class="form-control" id="bannerimage">
                 <label style="color: white;" for="exampleFormControlFile1">Upload Image </label> <br>
               </div>
             </div>
@@ -220,6 +220,20 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
+
+  function checker(id){
+    var img = document.getElementById(id).value
+    console.log(img,"LLLLLLLLLL")
+    var allowedExtensions =
+    /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+    if(!allowedExtensions.exec(img)){
+      console.log("in")
+      Swal.fire("image should be jpg , jpeg , png")
+      document.getElementById(id).value = "";
+  }
+
+
+}
 
       $("#Select1").change(function (){
         var url = "{% url 'BannerSelect' %}"

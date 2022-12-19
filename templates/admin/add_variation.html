@@ -4,11 +4,25 @@
 {% load static %}
 
  {% block content %}
+ {% for message in messages %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  var m = "{{ message }}";
+  Swal.fire({
+    icon: 'error',
+    title: m,
+  })
+</script>
+
+  
+{% endfor %}
  <script>
   $("#checkbox1").is(':checked', function(){
     $("#checkbox1").prop('checked', true);
   });
   </script>  
+
    
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   
@@ -144,6 +158,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 
       $("#varient1").change(function (){
@@ -181,11 +197,48 @@
         var size=$("#value2 option:selected").val();
         var price=$("input[name='v_price']").val();
         var quantity=$("input[name='v_quantity']").val();
+        if (size ==''){
+          Swal.fire({
+            icon: 'error',
+            title: 'You have to select the size',
+          })
+          return false;
+        }
+        if (type ==''){
+          Swal.fire({
+            icon: 'error',
+            title: 'You have to select the type',
+          })
+          return false;
+        }
+        if (varient ==''){
+          Swal.fire({
+            icon: 'error',
+            title: 'varient not defined',
+          })
+          return false;
+        }
+        if (price ==''){
+          Swal.fire({
+            icon: 'error',
+            title: 'Price not defined',
+          })
+          return false;
+        }
+        if (quantity ==''){
+          Swal.fire({
+            icon: 'error',
+            title: 'Quantity not defined',
+          })
+          return false;
+        }
+
         console.log(varient,type,price,quantity,size)
         $.ajax({
             url : "{% url 'addTypes' %}",
             data :{"varient":varient,"type":type,"size":size,"price":price,"quantity":quantity,"id":id},
             success: function(data){
+              
             alertify.message('variation added');
               $("#v_table").html(data);
             }

@@ -4,8 +4,9 @@ from django.contrib import messages
 from django.http import HttpResponse
 from cart.models import CartItem
 import datetime
-# Create your views here.
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='adminlogin')
 def add_coupen(request):
     if request.POST:
         if not request.POST.get('coupen_code'):
@@ -20,6 +21,7 @@ def add_coupen(request):
         messages.success(request,'Coupen added succesfully')
         return redirect('coupen')
 
+@login_required(login_url='adminlogin')
 def coupen(request):
     coupen      = Coupens.objects.all()
     return render(request, "admin/Add_coupen.html", {"coupen":coupen})

@@ -7,8 +7,10 @@ from category.models import Products
 import uuid
 from django.contrib import messages
 from coupen.models import Coupens
+from django.contrib.auth.decorators import login_required
 
-# Create your views here.
+
+@login_required(login_url='adminlogin')
 def admin_order_detailes(request):
     orders = Orders.objects.all().order_by('-orderd_date')
     return render(request,"admin/orders.html", {"orders": orders})
@@ -98,8 +100,7 @@ def order_place(request,total=0,quantity=0,
                 new_total = new_price
                 coupen_price = g_total-new_total
                 coupen_didected = coupen_price/num
-                print(g_total,num,"<<<<<<<<<<",new_total)
-                print(coupen_didected,">>>>>>>>>>")
+               
     except :
         if not request.user.is_authenticated:
             messages.info(request ,'You have to login to continue Checkout')
@@ -202,14 +203,15 @@ def order_details(request, id):
     # address = Address.objects.get(id=id)
     return render(request, "order_details.html",{"order":order})
 
+@login_required(login_url='adminlogin')
 def admin_orderedit(request):
-    
     order_id = request.GET.get('oid')
     value = request.GET.get('value')
     obj = Orders.objects.get(id = order_id)
     obj.status = value
     obj.save()
-    return JsonResponse({"order":order_id})
+    orders = Orders.objects.all().order_by('id')
+    return render(request,"admin/orders_load.html",{"orders":orders})
 
 def ordercancell(request, id):
     order = Orders.objects.get(id=id)
@@ -220,6 +222,7 @@ def ordercancell(request, id):
     order.save()
     return redirect('order_status')
 
+@login_required(login_url='adminlogin')
 def admin_order_cancell(request):
     id = request.GET.get('id')
     orders = Orders.objects.get(id=id)
@@ -229,14 +232,15 @@ def admin_order_cancell(request):
     orders.status = "cancelled"
     orders.save()
     orders = Orders.objects.all().order_by('id')
-    return JsonResponse({"id":id})
+    return render(request,"admin/orders_load.html",{"orders":orders})
 
 def return_order(request,id):
     order = Orders.objects.get(id=id)
     order.status="Return Requested waiting for approval"
     order.save()
     return redirect('order_status')
-    
+
+@login_required(login_url='adminlogin')
 def approve_return(request):
     id = request.GET.get('id')
     orders = Orders.objects.get(id=id)

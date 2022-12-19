@@ -159,8 +159,8 @@
               <div class="card card-registration card-registration-2" style="border-radius: 15px;">
                 <div class="card-body p-0">
                   <div class="row g-0" id ="cartitem">
-                    <div class="col-lg-8 col-sm-12 col-xs-12">
-                      <div class="p-5">
+                    <div class="col-lg-8 col-sm-12 col-12">
+                      <div class="p-3">
                         <div class="d-flex justify-content-between align-items-center mb-5">
                           <h6 class="fw-bold mb-0 text-black">Items</h6>
                           <h6 class="fw-bold mb-0 text-black">name</h6>
@@ -172,12 +172,12 @@
                         {% for i in cart_items  %}
                         <hr class="my-4">
                         <div class="row mb-4 d-flex justify-content-between align-items-center">
-                          <div class="col-sm-2 col-md-2 col-lg-2 col-xl-2">
+                          <div class="col-4 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                             <img
                               src="/media/{{i.product.product_img1}}"
                               class="img-fluid rounded-3" alt="Cotton T-shirt">
                           </div>
-                          <div class="col-sm-3 col-md-3 col-lg-3 col-xl-3">
+                          <div class="col-3 col-sm-2 col-md-2 col-lg-3 col-xl-3">
                             <h6 class="text-muted">{{i.product.subcategory}}</h6>
                             <h6 class="text-black mb-0">{{i.product.product_name}}</h6>
                             
@@ -188,16 +188,17 @@
                             {% endif %}
                               
                           </div>
-              <div class="col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex">
-                          <a  class="btn btn-link px-2" id='minusbtn{{ forloop.counter }}' onclick= qtyminus("qty{{ forloop.counter }}","{{i.product.id}}","sub_t{{ forloop.counter }}",'minusbtn{{ forloop.counter }}',"{{i.varient_id}}")>-</a> 
-                        		<input id="qty{{ forloop.counter }}"  min="1" max="30" name="quantity" value="{{i.Quantity}}" type="number"
-                              class="form-control form-control-sm" />
-					     <a  class="btn btn-link px-2" onclick=idcc("qty{{ forloop.counter }}","{{i.product.id}}","sub_t{{ forloop.counter }}","{{i.varient_id}}")>+</a> 
+              <div class="col-5 col-sm-3 col-md-3 col-lg-3 col-xl-2 d-flex" >
+                          <a style="background-color: rgb(80, 80, 80); color: white;  padding-top:8px ;" class="btn-link px-2" id='minusbtn{{ forloop.counter }}' onclick= qtyminus("qty{{ forloop.counter }}","{{i.product.id}}","sub_t{{ forloop.counter }}",'minusbtn{{ forloop.counter }}',"{{i.varient_id}}")>-</a> 
+                        		<input id="qty{{ forloop.counter }}"  min="1" maxlength=1 name="quantity" value="{{i.Quantity}}" type="number"
+                              class="form-control form-control-sm" /> 
+                              <!-- <button id="qty{{ forloop.counter }}" >{{i.Quantity}}</button> -->
+					     <a style="background-color: rgb(80, 80, 80); color: white; padding-top:8px ;"  class=" btn-link px-2" onclick=idcc("qty{{ forloop.counter }}","{{i.product.id}}","sub_t{{ forloop.counter }}","{{i.varient_id}}")>+</a> 
                           </div>
-                          <div id="sub_t{{ forloop.counter }}" class="col-sm-3 col-md-3 col-lg-2 col-xl-2 offset-lg-1" style="margin: 1rem ;">
+                          <div id="sub_t{{ forloop.counter }}" class="col-4 col-sm-2 col-md-2 col-lg-2 col-xl-2 offset-lg-1" style="margin: 1rem ;">
                             <h6 class="mb-0"  >₹ {{i.sub_total}}  </h6>
                           </div>
-                          <div class="col-sm-4 col-md-4 col-lg-1 col-xl-1 text-end">
+                          <div class="col-4 col-sm-2 col-md-1 col-lg-1 col-xl-1 text-end">
                             <a href="#!" class="text-danger"><i class="fas fa-trash fa-lg"></i></a> <button type="button" onclick=deltcart("{{i.product.id}}","{{i.varient_id}}") class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter{{i.id}}">x</button>
                           </div>
                         </div>

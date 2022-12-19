@@ -245,6 +245,8 @@
 
 
     function return_order(){
+      
+      
         
       Swal.fire({
         title: 'Are you sure you want to return the order?',
@@ -256,8 +258,8 @@
       }).then((result) => {
         if (result.isConfirmed) {
             
-  
-          $.ajax({
+          alertify.prompt('Reason required').set('onok',function(){
+            $.ajax({
               type: 'GET',
               url: "{% url 'return_order' order.id %}",
               data: { 'value' : "True" },
@@ -265,6 +267,8 @@
                   location.reload();
               }
           })
+          })
+          
           
   
     }

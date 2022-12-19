@@ -7,6 +7,8 @@ from cart.models import GCart,CartItem
 from django.db.models import Count,Sum,Q,F
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 def index(request):
@@ -47,6 +49,7 @@ def MshirtsP(request,id):
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
     
+    
     return render(request,"MshirtsP.html",{"product":page,"id_1":id})
 
 def signle_P(request, id):
@@ -62,8 +65,7 @@ def signle_P(request, id):
     if Variation.objects.filter(product=prod).exists():
         variaiton1 = Variation.objects.filter(product=prod).values('color').distinct()
         variaiton2 = Variation.objects.filter(product=prod).values('size').distinct()
-        print("<<<<<<<<<<")
-    return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2})
+    return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2,"id":id})
 
 def productsingle(request):
     return render (request,"product-single.html")
@@ -77,43 +79,52 @@ def blog(request):
 def contact(request):
     return render (request,"contact.html")
 
+@login_required(login_url='adminlogin')
 def a_tables(request):
     person = Account.objects.all().order_by('id')
     return render(request, "admin/tables.html",{"person":person})
 
 
-
+@login_required(login_url='adminlogin')
 def category(request):
     cata = Category.objects.all()
     return render(request, "admin/category.html" ,{"cata":cata})
 
+@login_required(login_url='adminlogin')
 def subcategory(request):
     cata = SubCategory.objects.all()
     return render (request, "admin/subcategory.html",{"cata":cata})
 
+@login_required(login_url='adminlogin')
 def product(request):
     prod = Products.objects.all()
     return render (request, "admin/product.html", {"prod":prod})
 
+@login_required(login_url='adminlogin')
 def add_category(request):
     return render (request, "admin/add_category.html")
 
+@login_required(login_url='adminlogin')
 def add_subcategory(request):
     cata = Category.objects.all()
     return render (request, "admin/add_subcategory.html", {"cata":cata})
 
+@login_required(login_url='adminlogin')
 def add_product(request):
     catg = SubCategory.objects.all()
     Scata = Category.objects.all()
     return render (request, "admin/add_product.html" ,{"Scata":Scata})
 
+@login_required(login_url='adminlogin')
 def edit_subcategory(request, id):
     cata = Category.objects.all()
+    subcategory =SubCategory.objects.get(id=id)
     if request.POST:
         subcategory =SubCategory.objects.get(id=id)
-        cat1=request.POST.get('category2')
-        subcategory.category_id = cat1
-        subcategory.save()
+        if request.POST.get('category2'):
+            cat1=request.POST.get('category2')
+            subcategory.category_id = cat1
+            subcategory.save()
         if request.POST['subcategory_name']:
             name = request.POST.get("subcategory_name")
             subcategory.subcategory_name = name
@@ -123,12 +134,13 @@ def edit_subcategory(request, id):
             subcategory.Sub_img = request.FILES.get("img")
             subcategory.save()
         return redirect("pages:subcategory")
-    return render (request, "admin/edit_subcategory.html", {"cata":cata})
+    return render (request, "admin/edit_subcategory.html", {"cata":cata,"subcategory":subcategory})
 
-
+@login_required(login_url='adminlogin')
 def edit_product(request,id):
     catg = SubCategory.objects.all()
     Scata = Category.objects.all()
+    product = Products.objects.get(pk=id)
     if request.POST:
         product = Products.objects.get(pk=id)
         if request.POST['p_name']:
@@ -152,11 +164,11 @@ def edit_product(request,id):
             sp = request.POST.get("p_sp")
             product.selling_price=sp
             product.save()
-        if request.POST['p_catg']:
+        if request.POST.get('p_catg'):
             category = request.POST.get("p_catg")
             product.category_id =category
             product.save()
-        if request.POST['p_scatg']:
+        if request.POST.get('p_scatg'):
             subcategory = request.POST.get("p_scatg")
             product.subcategory_id =subcategory
             product.save()
@@ -186,12 +198,12 @@ def edit_product(request,id):
             product.save()
         return redirect("pages:product")
     
-    return render (request, "admin/edit_product.html",  {"catg":catg ,"Scata":Scata })
+    return render (request, "admin/edit_product.html",  {"catg":catg ,"Scata":Scata , "product":product })
 
+@login_required(login_url='adminlogin')
 def user_block(request):
     id= request.GET.get('id')
     val = request.GET.get('value')
-    print(id ,"vanunnuuuuuuuuuuuuuuuuuuu" ,val)
     
     person = Account.objects.get(pk=id)
     if val =="True":
