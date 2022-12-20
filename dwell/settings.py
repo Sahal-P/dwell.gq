@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 import os
 from pathlib import Path
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-jq&&0_a14bz63$#jb%4q5sa&&9jncv6fg8n$svos25aod3z5ee'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -99,7 +103,7 @@ DATABASES = {
        
        'USER': 'postgres',
        
-       'PASSWORD': '09876',
+       'PASSWORD': env('DATA_BASE_PASSWORD'),
 
        'HOST': 'localhost',
 
@@ -158,16 +162,12 @@ MEDIA_ROOT =  BASE_DIR/'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-SID_TWILIO = "AC85fdeaad04ced9b3d69c6db3cbea2621"
-TOKEN_TWILIO = "03f12fd95abd9b10936f7e10778cf97a"
+SID_TWILIO = env('SID_TWILIO')
 
-RAZOR_ID = "rzp_test_U3hCafDNlYy1xe"
-RAZOR_SECRET = "gUGeShTN3x0JX8COyS9Mpki6"
+TOKEN_TWILIO = env('TOKEN_TWILIO')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+RAZOR_ID = env('RAZOR_ID')
 
-EMAIL_HOST = 'smpt.gmail.com'
-EMAIL_PORT = 587
+RAZOR_SECRET = env('RAZOR_SECRET')
 
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+TWILIO_PHONE = env('TWILIO_PHONE')

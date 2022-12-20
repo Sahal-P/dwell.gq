@@ -8,7 +8,6 @@ from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse ,JsonResponse
 from django.views.decorators.cache import never_cache
-
 from django.contrib.auth.decorators import login_required
 from .helpers import *
 from .models import Account ,ReferalSection,Banner
@@ -94,7 +93,6 @@ def sales_report(request):
 def d_admin(request):
     if request.user.is_superuser:
         today   = datetime.now() # - relativedelta(months=1)
-        
         current = today.strftime("%B %d, %Y")
         date    = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(orderd_items=Count('id')).order_by("orderd_date__date")
         sales   = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(sales=Count('id',filter=Q(status ="Deliverd")),cancelled=Count('id' , filter=Q(status ="cancelled")),returns=Count('id' , filter=(Q(status ="Refund In Progress")|Q(status ="Return Aproved")))).order_by("orderd_date__date")
