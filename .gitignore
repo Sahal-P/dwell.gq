@@ -1,1 +1,6 @@
 .env
+media/images/*
+media/images/banners/*
+media/imgs/category_img/*
+media/imgs/product_img/*
+media/imgs/sub_category_img/*
