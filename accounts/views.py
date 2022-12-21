@@ -58,6 +58,7 @@ def add_Product_offer(request,id):
 
 @login_required(login_url='adminlogin')
 def sales_report(request):
+    
     orders   = Orders.objects.annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
     
     if  request.GET.get('Month') != "0":
@@ -65,7 +66,7 @@ def sales_report(request):
         month1 = request.GET.get('Month') 
         if month1 is not None and month1 !="0":
             month = int(month1)
-       
+        
             # today   = datetime.now()- relativedelta(months=1)
             orders      = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
         

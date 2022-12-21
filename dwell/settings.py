@@ -30,7 +30,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -97,7 +97,7 @@ AUTH_USER_MODEL ='accounts.Account'
 
 DATABASES = {
 'default': {
-       'ENGINE': 'django.db.backends.postgresql',
+       'ENGINE': 'django.db.backends.postgresql_psycopg2',
        
        'NAME': 'dwell',
        
@@ -146,15 +146,14 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
-STATIC_URL = 'static/'
+STATIC_URL ='static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
 
-MEDIA_URL = '/media/'
+STATICFILES_DIRS =[os.path.join(BASE_DIR, 'static'),]
 
-MEDIA_ROOT =  BASE_DIR/'media'
+MEDIA_URL ='/media/'
+
+MEDIA_ROOT =BASE_DIR/'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
