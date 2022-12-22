@@ -5,6 +5,7 @@ from django.views.generic import View
 from orders.models import Orders
 from django.http import HttpResponse 
 from . utils import *
+import os
 from datetime import datetime, timedelta
 from django.db.models import Count,Sum,Q,F
 from django.conf import settings
@@ -16,24 +17,49 @@ class otphandler:
     otp = None
    
     def __init__(self,phone_number) -> None:
+        
         self.phone_number= phone_number
         
     def sent_otp_on_phone(self):
         sid_= getattr(settings, "SID_TWILIO", None)
         token_= getattr(settings, "TOKEN_TWILIO", None)
         client = Client(sid_,token_)
+        
         otphandler.phone_number = self.phone_number
-        otp = random.randint(1000, 9999)
-        otphandler.Otp = str(otp)
-        sent = "Dwell Shopping Account verification code is "+ str(otp)
-        message = client.messages.create(
-                              body=sent,
-                              from_= getattr(settings, "TWILIO_PHONE", None),
-                              to='+91'+self.phone_number)
+        # otp = random.randint(1000, 9999)
+        # otphandler.Otp = str(otp)
+        # sent = "Dwell Shopping Account verification code is "+ str(otp)
+        # message = client.messages.create(
+        #                       body=sent,
+        #                       from_= getattr(settings, "TWILIO_PHONE", None),
+        #                       to='+91'+self.phone_number)
+        # account_sid = getattr(settings, "SID_TWILIO", None)
+        # auth_token = getattr(settings, "TOKEN_TWILIO", None)
+        # client = Client(account_sid, auth_token)
+        verification = client.verify.v2.services('VA52f6fc8fa92fbcc412e330255536e6bf').verifications.create(to='+91'+self.phone_number, channel="sms")
+
+        print(verification.status)
+        
+    def checkotp(self,otp):
+        print('kkkkkk')
+        sid_= getattr(settings, "SID_TWILIO", None)
+        token_= getattr(settings, "TOKEN_TWILIO", None)
+        client = Client(sid_,token_)
+        print(self.phone_number,'phoooooooooo',otp)
+        verification = client.verify.v2.services('VA52f6fc8fa92fbcc412e330255536e6bf').verification_checks.create(to='+91'+self.phone_number, code=otp)
+        print(verification.status,"kkkkkkkkkk")
+        
+        if verification.status == "approved":
+            return True
+        else:
+            return False
+        
 class signupgetuser:
     email = None
-    def __init__(self,email) -> None:
-        signupgetuser.email = email
+    phone_number = None
+    def __init__(self,email,phone_number):
+        self.email = email
+        self.phone_number = phone_number
         
         
         

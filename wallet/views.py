@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from .models import Wallet
-from accounts.models import Account,ReferalSection
 
 # Create your views here.
 def wallet(request):

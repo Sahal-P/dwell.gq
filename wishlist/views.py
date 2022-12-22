@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.shortcuts import render
 from django.http import JsonResponse
 from accounts.models import Wishlist
 from category.models import Products

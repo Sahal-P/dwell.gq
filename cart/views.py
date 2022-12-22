@@ -10,7 +10,8 @@ from django.contrib import messages
 from bunch import bunchify
 from munch import DefaultMunch
 from variation.models import Variation
-# Create your views here.
+from django.views.decorators.cache import never_cache
+
 
 def create(request):
     cart=request.session.session_key
@@ -143,7 +144,6 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
         "g_total":g_total
     })
     
-
 def cartrefresh(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0):
     try :
         if request.user.is_authenticated:
@@ -203,7 +203,7 @@ def delete_cart(request):
     cart_item.delete()
     status = True
     return JsonResponse({"status":status})
-    
+
 def checkout(request,total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0,payment=None):
     try :   
         if request.user.is_authenticated:

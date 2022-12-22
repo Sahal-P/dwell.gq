@@ -2,8 +2,7 @@ from django.shortcuts import render,redirect
 from accounts.models import Account, Address , ReferalSection
 from django.contrib.auth.views import PasswordChangeView , PasswordResetDoneView
 from django.contrib import messages
-
-# Create your views here.
+from django.views.decorators.cache import never_cache
 
 
 def user_profile(request):

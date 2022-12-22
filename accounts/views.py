@@ -36,11 +36,13 @@ def home3(request):
     status = False
     return JsonResponse({"status":status})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def product_offer(request):
     product = Products.objects.all()
     return render(request, 'admin/Product_offer.html',{'products':product})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def add_Product_offer(request,id):
     if request.POST:
@@ -56,6 +58,7 @@ def add_Product_offer(request,id):
     product = Products.objects.get(id=id)
     return render(request, "admin/add_Product_offer.html",{"product":product})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def sales_report(request):
     
@@ -90,6 +93,7 @@ def sales_report(request):
     
     return render(request , "admin/Sales_report.html", {"orders":page})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def d_admin(request):
     if request.user.is_superuser:
@@ -101,6 +105,7 @@ def d_admin(request):
         return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current,"best_moving":best_moving})
     return redirect("adminlogin")
 
+@never_cache
 def home(request):
     id = 16
     id2 = 19
@@ -115,6 +120,7 @@ def home(request):
         return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2})
     return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2})
 
+@never_cache
 def user_login(request):
     if request.user.is_authenticated:
         return redirect("home")
@@ -168,6 +174,7 @@ def user_login(request):
               
     return render(request,"login.html")
 
+@never_cache
 def user_signup(request,*args, **kwargs):
     user = request.user
     if user.is_authenticated:
@@ -190,7 +197,6 @@ def user_signup(request,*args, **kwargs):
                 phone_number = request.POST.get("phone_number")
                 username = request.POST.get("username")
                 password = request.POST.get("password1")
-                
                 if not first_name or not email or not phone_number or not username or not password:
                     messages.error(request,'Please fill all required fields')
                     return redirect(request.META.get('HTTP_REFERER'))
@@ -213,48 +219,75 @@ def user_signup(request,*args, **kwargs):
                 if amount is not 0:
                     wallet = Wallet.objects.create(user=user,amount = amount)
                     wallet.save()
+                    
                 user = Account.objects.get(email=email,username=username)
+                
                 user1 = authenticate(request,email=email,password=password)
                 if user1 is not None:
-                    otp_handler = otphandler('9544633437').sent_otp_on_phone() # give phone_number instead of real numbers 
-                    signupgetuser(email)
-                    return redirect("signup_otp_v")
+                    otp_handler = otphandler(phone_number).sent_otp_on_phone()
+                    response = redirect("signup_otp_v")
+                    response.set_cookie('phone', phone_number)
+                    signupgetuser(email,phone_number)
+                    return response
                 
     except:
         messages.info(request,'Invalid credentials')
     return render(request,"signup.html")
 
+@never_cache
 def signup_otp_v(request):
     user = request.user
-    print(user)
     if user.is_authenticated:
         return redirect("home")
     email = signupgetuser.email
+    phone_number = request.COOKIES.get('phone')
+    try:
+        user = Account.objects.get(phone_number=phone_number)
+    except:
+        messages.error(request,'somthing error occured during the verification !!')
+        return redirect(request.META.get('HTTP_REFERER'))
+    request.user = user
     
 
     try:
-        otp = otphandler.Otp
         if request.method == "POST":
             otp1 = request.POST.get("otp1")
             otp2 = request.POST.get("otp2")
             otp3 = request.POST.get("otp3")
             otp4 = request.POST.get("otp4")
-            if not otp1 or not otp2 or not otp3 or not otp4:
+            otp5 = request.POST.get("otp5")
+            otp6 = request.POST.get("otp6")
+            print(otp1,otp2,otp3,otp4,otp5,otp6)
+            if not otp1 or not otp2 or not otp3 or not otp4 or not otp5 or not otp6:
                 messages.error(request,'make sure you filled all fields !!')
                 return redirect(request.META.get('HTTP_REFERER'))
-            otp5 = otp1+otp2+otp3+otp4
-            user = Account.objects.get(email=email)
-            if otp == otp5:
+            
+            code = otp1+otp2+otp3+otp4+otp5+otp6
+            check = otphandler(phone_number).checkotp(code)
+            check = True
+            print(check,"<<<<<<<<<<<<<")
+            if check == True:
+                print("PPPPPPPPPPPPPP")
                 login(request,user)
                 credit = 100
+                print('ooooooooooooo')
                 if Wallet.objects.filter(user=user).exists():
+                    print('<<<<<<<<<<<<<<')
+                    
                     wallet = Wallet.objects.get(user=user)
                     wallet.amount += credit
                     wallet.save()
+                    print('<<<<<<<<<<<<<<')
                 else:
+                    print('<<<<<<<<<<<<<<')
+                    
                     wallet = Wallet.objects.create(user=user,amount = credit)
+                    print('<<<<<<<<<<<<<<')
                 wallet.save()
+                print("KKKKKKKKK")
                 refer_id = str(user.first_name) + str(uuid.uuid4())[:8]
+                print('<<<<<<<<<<<<<<')
+                
                 referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
                 referal.save()
                 return render(request,"index.html")
@@ -266,6 +299,7 @@ def signup_otp_v(request):
         
     return render (request, "signup_otpv.html")
 
+@never_cache
 def user_otp(request):
     if request.user.is_authenticated:
       return redirect("home")
@@ -273,36 +307,51 @@ def user_otp(request):
         if request.POST:
             phone_number = request.POST.get("phone_number")
             phone = Account.objects.filter(phone_number=phone_number).exists()
-            
             if phone is True:
                 user = Account.objects.get(phone_number=phone_number)
                 request.user = user
+                
                 otp_handler = otphandler(phone_number).sent_otp_on_phone()
                 return redirect("otp_v")
+            else :
+                messages.error(request,'User does not exists in this number !!')
+                return redirect(request.META.get('HTTP_REFERER'))
+                
     except:
        pass
     return render(request,'otp.html')
 
+@never_cache
 def otp_v(request):
     if request.user.is_authenticated:
          return redirect("home")
      
     phone = otphandler.phone_number
-    user = Account.objects.get(phone_number=phone)
+    try:
+        user = Account.objects.get(phone_number=phone)
+    except:
+        messages.error(request,'somthing error occured during the verification !!')
+        return redirect(request.META.get('HTTP_REFERER'))
     request.user = user
+
+    
     try:    
         user =request.user
-        otp = otphandler.Otp
         if request.method == "POST":
             otp1 = request.POST.get("otp1")
             otp2 = request.POST.get("otp2")
             otp3 = request.POST.get("otp3")
             otp4 = request.POST.get("otp4")
-            if not otp1 or not otp2 or not otp3 or not otp4:
+            otp5 = request.POST.get("otp5")
+            otp6 = request.POST.get("otp6")
+            print(otp1,otp2,otp3,otp4,otp5,otp6)
+            if not otp1 or not otp2 or not otp3 or not otp4 or not otp5 or not otp6:
                 messages.error(request,'make sure you filled all fields !!')
                 return redirect(request.META.get('HTTP_REFERER'))
-            otp5 = otp1+otp2+otp3+otp4
-            if otp == otp5:
+            
+            code = otp1+otp2+otp3+otp4+otp5+otp6
+            check = otphandler(phone).checkotp(code)
+            if check is True:
                 login(request,user)
                 return render(request,"index.html")
             else:
@@ -312,11 +361,13 @@ def otp_v(request):
         messages.error(request,'Invalid credentials !!')
     return render (request, "otpv.html" )
 
+
 def resendotp(request):
     phone = otphandler.phone_number
     otphandler(phone).sent_otp_on_phone()
     return JsonResponse({phone:phone})
 
+@never_cache
 def adminlogin(request):
     if request.POST:
         email= request.POST.get("email")
@@ -328,22 +379,27 @@ def adminlogin(request):
                return redirect("d_admin")
     return render (request, "admin/login.html")
 
+@never_cache
 def adminlogout(request):
     logout(request)
     return redirect("adminlogin")
 
+@never_cache
 def log_out(request):
     logout(request)
     return render(request, "login.html")
 
+@never_cache
 def log_in(request):
     return redirect('user_login')
 
+@never_cache
 @login_required(login_url='adminlogin')
 def banner(request):
     banner = Banner.objects.all()
     return render(request, "admin/banner.html",{"banner":banner})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def add_banner(request):
     count = len(Banner.objects.all())

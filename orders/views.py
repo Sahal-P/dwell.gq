@@ -8,6 +8,7 @@ import uuid
 from django.contrib import messages
 from coupen.models import Coupens
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 
 @login_required(login_url='adminlogin')
@@ -171,6 +172,7 @@ def order_place(request,total=0,quantity=0,
             
     return redirect("checkout")
 
+@never_cache
 def order_success(request,total=0,quantity=0,
                 cart_items=None,tax=0,delv=0,
                 g_total=0):
@@ -189,7 +191,7 @@ def order_success(request,total=0,quantity=0,
         return redirect('order_status')
     CartItem.objects.filter(user=request.user,is_active=True).delete()
     return render(request , "order_success.html" ,{"user":user,"g_total":g_total})
-
+@never_cache
 def order_status(request):
     try:
         orders = Orders.objects.filter(user = request.user).order_by('-orderd_date')
@@ -197,6 +199,7 @@ def order_status(request):
         return render(request, "order_status.html" )
     return render(request, "order_status.html" ,{"orders":orders})
 
+@never_cache
 def order_details(request, id):
     order = Orders.objects.get(id=id)
     id = order.address
@@ -234,6 +237,7 @@ def admin_order_cancell(request):
     orders = Orders.objects.all().order_by('id')
     return render(request,"admin/orders_load.html",{"orders":orders})
 
+@never_cache
 def return_order(request,id):
     order = Orders.objects.get(id=id)
     order.status="Return Requested waiting for approval"

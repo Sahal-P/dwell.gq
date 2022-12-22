@@ -4,9 +4,9 @@ from category.models import Offer_product, Category , Offer_category
 from django.http import HttpResponse ,JsonResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
 
-# Create your views here.
 
 
 @login_required(login_url='adminlogin')
@@ -14,6 +14,7 @@ def product_offer(request):
     product = Products.objects.all()
     return render(request, 'admin/Product_offer.html',{'products':product})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def add_Product_offer(request,id):
     if request.POST:
@@ -45,6 +46,7 @@ def category_offer(request):
 
     return render(request, 'admin/Category_offer.html',{"category":categorys})
 
+@never_cache
 @login_required(login_url='adminlogin')
 def add_category_offer(request, id):
     if request.POST:

@@ -29,7 +29,25 @@
 <!--===============================================================================================-->
 </head>
 <body style="background-color: rgb(255, 245, 245) ;">
-	
+
+	{% if messages %}
+	{% for message in messages %}
+    {% comment %} {% if message.tags == 'success' %} {% endcomment %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+			icon: 'error',
+			title: 'Oops...',
+			text: m,
+			
+		  })
+      </script>
+    
+   {% endfor %}
+ {% endif %}
+
 	
 	<div class="d-flex justify-content-center align-items-center container ">
 

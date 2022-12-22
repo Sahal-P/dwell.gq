@@ -1,7 +1,6 @@
 from distutils.log import error
 from django.shortcuts import render, redirect
 from .models import *
-# Create your views here.
 from django.utils.text import slugify
 from django.conf import settings
 import os

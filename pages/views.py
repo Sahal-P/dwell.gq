@@ -8,24 +8,28 @@ from django.db.models import Count,Sum,Q,F
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 
-# Create your views here.
-
+@never_cache
 def index(request):
     return render (request,"index.html")
 
+@never_cache
 def shop(request):
     return render (request,"products.html")
 
+@never_cache
 def c_category(request):
     catag = Category.objects.all()
     return render (request,"category.html",{"catag":catag})
 
+@never_cache
 def mensSC(request,id):
     id = id
     subc= SubCategory.objects.filter(category_id = id)
     return render(request,"mensSC.html",{"subc":subc})
 
+@never_cache
 def MshirtsP(request,id):
     id = id
     product= Products.objects.filter(subcategory_id=id).annotate(mrp=F('selling_price')+300).order_by('id')
@@ -52,6 +56,7 @@ def MshirtsP(request,id):
     
     return render(request,"MshirtsP.html",{"product":page,"id_1":id})
 
+@never_cache
 def signle_P(request, id):
     id = id 
     obj = Products.objects.filter(id=id).annotate(mrp=F('selling_price')+300)
@@ -67,8 +72,10 @@ def signle_P(request, id):
         variaiton2 = Variation.objects.filter(product=prod).values('size').distinct()
     return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2,"id":id})
 
+@never_cache
 def productsingle(request):
     return render (request,"product-single.html")
+
 
 def about(request):
     return render (request,"about.html")

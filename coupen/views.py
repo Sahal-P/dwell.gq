@@ -72,7 +72,6 @@ def Applay_coupen(request):
     return HttpResponse('True')
 
 
-
 def remove_coupen(request):
     
     code = request.session['coupen']
