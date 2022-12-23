@@ -258,7 +258,6 @@ def signup_otp_v(request):
             otp4 = request.POST.get("otp4")
             otp5 = request.POST.get("otp5")
             otp6 = request.POST.get("otp6")
-            print(otp1,otp2,otp3,otp4,otp5,otp6,"otppppppppp")
             if not otp1 or not otp2 or not otp3 or not otp4 or not otp5 or not otp6:
                 messages.error(request,'make sure you filled all fields !!')
                 return redirect(request.META.get('HTTP_REFERER'))
@@ -302,7 +301,7 @@ def user_otp(request):
                 request.user = user
                 
                 
-                # otp_handler = otphandler(phone_number).sent_otp_on_phone()
+                otp_handler = otphandler(phone_number).sent_otp_on_phone()
                 
                 response = redirect("otp_v")
                 response.set_cookie('phone', phone_number)
@@ -339,7 +338,6 @@ def otp_v(request):
             otp4 = request.POST.get("otp4")
             otp5 = request.POST.get("otp5")
             otp6 = request.POST.get("otp6")
-            print(otp1,otp2,otp3,otp4,otp5,otp6)
             if not otp1 or not otp2 or not otp3 or not otp4 or not otp5 or not otp6:
                 messages.error(request,'make sure you filled all fields !!')
                 return redirect(request.META.get('HTTP_REFERER'))
