@@ -40,6 +40,7 @@ class otphandler:
         verification = client.verify.v2.services('VA52f6fc8fa92fbcc412e330255536e6bf').verifications.create(to='+91'+self.phone_number, channel="sms")
 
         print(verification.status)
+        
     @csrf_exempt
     def checkotp(self,otp):
         print('kkkkkk')
@@ -47,6 +48,7 @@ class otphandler:
         token_= getattr(settings, "TOKEN_TWILIO", None)
         client = Client(sid_,token_)
         print(self.phone_number,'phoooooooooo',otp)
+        
         verification = client.verify.v2.services('VA52f6fc8fa92fbcc412e330255536e6bf').verification_checks.create(to='+91'+self.phone_number, code=otp)
         print(verification.status,"kkkkkkkkkk")
         

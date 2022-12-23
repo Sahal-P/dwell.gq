@@ -242,10 +242,8 @@ def signup_otp_v(request):
         return redirect("home")
     email = signupgetuser.email
     phone_number = request.COOKIES.get('phone')
-    print("phone::::::" ,phone_number)
     try:
         user = Account.objects.get(phone_number=phone_number)
-        print(user,"objjjjjjjjj")
     except:
         messages.error(request,'somthing error occured during the verification !!')
         return redirect(request.META.get('HTTP_REFERER'))
@@ -266,34 +264,21 @@ def signup_otp_v(request):
                 return redirect(request.META.get('HTTP_REFERER'))
             
             code = otp1+otp2+otp3+otp4+otp5+otp6
-            print(code,"LL567LLLLLL")
             check = otphandler(phone_number).checkotp(code)
-            check = True
-            print(check,"<<<<<<<123<<<<<<")
             if check == True:
-                print("PPPPPPPPPPPPPP")
                 login(request,user)
                 credit = 100
-                print('ooooooooooooo')
                 if Wallet.objects.filter(user=user).exists():
-                    print('<<<<<<09<<<<<<<<')
                     
                     wallet = Wallet.objects.get(user=user)
                     wallet.amount += credit
                     wallet.save()
-                    print('<<<<<54<<<<<<<<<')
-                else:
-                    print('<<<<<<<99<<<<<<<')
-                    
+                else:                    
                     wallet = Wallet.objects.create(user=user,amount = credit)
-                    print('<<<<<<<87<<<<<<<')
                 wallet.save()
-                print("KKKKKKKKK")
                 refer_id = str(user.first_name) + str(uuid.uuid4())[:8]
-                print('<<<<<<<<45<<<<<<')
                 
                 referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
-                print("<<<<<<<<<<<<<<<12<<<<<<<<<")
                 referal.save()
                 return render(request,"index.html")
             else:
@@ -311,20 +296,16 @@ def user_otp(request):
     try: 
         if request.POST:
             phone_number = request.POST.get("phone_number")
-            print(phone_number,"phonenumbreeeeeeeeeeeee")
             phone = Account.objects.filter(phone_number=phone_number).exists()
             if phone is True:
                 user = Account.objects.get(phone_number=phone_number)
                 request.user = user
-                print(user,"<<<<<<<<<<22<<<<<<")
                 
-                print('1somthing')
                 
-                otp_handler = otphandler(phone_number).sent_otp_on_phone()
+                # otp_handler = otphandler(phone_number).sent_otp_on_phone()
                 
-                print('2somthing')
                 response = redirect("otp_v")
-                response.set_cookie('lphone', phone_number)
+                response.set_cookie('phone', phone_number)
                 signupgetuser(email,phone_number)
                 return response
             else :
@@ -340,24 +321,18 @@ def otp_v(request):
     if request.user.is_authenticated:
          return redirect("home")
      
-    phone = otphandler.phone_number
-    print(phone,"OOOOOOO")
-    phone_number = request.COOKIES.get('lphone')
-    print(phone_number,"<<<<<<<<<<<<34<<<<<")
+    phone_number = request.COOKIES.get('phone')
     try:
         user = Account.objects.get(phone_number=phone_number)
-        print(user,"login usreeeeeeeeeeee")
     except:
         messages.error(request,'somthing error occured during the verification !!')
         return redirect(request.META.get('HTTP_REFERER'))
-    print('hereeeeeee')
     request.user = user
 
     
     try:    
         user =request.user
         if request.method == "POST":
-            print("login ----------post")
             otp1 = request.POST.get("otp1")
             otp2 = request.POST.get("otp2")
             otp3 = request.POST.get("otp3")
@@ -370,8 +345,7 @@ def otp_v(request):
                 return redirect(request.META.get('HTTP_REFERER'))
             
             code = otp1+otp2+otp3+otp4+otp5+otp6
-            check = otphandler(phone).checkotp(code)
-            # check = True
+            check = otphandler(phone_number).checkotp(code)
             if check is True:
                 login(request,user)
                 return render(request,"index.html")
@@ -385,6 +359,8 @@ def otp_v(request):
 
 def resendotp(request):
     phone = otphandler.phone_number
+    phone_number = request.COOKIES.get('phone')
+    
     otphandler(phone).sent_otp_on_phone()
     return JsonResponse({phone:phone})
 
