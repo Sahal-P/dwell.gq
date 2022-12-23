@@ -9,7 +9,7 @@ import os
 from datetime import datetime, timedelta
 from django.db.models import Count,Sum,Q,F
 from django.conf import settings
-
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 import smtplib, ssl
 class otphandler:
@@ -20,6 +20,7 @@ class otphandler:
         
         self.phone_number= phone_number
         
+    @csrf_exempt
     def sent_otp_on_phone(self):
         sid_= getattr(settings, "SID_TWILIO", None)
         token_= getattr(settings, "TOKEN_TWILIO", None)
@@ -39,7 +40,7 @@ class otphandler:
         verification = client.verify.v2.services('VA52f6fc8fa92fbcc412e330255536e6bf').verifications.create(to='+91'+self.phone_number, channel="sms")
 
         print(verification.status)
-        
+    @csrf_exempt
     def checkotp(self,otp):
         print('kkkkkk')
         sid_= getattr(settings, "SID_TWILIO", None)

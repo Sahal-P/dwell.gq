@@ -1,5 +1,6 @@
 from cProfile import Profile
 import email
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from urllib import request
 from urllib.request import Request
@@ -66,7 +67,7 @@ def sales_report(request):
     
     if  request.GET.get('Month') != "0":
         currentMonth = datetime.now().month
-        month1 = request.GET.get('Month') 
+        month1 = request.GET.get('Month') http://42.105.227.134:8979/
         if month1 is not None and month1 !="0":
             month = int(month1)
         
