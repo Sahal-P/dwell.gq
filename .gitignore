@@ -1,4 +1,5 @@
 .env
+media
 media/images/*
 media/images/banners/*
 media/imgs/category_img/*
