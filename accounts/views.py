@@ -1,11 +1,7 @@
-from cProfile import Profile
 import email
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from urllib import request
-from urllib.request import Request
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import auth
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse ,JsonResponse
 from django.views.decorators.cache import never_cache
@@ -13,29 +9,21 @@ from django.contrib.auth.decorators import login_required
 from .helpers import *
 from .models import Account ,ReferalSection,Banner
 from datetime import datetime, timedelta
-from django.http import HttpResponseRedirect
 from cart.models import GCart, CartItem
 from orders.models import Orders,Products
-from category.models import Offer_product,SubCategory
+from category.models import Offer_product,SubCategory,Category
 from django.db.models import Count,Sum,Q,F
 import ast
-from django.http import FileResponse
-import io
-from reportlab.pdfgen import canvas
-from reportlab.lib.units import inch
-from reportlab.lib.pagesizes import letter
 from django.core.paginator import Paginator
-from dateutil.relativedelta import relativedelta
 from wallet.models import Wallet
 import uuid
 from django.core.mail import send_mail
 
+def page_not_found_view(request, exception):
+    return render(request, 'page-not-found.html', status=404)
 
-def home3(request):
-    email = request.POST.get('task')
-    print(email,"LKKKKKKKKKKKJJJJJJJJJJJUUUUUUUUUUbbbbbbbb")
-    status = False
-    return JsonResponse({"status":status})
+def error_500(request):
+    return render(request, 'page-not-found.html')
 
 @never_cache
 @login_required(login_url='adminlogin')
@@ -111,15 +99,17 @@ def home(request):
     id = 16
     id2 = 19
     trending = Products.objects.all().order_by('?')[:6]
-    our = Products.objects.filter(subcategory_id =16).order_by('?')[:4]
+    our = Products.objects.filter(subcategory_id =16).order_by('?')[:3]
     banner = Banner.objects.all()[:3]
     banner2 = Banner.objects.all()[3:6]
-    
+    catag = Category.objects.all()
+    subcat = SubCategory.objects.all()
+    new_prod = Products.objects.all().order_by('-added_Date')[:9]
    
     if request.user.is_authenticated:
         
-        return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2})
-    return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2})
+        return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod})
+    return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod})
 
 @never_cache
 def user_login(request):
@@ -149,20 +139,19 @@ def user_login(request):
                     
                     gcart=GCart.objects.get(Guest_id = id)
                     if CartItem.objects.filter(Guest_id = gcart).exists():
-                        a =CartItem.objects.filter(Guest_id = gcart)
-                        for i in a :
-                            print(i.product.selling_price)
+                        trans_carts =CartItem.objects.filter(Guest_id = gcart)
+                        for i in trans_carts :
                             product = i.product
                             qty = i.Quantity
-                            if CartItem.objects.filter(product=product, user= user).exists():
-                                b=CartItem.objects.get(product=product, user= user)
-                                b.Quantity +=qty
-                                b.save()
+                            if CartItem.objects.filter(product=product, user= user ,varient_id=i.varient_id).exists():
+                                new_cart=CartItem.objects.get(product=product, user= user,varient_id=i.varient_id)
+                                new_cart.Quantity +=qty
+                                new_cart.save()
                             else:
-                                cart_item=CartItem.objects.create(product=product,Quantity=qty,user=user)
+                                cart_item=CartItem.objects.create(product=product,Quantity=qty,user=user,varient_id=i.varient_id)
                                 cart_item.save()
                         login(request,user)
-                        a.delete()
+                        trans_carts.delete()
                         response = redirect(dest)
                         response.delete_cookie('Guest_checkout')
                         return response
@@ -279,7 +268,29 @@ def signup_otp_v(request):
                 
                 referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
                 referal.save()
-                return render(request,"index.html")
+                if request.COOKIES.get('Guest_checkout'):
+                    value = request.COOKIES.get('Guest_checkout')
+                    data = ast.literal_eval(value)
+                    dest,id = data.values()
+                    
+                    gcart=GCart.objects.get(Guest_id = id)
+                    if CartItem.objects.filter(Guest_id = gcart).exists():
+                        trans_carts =CartItem.objects.filter(Guest_id = gcart)
+                        for i in trans_carts :
+                            product = i.product
+                            qty = i.Quantity      
+                            cart_item=CartItem.objects.create(product=product,Quantity=qty,user=user,varient_id=i.varient_id)
+                            cart_item.save()
+                        trans_carts.delete()
+                        response = redirect(dest)
+                        response.delete_cookie('phone')
+                        response.delete_cookie('Guest_checkout')
+                        return response
+                    
+                response = render(request,"index.html")
+                response.delete_cookie('phone')
+
+                return response
             else:
                 messages.error(request,'Invalid otp, make sure it is correct !!')
                 return redirect(request.META.get('HTTP_REFERER'))   
@@ -328,7 +339,6 @@ def otp_v(request):
         return redirect(request.META.get('HTTP_REFERER'))
     request.user = user
 
-    
     try:    
         user =request.user
         if request.method == "POST":
@@ -346,7 +356,9 @@ def otp_v(request):
             check = otphandler(phone_number).checkotp(code)
             if check is True:
                 login(request,user)
-                return render(request,"index.html")
+                response = render(request,"index.html")
+                response.delete_cookie('phone')
+                return response
             else:
                 messages.error(request,'Invalid otp, make sure it is correct !!')
                 return redirect(request.META.get('HTTP_REFERER'))   
@@ -459,6 +471,9 @@ def Remove_banner(request):
 
 def searchproduct(request):
     data = request.GET.get('searched')
+    if data =='':
+        messages.warning(request,"please type somthing in the search box")
+        return redirect(request.META.get('HTTP_REFERER'))
     id =0
     if request.GET.get('id_subc'):
         id = request.GET.get('id_subc')
@@ -467,9 +482,21 @@ def searchproduct(request):
             product = Products.objects.filter(product_name__icontains = data,subcategory=subcat).annotate(mrp=F('selling_price')+300).order_by('id')
         else:    
             product = Products.objects.filter(product_name__icontains = data).annotate(mrp=F('selling_price')+300).order_by('id')
+            
+    elif request.GET.get('id_catg'):
+        id = request.GET.get('id_catg')
+        if id is not None and id != "0":
+            catg = Category.objects.get(id = id )
+            product = Products.objects.filter(product_name__icontains = data,category=catg).annotate(mrp=F('selling_price')+300).order_by('id')
+        else:    
+            product = Products.objects.filter(product_name__icontains = data).annotate(mrp=F('selling_price')+300).order_by('id')
+        
     else:    
             product = Products.objects.filter(product_name__icontains = data).annotate(mrp=F('selling_price')+300).order_by('id')
     
+    if not product:
+        messages.warning(request,"No result Found !!")
+        return redirect(request.META.get('HTTP_REFERER'))
     for i in product:
         if i.category.discount<i.offer:
          if i.offer is not None and i.offer is not 0 :
@@ -488,4 +515,4 @@ def searchproduct(request):
     page = Paginator(product,4)
     page_list = request.GET.get('page')
     page = page.get_page(page_list)
-    return render(request,"searchprod.html",{"searched":page,"id_1":id})
+    return render(request,"MshirtsP.html",{"product":page,"id_1":id})

@@ -71,30 +71,56 @@ def add_cart(request):
                 
 
     else: 
-        
         try:
-            id=GCart.objects.get(Guest_id = create(request))
-            if CartItem.objects.filter(product=product,Guest=id).exists():
-                cart_item=CartItem.objects.get(product=product,Guest=id)
-                cart_item.Quantity+=1
-                cart_item.save()
-            else:
-                cart_item=CartItem.objects.create(
-                product=product,
-                Quantity=1,
-                Guest=id,)
-                cart_item.save()
-        except:
+            G_id=GCart.objects.get(Guest_id = create(request))
             
-            id=GCart.objects.create(Guest_id= create(request))
-            id.save()
-            cart_item=CartItem.objects.create(
-                product=product,
-                Quantity=1,
-                Guest=id,)
-            cart_item.save()
+            if varient is not 0:
+                if CartItem.objects.filter(product=product,Guest =G_id,varient_id = v_id_).exists():
+                    cart_item = CartItem.objects.get(product=product,Guest =G_id,varient_id = v_id_)
+                    if cart_item.varient_id == v_id_:
+                        cart_item.Quantity +=1
+                        cart_item.save()
+                        status = True
+                    
+                    return JsonResponse({"status":status})
+                else:
+                                        
+                    cart_item = CartItem.objects.create(product=product, Quantity = 1, Guest = G_id ,varient_id=varient.variation_id ,varient_price=varient.price)
+                    cart_item.save()
+                    status = False
+                    
+                    return JsonResponse({"status":status})
+            else:
+                try:
+                    cart_item = CartItem.objects.get(product=product,Guest =G_id,varient_id=0)
+                
+                    cart_item.Quantity +=1
+                    cart_item.save()
+                    status = True
+
+                    return JsonResponse({"status":status})
+                except:
+                    cart_item = CartItem.objects.create(product=product, Quantity = 1, Guest = G_id)
+                    cart_item.save()
+                    status = False
+                    return JsonResponse({"status":status})
+                
+
+        except GCart.DoesNotExist:
+            G_id=GCart.objects.create(Guest_id= create(request))
+            G_id.save()
+            if varient is not 0:
+                cart_item = CartItem.objects.create(product=product, Quantity = 1, Guest = G_id ,varient_id=varient.variation_id ,varient_price=varient.price)
+                cart_item.save()
+                status = False
+                return JsonResponse({"status":status})
+            else:
+                cart_item = CartItem.objects.create(product=product, Quantity = 1, Guest = G_id)
+                cart_item.save()
+                status = False
+                return JsonResponse({"status":status})
         
-    return redirect("cart")
+        return redirect("cart")
 
 def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0):
     try :
@@ -123,9 +149,16 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
         
         if GCart.objects.filter(Guest_id=create(request)).exists():
             id=GCart.objects.get(Guest_id=create(request))
-            cart_items=CartItem.objects.filter(Guest_id=id,is_active=True)
+            cart_items=CartItem.objects.filter(Guest=id,is_active=True)
             
             for cart_item in cart_items:
+                c_varient = cart_item.varient_id
+                if c_varient != "0":
+                    v = Variation.objects.get(variation_id=cart_item.varient_id)
+                    v_price = v.price
+                    cart_item.varient_price=v_price
+                    cart_item.save()
+                
                 if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
                     total += (cart_item.product.offer_price * cart_item.Quantity)
                 else:
@@ -199,7 +232,7 @@ def delete_cart(request):
             cart_item=CartItem.objects.get(product=product,user=request.user,varient_id=v_id)
     else:
         id=GCart.objects.get(Guest_id=create(request))
-        cart_item=CartItem.objects.get(product=product,Guest_id=id)
+        cart_item=CartItem.objects.get(product=product,Guest_id=id,varient_id=v_id)
     cart_item.delete()
     status = True
     return JsonResponse({"status":status})
@@ -294,6 +327,7 @@ def quantity_edit(request):
     v_id = request.GET.get('v_id')
     product = get_object_or_404(Products, id=id)
     if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user,is_active=True)
         if v_id is not '0':
             varient = Variation.objects.get(variation_id=v_id)
             v_id = varient.variation_id
@@ -302,8 +336,15 @@ def quantity_edit(request):
             cart_item = CartItem.objects.get(product=product, user= request.user,varient_id=0)
     else:
         Guest_id = GCart.objects.get(Guest_id= create(request))
-        cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id)
+        cart_items = CartItem.objects.filter(Guest_id=Guest_id,is_active=True)
         
+        if v_id is not '0':
+            varient = Variation.objects.get(variation_id=v_id)
+            v_id = varient.variation_id
+            cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id ,varient_id = v_id)
+        else:
+            cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id ,varient_id = 0)
+    
     if cart_item.Quantity :
             qty = cart_item.Quantity + 1
             if cart_item.product.quantity >=qty:
@@ -316,7 +357,6 @@ def quantity_edit(request):
                 cart_item.save()
                 sub = cart_item.sub_total()
                 
-                cart_items = CartItem.objects.filter(user=request.user,is_active=True)
                 total=0
                 for cart_item in cart_items:
                     if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
@@ -326,7 +366,7 @@ def quantity_edit(request):
                     tax = (5*total)/100
                     delv = 5
                     g_total = total+ tax+delv
-                
+                    print('ooooooooooo')
                 return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
 
 def quantity_minus(request):
@@ -335,6 +375,7 @@ def quantity_minus(request):
     v_id = request.GET.get('v_id')
     
     if request.user.is_authenticated:
+        cart_items = CartItem.objects.filter(user=request.user,is_active=True)
         if v_id is not '0':
             varient = Variation.objects.get(variation_id=v_id)
             v_id = varient.variation_id
@@ -343,7 +384,14 @@ def quantity_minus(request):
             cart_item = CartItem.objects.get(product=product, user= request.user,varient_id=0)
     else:
         Guest_id = GCart.objects.get(Guest_id= create(request))
-        cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id)
+        cart_items = CartItem.objects.filter(Guest_id=Guest_id,is_active=True)
+        
+        if v_id is not '0':
+            varient = Variation.objects.get(variation_id=v_id)
+            v_id = varient.variation_id
+            cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id ,varient_id = v_id)
+        else:
+            cart_item = CartItem.objects.get(product=product, Guest_id=Guest_id ,varient_id = 0)
     
     if cart_item.Quantity :
         if cart_item.Quantity is not 1:
@@ -357,7 +405,6 @@ def quantity_minus(request):
             cart_item.save()
             sub = cart_item.sub_total()
             
-            cart_items = CartItem.objects.filter(user=request.user,is_active=True)
             total=0
             for cart_item in cart_items:
                 if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
@@ -368,9 +415,7 @@ def quantity_minus(request):
                 delv = 5
                 g_total = total+ tax+delv
     
-            
- 
-    return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
+            return JsonResponse({"qty":qty, "total":total , "tax":tax , "delv":delv , "g_total": g_total , "sub":sub})
 
 def Gusr(request):
     

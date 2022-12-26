@@ -27,7 +27,7 @@ def c_category(request):
 def mensSC(request,id):
     id = id
     subc= SubCategory.objects.filter(category_id = id)
-    return render(request,"mensSC.html",{"subc":subc})
+    return render(request,"mensSC.html",{"subc":subc,"id":id})
 
 @never_cache
 def MshirtsP(request,id):
@@ -54,7 +54,7 @@ def MshirtsP(request,id):
     page = page.get_page(page_list)
     
     
-    return render(request,"MshirtsP.html",{"product":page,"id_1":id})
+    return render(request,"MshirtsP.html",{"product":page,"id":id})
 
 @never_cache
 def signle_P(request, id):
@@ -70,7 +70,7 @@ def signle_P(request, id):
     if Variation.objects.filter(product=prod).exists():
         variaiton1 = Variation.objects.filter(product=prod).values('color').distinct()
         variaiton2 = Variation.objects.filter(product=prod).values('size').distinct()
-    return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2,"id":id})
+    return render (request, "product-single.html",{"obj":obj,"var":variaiton1,"var2":variaiton2,"id":id,"prod":prod})
 
 @never_cache
 def productsingle(request):

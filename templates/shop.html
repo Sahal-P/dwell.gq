@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
 	{% load static %}
-    <title>Modist - Free Bootstrap 4 Template by Colorlib</title>
+  <title>Dwell Fashion</title>
+
+  <!--== Favicon ==-->
+  <link rel="shortcut icon" href="{% static 'bot5/assets/img/favicon1.ico' %}" type="image/x-icon" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -49,41 +52,163 @@
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
     
+
+
+    
+    <link href="{% static 'bot5/assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <!--== Font-awesome Icons CSS ==-->
+    <link href="{% static 'bot/assets/css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <!--== Icofont Min Icons CSS ==-->
+    <link href="{% static 'bot5/assets/css/icofont.min.css' %}" rel="stylesheet"/>
+    <!--== lastudioIcons CSS ==-->
+    <link href="{% static 'bot5/assets/css/lastudioIcons.css' %}" rel="stylesheet"/>
+    <!--== Animate CSS ==-->
+    <link href="{% static 'bot5/assets/css/animate.css' %}" rel="stylesheet"/>
+    <!--== Aos CSS ==-->
+    <link href="{% static 'bot5/assets/css/aos.css' %}" rel="stylesheet"/>
+    <!--== FancyBox CSS ==-->
+    <link href="{% static 'bot5/assets/css/jquery.fancybox.min.css' %}" rel="stylesheet"/>
+    <!--== Slicknav CSS ==-->
+    <link href="{% static 'bot5/assets/css/slicknav.css' %}" rel="stylesheet"/>
+    <!--== Swiper CSS ==-->
+    <link href="{% static 'bot5/assets/css/swiper.min.css' %}" rel="stylesheet"/>
+    <!--== Slick CSS ==-->
+    <link href="{% static 'bot5/assets/css/slick.css' %}" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <link href="{% static 'bot5/assets/css/style.css' %}" rel="stylesheet" />
+
+    <link href="{% static 'bot5/assets/css/rangeslider.css' %}" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <style> @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap'); </style>
     
   </head>
   <body>
 
-
+{% comment %} 
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
   <div class="container">
     <a class="navbar-brand" href="{% url "home" %}">Dwell</a>
+    
     <button class="navbar-toggletestr navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="oi oi-menu"></span> Menu
     </button>
 
     <div class="collapse navbar-collapse" id="ftco-nav">
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item active"><a href="{% url "home" %}" class="nav-link">Home</a></li>
+        <li class="nav-item active"><a  class="nav-link">Home</a></li>
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
         <div class="dropdown-menu" aria-labelledby="dropdown04">
-          <a class="dropdown-item" href="{% url "pages:c_category" %}">Category</a>
-          <a class="dropdown-item" href="{% url "cart" %}">Cart</a>
-          <a class="dropdown-item" href="{% url "order_status" %}">Orders</a>
+          <a class="dropdown-item" >Category</a>
+          <a class="dropdown-item" >Cart</a>
+          <a class="dropdown-item" >Orders</a>
           <a class="dropdown-item" href="{% url "wishlist" %}">Wishlist</a>
         </div>
       </li>
-        <li class="nav-item"><a href="{% url "pages:about" %}" class="nav-link">About</a></li>
-        <li class="nav-item"><a href="{% url "pages:blog" %}" class="nav-link">Blog</a></li>
-        <li class="nav-item"><a href="{% url "pages:contact" %}" class="nav-link">Contact</a></li>
-        <li class="nav-item cta cta-colored"><a href="{% url "cart" %}" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+        <li class="nav-item"><a class="nav-link">About</a></li>
+        <li class="nav-item"><a  class="nav-link">Blog</a></li>
+        <li class="nav-item"><a  class="nav-link">Contact</a></li>
+        <li class="nav-item cta cta-colored"><a href= class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 
       </ul>
     </div>
   </div>
-</nav>
+</nav> {% endcomment %}
 <!-- END nav -->
 
+  <!--== Start Header Wrapper ==-->
+  <header class="header-area header-default sticky-header">
+    <div class="container-fluid">
+      <div class="row row-gutter-0 align-items-center">
+        <div class="col-4 col-xs-3 col-sm-3 col-md-3 col-xl-2 col-xxl-3">
+          <div class="header-logo-area">
+            <a href="index.html">
+              {% comment %} <img class="logo-main" src="assets/img/logo-main.svg" alt="Logo" />
+              <img class="logo-light" src="assets/img/logo-main.svg" alt="Logo" /> {% endcomment %}
+              <a href="{% url "home" %}"><h2 style="font-family: 'Cinzel', serif;">Dwell</h2></a>
+              
+
+            </a>
+          </div>
+        </div>
+        <div class="col-md-7 col-xl-7 col-xxl-6 d-none d-xl-block">
+          <div class="header-align">
+            <div class="header-navigation-area">
+              <ul class="main-menu nav justify-content-center position-relative">
+                <li class="has-submenu active"><a href="{% url "home" %}" >Home</a>
+                 
+                </li>
+                <li class="has-submenu"><a href="{% url "pages:c_category" %}">Shop</a>
+                  <ul class="submenu-nav submenu-nav-mega">
+                  
+                    <li class="mega-menu-item"><a class="srmenu-title" >Go to</a>
+                      <ul>
+                        <li><a href={% url "user_profile" %}>My Account</a></li>
+                        <li><a href="{% url "cart" %}">Cart</a></li>
+                        <li><a href="{% url "wishlist" %}">Wishlist</a></li>
+                        <li><a href="{% url "order_status" %}">Orders</a></li>
+                        <li><a href="{% url "pages:c_category" %}">Shop By Category</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                  
+                  </ul>
+                </li>
+               
+                <li><a href={% url "user_profile" %}>Account</a></li>
+                
+                <li ><a href="{% url "pages:blog" %}">Blog</a>
+                 
+                </li>
+                <li><a href="{% url "pages:contact" %}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 col-xs-9 col-sm-9 col-md-9 col-xl-3 col-xxl-3">
+          <div class="header-action-area">
+            <div class="header-action-search">
+              <button class="btn-search btn-search-menu">
+                <i class="lastudioicon-zoom-1"></i>
+              </button>
+            </div>
+            <div class="header-action-login">
+              <button class="btn-login" onclick="window.location.href='login.html'">
+                <i class="lastudioicon-single-01-2"></i>
+              </button>
+            </div>
+            <div class="header-action-cart"><a href="{% url "cart" %}">
+              <button class="btn-cart cart-icon">
+                <span class="cart-count">2</span>
+                <i class="lastudioicon-shopping-cart-2"></i>
+             
+              </button> </a>
+            </div>
+            <button class="btn-menu d-xl-none">
+              <i class="lastudioicon-menu-3-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!--== End Header Wrapper ==-->
+  
+  {% comment %} <main class="main-content"> {% endcomment %}
+    <!--== Start Page Title Area ==-->
+    {% comment %} <section class="page-title-area bg-img" data-bg-img="assets/img/photos/bg-page1.jpg">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="page-title-content">
+              <h2 class="title">Shop</h2>
+              <div class="bread-crumbs"><a href="index.html">Home<span class="breadcrumb-sep">></span></a><span class="active">Shop</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> {% endcomment %}
 
 
     {% block content %}
@@ -91,6 +216,31 @@
 
     
     {% endblock %}
+    <aside class="off-canvas-wrapper">
+      <div class="off-canvas-inner">
+        <div class="off-canvas-overlay d-none"></div>
+        <!-- Start Off Canvas Content Wrapper -->
+        <div class="off-canvas-content">
+          <!-- Off Canvas Header -->
+          <div class="off-canvas-header">
+            <div class="close-action">
+              <button class="btn-close"><i class="icofont-close-line"></i></button>
+            </div>
+          </div>
+  
+          <div class="off-canvas-item">
+            <!-- Start Mobile Menu Wrapper -->
+            <div class="res-mobile-menu">
+              <!-- Note Content Auto Generate By Jquery From Main Menu -->
+            </div>
+            <!-- End Mobile Menu Wrapper -->
+          </div>
+          <!-- Off Canvas Footer -->
+          <div class="off-canvas-footer"></div>
+        </div>
+        <!-- End Off Canvas Content Wrapper -->
+      </div>
+    </aside>
 
 
    
@@ -109,6 +259,34 @@
   <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
   <script src="{% static "js/scrollax.min.js" %}"></script>
   <script src="{% static "js/main.js" %}"></script>
+
+  
+<!--=== Modernizr Min Js ===-->
+<script src="{% static 'bot5/assets/js/modernizr.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-main.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-migrate.js' %}"></script>
+<script src="{% static 'bot5/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.appear.js' %}"></script>
+<script src="{% static 'bot5/assets/js/swiper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/fancybox.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/aos.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/tippy.all.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/vivus.js' %}"></script>
+<script src="{% static 'bot5/assets/js/parallax.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/slick.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/wow.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-zoom.min.js' %}"></script>
+
+<!--=== Custom Js ===-->
+<script src="{% static 'bot5/assets/js/custom.js' %}"></script>
+
+<!--=== RangeSlider Js ===-->
+<script src="{% static 'bot5/assets/js/rangeSlider.js' %}"></script>
+
     
   </body>
 </html>

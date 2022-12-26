@@ -18,7 +18,7 @@ def admin_order_detailes(request):
 
 def add_address(request):
     if not request.user.is_authenticated:
-            messages.info(request ,'You have to login to continue Checkout')
+            messages.info(request ,'Guest')
             return redirect(request.META.get('HTTP_REFERER'))
     user = request.user
     destination = request.META.get('HTTP_REFERER')
@@ -264,6 +264,7 @@ def guest_checkout(request):
         response = redirect('user_login')
         response.set_cookie('Guest_checkout', {"destination":destination,"Guest_id":id})
         return response
+
     
 def order_invoice(request,id):
     orders = Orders.objects.filter(order_id = id)

@@ -7,16 +7,19 @@ from django.views.decorators.cache import never_cache
 
 def user_profile(request):
     try:
-        user = request.user
-        user_profile = Account.objects.get(email =user)
-        address = Address.objects.filter(user = user)
-        referal = ReferalSection.objects.get(user=user)
-        id = referal.referal_id
-        return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address,"referal_id":id})
+        if request.user.is_authenticated:
+            user = request.user
+            user_profile = Account.objects.get(email =user)
+            address = Address.objects.filter(user = user)
+            referal = ReferalSection.objects.get(user=user)
+            id = referal.referal_id
+            return render(request, 'profile.html' ,{"user_profile":user_profile,"address":address,"referal_id":id})
+        else:
+            messages.error(request, 'Please Login to view account detailes')
+            return redirect(request.META.get('HTTP_REFERER'))
     except:
-        messages.error(request, 'Please Login to view account detailes')
-    return redirect(request.META.get('HTTP_REFERER'))
-
+        pass
+        
 def edit_user_profile(request):
     user = request.user
     user_profile = Account.objects.get(email =user)

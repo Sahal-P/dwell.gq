@@ -1,11 +1,188 @@
 
-{% extends 'shop.html' %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+	{% load static %}
+  <title>Dwell Fashion</title>
 
-{% load static %}
-{% block content %}
+  <!--== Favicon ==-->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="shortcut icon" href="{% static 'bot5/assets/img/favicon1.ico' %}" type="image/x-icon" />
+  
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+  
+    <link rel="stylesheet" href="{% static "css/open-iconic-bootstrap.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/animate.css" %}">
+    
+    <link rel="stylesheet" href="{% static "css/owl.carousel.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/owl.theme.default.min.css" %}">
+    <link rel="stylesheet" href="{% static "css/magnific-popup.css" %}">
+
+    <link rel="stylesheet" href="{% static "css/aos.css" %}">
+
+    <link rel="stylesheet" href="{% static "css/ionicons.min.css" %}">
+
+    <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}">
+    <link rel="stylesheet" href="{% static "css/jquery.timepicker.css" %}">
+
+    
+    <link rel="stylesheet" href="{% static "css/flaticon.css" %}">
+    <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
+    <link rel="stylesheet" href="{% static "css/style.css" %}">
+
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+
+
+    
+    <link href="{% static 'bot5/assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <!--== Font-awesome Icons CSS ==-->
+    <link href="{% static 'bot/assets/css/font-awesome.min.css' %}" rel="stylesheet"/>
+    <!--== Icofont Min Icons CSS ==-->
+    <link href="{% static 'bot5/assets/css/icofont.min.css' %}" rel="stylesheet"/>
+    <!--== lastudioIcons CSS ==-->
+    <link href="{% static 'bot5/assets/css/lastudioIcons.css' %}" rel="stylesheet"/>
+    <!--== Animate CSS ==-->
+    <link href="{% static 'bot5/assets/css/animate.css' %}" rel="stylesheet"/>
+    <!--== Aos CSS ==-->
+    <link href="{% static 'bot5/assets/css/aos.css' %}" rel="stylesheet"/>
+    <!--== FancyBox CSS ==-->
+    <link href="{% static 'bot5/assets/css/jquery.fancybox.min.css' %}" rel="stylesheet"/>
+    <!--== Slicknav CSS ==-->
+    <link href="{% static 'bot5/assets/css/slicknav.css' %}" rel="stylesheet"/>
+    <!--== Swiper CSS ==-->
+    <link href="{% static 'bot5/assets/css/swiper.min.css' %}" rel="stylesheet"/>
+    <!--== Slick CSS ==-->
+    <link href="{% static 'bot5/assets/css/slick.css' %}" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <link href="{% static 'bot5/assets/css/style.css' %}" rel="stylesheet" />
+
+    <link href="{% static 'bot5/assets/css/rangeslider.css' %}" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <style> @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap'); </style>
+    
+  </head>
+  <body>
+
+
+<!-- END nav -->
+
+  <!--== Start Header Wrapper ==-->
+  <header class="header-area header-default sticky-header">
+    <div class="container-fluid">
+      <div class="row row-gutter-0 align-items-center">
+        <div class="col-4 col-xs-3 col-sm-3 col-md-3 col-xl-2 col-xxl-3">
+          <div class="header-logo-area">
+            <a href="index.html">
+              {% comment %} <img class="logo-main" src="assets/img/logo-main.svg" alt="Logo" />
+              <img class="logo-light" src="assets/img/logo-main.svg" alt="Logo" /> {% endcomment %}
+              <a href="{% url "home" %}"><h2 style="font-family: 'Cinzel', serif;">Dwell</h2></a>
+              
+
+            </a>
+          </div>
+        </div>
+        <div class="col-md-7 col-xl-7 col-xxl-6 d-none d-xl-block">
+          <div class="header-align">
+            <div class="header-navigation-area">
+              <ul class="main-menu nav justify-content-center position-relative">
+                <li class="has-submenu active"><a href="{% url "home" %}" >Home</a>
+                 
+                </li>
+                <li class="has-submenu"><a href="{% url "pages:c_category" %}">Shop</a>
+                  <ul class="submenu-nav submenu-nav-mega">
+                  
+                    <li class="mega-menu-item"><a class="srmenu-title" >Go to</a>
+                      <ul>
+                        <li><a href="{% url "cart" %}">Cart</a></li>
+                        <li><a href="{% url "wishlist" %}">Wishlist</a></li>
+                        <li><a href="{% url "order_status" %}">Orders</a></li>
+                        <li><a href="{% url "pages:c_category" %}">Shop By Category</a></li>
+                        
+                      </ul>
+                    </li>
+                  
+                  
+                  </ul>
+                </li>
+               
+              
+                <li><a href={% url "user_profile" %}>Account</a></li>
+
+                <li ><a href="{% url "pages:blog" %}">Blog</a>
+                 
+                </li>
+                <li><a href="{% url "pages:contact" %}">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-8 col-xs-9 col-sm-9 col-md-9 col-xl-3 col-xxl-3">
+          <div class="header-action-area">
+            <div class="header-action-search">
+              <button class="btn-search btn-search-menu">
+                <i class="lastudioicon-zoom-1"></i>
+              </button>
+            </div>
+            <div class="header-action-login">
+              <button class="btn-login" onclick="window.location.href='login.html'">
+                <i class="lastudioicon-single-01-2"></i>
+              </button>
+            </div>
+            <div class="header-action-cart"><a href="{% url "cart" %}">
+              <button class="btn-cart cart-icon">
+                <span class="cart-count">2</span>
+                <i class="lastudioicon-shopping-cart-2"></i>
+             
+              </button> </a>
+            </div>
+            <button class="btn-menu d-xl-none">
+              <i class="lastudioicon-menu-3-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+
+
+
+
+
+
 
 {% if messages %}
 {% for message in messages %}
+
+{% if message.tags == 'warning' %}
+
+<script>
+  alertify.alert("","{{message}}")
+</script>
+{% else %}
   
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -17,309 +194,638 @@
     
     })
     </script>
-  
+  {% endif %}
 {% endfor %}
 {% endif %}
 
 
-
 <style>
-  /****** Bootstrap Colors ******/
-.primary {
-  min-height: 800px;
-}
-/*** Accordion Toggles ***/
-.panel-heading {
-  position: relative;
-}
-.panel-heading .accordion-toggle:after {
-  font-family: 'Glyphicons Halflings';
-  content: "\e260";
-  position: absolute;
-  right: 16px;
-}
-.panel-heading .accordion-toggle.collapsed:after {
-  font-family: 'Glyphicons Halflings';
-  content: "\e259";
-}
-/*** Filter Menu ***/
-/* Panels */
-.filter-menu .panel {
-  border-radius: 0;
-  border: 1px solid #eeeeee;
-}
-.filter-menu .panel-heading {
-  background: #fff;
-  padding: 0;
-}
-.filter-menu .panel-title {
-  color: #333333;
-  font-weight: bold;
-  display: block;
-  padding: 16px;
-}
-.filter-menu a.panel-title {
-  color: #333333;
-}
-.filter-menu a.panel-title:hover,
-.filter-menu a.panel-title:focus {
-  color: #333333;
-  text-decoration: none;
-}
-.filter-menu .panel-body {
-  padding: 16px;
-}
-/* Inner Panels */
-.filter-menu .panel-group {
-  margin: -16px;
-}
-.filter-menu .panel-group .panel-title {
-  background: #eee;
-  transition: color, 0.5s, ease;
-}
-.filter-menu .panel-group .panel-title:hover {
-  color: #333333;
-  text-decoration: none;
-  background: #777777;
-}
-.filter-menu .panel-group .panel + .panel {
-  margin-top: 0;
-}
-/*** Filter Menu - Mobile ***/
-/* Panels - Mobile */
-.filter-menu.mobile .btn-link {
-  color: #f9f9f9;
-}
-.filter-menu.mobile hr {
-  margin-top: 0;
-  border-top-color: #ffffff;
-}
-.filter-menu.mobile .panel-group .panel-heading + .panel-collapse > .panel-body {
-  border-color: #ffffff;
-}
-.filter-menu.mobile .panel {
-  border-color: #ffffff;
-  background: #b3b5b6;
-  color: #f9f9f9;
-}
-.filter-menu.mobile .panel-heading {
-  background: #a7aeb3;
-}
-.filter-menu.mobile a.panel-title {
-  color: #f9f9f9;
-}
-.filter-menu.mobile a.panel-title:hover {
-  color: #f9f9f9;
-}
-.filter-menu.mobile .panel-group .panel {
-  border-color: #a5afb6;
-}
-.filter-menu.mobile .panel-group .panel-title {
-  background: #a4aeb4;
-}
-.filter-menu.mobile .panel-group .panel-title:hover {
-  color: #f9f9f9;
-  background: #c2cbd1;
-}
-/****** Footer ******/
-.footer {
-  background-color: #eeeeee;
-}
-.footer p {
-  margin: 20px 0;
-  text-align: center;
-  color: #888888;
-}
-.footer .glyphicon-heart {
-  color: pink;
-}
-/*** Sticky Footer ***/
-html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px;
-}
-
+  .product-new-label{
+    color:#fff;background-color:#ef5777;
+    font-size:12px;
+    text-transform:uppercase;
+    padding:2px 7px;
+    display:block;
+    position:absolute;
+    top:10px;
+    left:0
+  }
 </style>
 
 
 
 
-<!-- END nav -->
-    
-    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_6.jpg' %});">
-  <div class="container">
-    <div class="row no-gutters slider-text align-items-center justify-content-center">
-      <div class="col-md-9 ftco-animate text-center">
-        <h1 class="mb-0 bread">Products</h1>
-        <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Product</span></p>
+
+<!--wrapper start-->
+<div class="wrapper page-Shop-wrapper">
+
+  <!--== Start Preloader Content ==-->
+  <div class="preloader-wrap">
+    <div class="preloader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
       </div>
     </div>
   </div>
-</div>
+  <!--== End Preloader Content ==-->
 
-
-
-
-
-   <div class="container">
-    <div class="row justify-content-center">
-
-<div class="col-xs-12 col-md-12 mt-5 justify-content-center">
-  <form  class="form-main  form-inline nofloat-xs pull-right pull-left-sm justify-content-center">
-
-    <div class="form-group form-input-fields form-group-lg has-feedback">
-
-      <label class="sr-only" for="search">Search</label>
-      <div class="input-group">
-        <input type="text" class="form-control input-search" name="searched" id="search" placeholder="Search">
-        <span class="input-group-addon group-icon"> <span class="glyphicon glyphicon-user"></span>
-        </span>
-
-      <button onclick=searchbox("{{id_1}}") type="button" class="btn btn-md  btn-submit">
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> Search 
-        </button>
-      </div>
-
-
-
-    </div>
-
-
-  </form>
-</div>
-</div>
-</div>
-
-
-
-
-
-    
-    <section class="ftco-section bg-light" >
-    <div class="container-fluid" >
-        <div class="row justify-content-center" id="ProductSection">
-
-            {% for i in product  %}
-            <div class="col-sm col-xs-3 col-md-6 col-lg-3 ftco-animate ">
-                <div class="product ">
-                    <a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " src="/media/{{i.product_img1}}" alt="Colorlib Template">
-                      
-                      {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-                      <span class="status">{{i.offer}}%</span>
-                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
-                      <span class="status">{{i.category_offer}}%</span>
-                      {% endif %}
-                        
-                    </a>
-                    <div class="text py-3 px-3">
-                        <h3><a href="#">{{i.product_name}}</a></h3>
-                        <h3><a href="#">{{i.brand}}</a></h3>
-                        <div class="d-flex">
-                          
-                          {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
-                          <div class="pricing">
-                            <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
-                        </div>
-                      
-                          
-              
-                            {% else %}
-                            <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
-                            </div>
-
-                            {% endif %}
-                            <div class="rating">
-                                <p class="text-right">
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                </p>
-                            </div>
-                        </div>
-                        {% if i.quantity < 10 and i.quantity > 0 %}
-                       
-                        <span style="font-size: 80x ; color: rgb(255, 0, 0);">Only {{i.quantity}} Left !!</span>
   
-                        {% endif %}
-                        <br>
-                        {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-                      <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
-                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
-                      <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
+  <main class="main-content">
+    <!--== Start Page Title Area ==-->
+    
 
-                      {% else %}
-                      <span class="status">No Offer Yet</span>
-
-                      {% endif %}
-                        <hr>
-                        {% if i.quantity <= 0 %}
-                        <p class="bottom-area d-flex">
-                          <a ><span style="font-size: 18px; color: red;">Out of Stock</span></a>
-                          
-                      </p>
-                        {% else %}
-                        <p class="bottom-area d-flex">
-                            <a onclick= addcat({{i.id}}) class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-                            <button onclick= addWish({{i.id}}) class="btn ml-auto"><span><i class="ion-ios-heart-empty"></i></span></button>
-                        </p>
-                        {% endif %}
+    <!--== Start Product Area Wrapper ==-->
+    <section class="product-area product-shop-inner-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3 order-1 order-lg-0">
+            <div class="sidebar-area inner-right-padding shop-sidebar-area">
+              <div class="widget">
+                <div class="widget-search-box">
+                  <form action="{% url 'searchproduct' %}" method="get">
+                    <div class="form-input-item">
+                      <label for="search2" class="sr-only">Search Here</label>
+                      <input type="search" name="searched" class="form-control" placeholder="Search" id="search-input">
+                      <input type="hidden" name ="id_subc" id="search-id" value="{{id}}">
+                      <button type="submit" class="btn-src">
+                        <i class="icofont-search-1"></i>
+                      </button>
                     </div>
+                  </form>
+                </div>
+              </div>
+              <div class="widget">
+                <h3 class="widget-title">Categories</h3>
+                <div class="widget-custom-menu">
+                    <ul>
+                      <li class="has-sub">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#has-sub1" role="button" aria-expanded="false" aria-controls="has-sub1">Men</a>
+                        <ul class="collapse" id="has-sub1" >
+                          <li><a href="shop.html">New in</a></li>
+                          <li><a href="shop.html">Clothing</a></li>
+                          <li><a href="shop.html">Coats</a></li>
+                          <li><a href="shop.html">Jackets</a></li>
+                          <li><a href="shop.html">Shirts</a></li>
+                          <li><a href="shop.html">T-shirts</a></li>
+                          <li><a href="shop.html">Blazers</a></li>
+                        </ul>
+                      </li>
+                      <li class="has-sub">
+                        <a class="collapsed active" data-bs-toggle="collapse" href="#has-sub2" role="button" aria-expanded="false" aria-controls="has-sub2">Women</a>
+                        <ul class="collapse" id="has-sub2">
+                          <li><a href="shop.html">New In</a></li>
+                          <li><a href="shop.html">Jeans</a></li>
+                          <li><a href="shop.html">Jackets</a></li>
+                          <li><a href="shop.html">Sweatshirts</a></li>
+                          <li><a href="shop.html">Skirts</a></li>
+                        </ul>
+                      </li>
+                      <li class="has-sub">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#has-sub3" role="button" aria-expanded="false" aria-controls="has-sub3">Kids</a>
+                        <ul class="collapse" id="has-sub3">
+                          <li><a href="shop.html">Shoes</a></li>
+                          <li><a href="shop.html">Clothing</a></li>
+                          <li><a href="shop.html">Shirts</a></li>
+                          <li><a href="shop.html">Skirts</a></li>
+                        </ul>
+                      </li>
+                      <li class="has-sub">
+                        <a class="collapsed" data-bs-toggle="collapse" href="#has-sub4" role="button" aria-expanded="false" aria-controls="has-sub4">Accessories</a>
+                        <ul class="collapse" id="has-sub4">
+                          <li><a href="shop.html">Bags</a></li>
+                          <li><a href="shop.html">Shoes</a></li>
+                          <li><a href="shop.html">Wallets</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+              </div>
+              <div class="widget">
+                <h4 class="widget-title">By price</h4>
+                <div class="widget-price-filter">
+                  <div class="slider-range" id="slider-range"></div>
+                  <div class="slider-labels">
+                    <span class="range-price-title">Price:</span>
+                    <div class="caption">
+                      <span id="slider-range-value1"></span>
+                    </div>
+                    <span class="range-separator"> — </span>
+                    <div class="caption">
+                      <span id="slider-range-value2"></span>
+                    </div>
+                  </div>
+                  <a class="btn-filter" href="shop.html">Filter</a>
+                </div>
+              </div>
+
+
+              <!-- <div class="widget">
+                <h4 class="widget-title">By Color</h4>
+                <div class="widget-color-menu">
+                  <ul>
+                    <li class="blue"></li>
+                    <li class="brown"></li>
+                    <li class="red"></li>
+                    <li class="violet"></li>
+                  </ul>
+                </div>
+              </div> -->
+
+<!-- 
+              <div class="widget">
+                <h4 class="widget-title">By Size</h4>
+                <div class="widget-size-menu">
+                  <ul>
+                    <li><a href="#/">Blue</a>(9)</li>
+                    <li><a href="#/">Brown</a>(10)</li>
+                    <li><a href="#/">Red</a>(1)</li>
+                    <li><a href="#/">Violet</a>(10)</li>
+                  </ul>
+                </div>
+              </div> -->
+
+<!-- 
+              <div class="widget">
+                <h4 class="widget-title">By brands</h4>
+                <div class="widget-size-menu">
+                  <ul>
+                    <li><a href="#/">Blue</a>(9)</li>
+                    <li><a href="#/">Brown</a>(10)</li>
+                    <li><a href="#/">Red</a>(1)</li>
+                    <li><a href="#/">Violet</a>(10)</li>
+                  </ul>
+                </div>
+              </div> -->
+
+
+              <!-- <div class="widget">
+                <div class="widget-banner">
+                    <a href="blog.html"><img src="{% static 'bot5/assets/img/photos/banner1.jpg' %}" alt="Image"></a>
+                  </div>              
+              </div> -->
+              <!-- <div class="widget">
+                <h3 class="widget-title">Instagram</h3>
+                <div class="widget-gallery">
+                  <div class="row row-cols-3 row-gutter-4">
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="{% static 'bot5/assets/img/photos/gallery1.jpg' %}" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="{% static 'bot5/assets/img/photos/gallery2.jpg' %}" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="assets/img/photos/gallery3.jpg" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="assets/img/photos/gallery4.jpg" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="assets/img/photos/gallery5.jpg" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="gallery-item">
+                        <img src="assets/img/photos/gallery6.jpg" alt="Givest-HasTech">
+                        <a class="icon" href="#/"><i class="icofont-instagram"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>              
+              </div> -->
+
+
+
+            </div>
+          </div>
+          <div class="col-lg-9 order-0 order-lg-1">
+            <div class="inner-left-padding">
+              <div class="shop-toolbar-wrap">
+                <div class="shop-toolbar-left">
+                  <div class="product-showing-status">
+                    <p class="count-result">Showing 1–12 of 88 results</p>
+                  </div>
+                </div>
+                <div class="shop-toolbar-right">
+                  <div class="product-sorting-menu product-view-count">
+                    <span class="current">Show 12 <i class="lastudioicon-down-arrow"></i></span>
+                    <ul>
+                      <li class="active"><a href="shop.html" class="active">Show 12</a></li>
+                      <li><a href="shop.html">Show 15</a></li>
+                      <li><a href="shop.html">Show 30</a></li>
+                    </ul>
+                  </div>
+                  <div class="product-sorting-menu product-view-count">
+                    <span class="current">Filters <i class="lastudioicon-down-arrow"></i></span>
+                    <ul>
+                      <li class="active"><a href="shop.html" class="active">Filters</a></li>
+                      <li><a href="shop.html">Categories</a></li>
+                      <li><a href="shop.html">Tags</a></li>
+                    </ul>
+                  </div>
+                  <div class="product-sorting-menu product-sorting">
+                    <span class="current">Sort by Default <i class="lastudioicon-down-arrow"></i></span>
+                    <ul>
+                      <li class="active"><a href="shop.html" class="active">Sort by Default</a></li>
+                      <li><a href="shop.html">Sort by Popularity</a></li>
+                      <li><a href="shop.html">Sort by Rated</a></li>
+                      <li><a href="shop.html">Sort by Latest</a></li>
+                      <li><a href="shop.html">Sort by Price: <i class="lastudioicon-arrow-up"></i></a></li>
+                      <li><a href="shop.html">Sort by Price: <i class="lastudioicon-arrow-down"></i></a></li>
+                    </ul>
+                  </div>
+                  <div class="product-view-mode">
+                    <nav>
+                      <div class="nav nav-tabs active" id="nav-tab" role="tablist">
+                        <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab" data-bs-target="#nav-list" type="button" role="tab" aria-controls="nav-list" aria-selected="false"><i class="lastudioicon-list-bullet-2"></i></button>
+                        <button class="nav-link" id="nav-grid-tab" data-bs-toggle="tab" data-bs-target="#nav-grid" type="button" role="tab" aria-controls="nav-grid" aria-selected="true"><i class="lastudioicon-microsoft"></i></button>
+                      </div>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-grid" role="tabpanel" aria-labelledby="nav-grid-tab">
+                  <div class="row row-gutter-60 product-items-style4">
+
+
+
+                    {% for i in product  %}
+
+
+                    <div class="col-sm-6 col-md-4">
+                      <!-- Start Product Item -->
+                      <div class="product-item">
+                        <div class="product-thumb">
+                          <a href="{% url 'pages:signle_P' i.id %} ">
+                            <img src="/media/{{i.product_img1}}" alt="Moren-Shop">
+                            <span class="thumb-overlay"></span>
+                          </a>
+                          <div class="product-action action-style3">
+                            {% if i.quantity > 0 %}
+                            <a class="action-cart ht-tooltip" data-tippy-content="Add to cart" onclick= addcat({{i.id}}) title="Add to cart">
+                              <i class="lastudioicon-shopping-cart-3"></i>
+                            </a>
+                            {% endif %}
+                            <a class="action-quick-view ht-tooltip" data-tippy-content="Quick View" href="javascript:void(0);" title="Wishlist">
+                              <i class="lastudioicon-search-zoom-in"></i>
+                            </a>
+                            <a class="action-wishlist ht-tooltip" data-tippy-content="Add to wishlist" onclick= addWish({{i.id}}) title="Add to wishlist">
+                              <i class="lastudioicon-heart-2"></i>
+                            </a>
+                            <a class="action-compare ht-tooltip" data-tippy-content="Add to compare" href="shop-compare.html" title="Add to compare">
+                              <i class="lastudioicon-compare"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="product-info info-style2">
+                          <div class="content-inner">                  
+                            <h4 class="title"><a href="{% url 'pages:signle_P' i.id %} ">{{i.product_name}}</a></h4>
+                            <h6 ><a href="{% url 'pages:signle_P' i.id %} ">{{i.brand}}</a></h6>
+
+                             
+                            {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
+                            <div class="pricing">
+                              <p class="price"><span class="mr-2 price-dc" style="text-decoration: line-through;">₹ {{i.original_price}}</span><br>
+                                <span class="price-sale">₹ {{i.offer_price}}.0</span></p>
+                          </div>
+
+                              {% else %}
+                              <div class="pricing">
+                                  <p class="price"><span class="mr-2 price-dc" style="text-decoration: line-through;">₹ {{i.mrp}}.0</span><br>
+                                    <span class="price-sale">₹ {{i.selling_price}}.0</span></p>
+                              </div>
+  
+                              {% endif %}
+                            <div class="text py-3 px-3">
+                              
+
+                              <div class="d-flex">
+                               
+                                  <div class="rating">
+                                      <p class="text-right">
+
+                                          <span class="ion-ios-star-outline"></span>
+                                          <span class="ion-ios-star-outline"></span>
+                                          <span class="ion-ios-star-outline"></span>
+                                          <span class="ion-ios-star-outline"></span>
+                                          <span class="ion-ios-star-outline"></span>
+
+                                      </p>
+                                  </div>
+                              </div>
+                              {% if i.quantity <= 0  %}
+                             
+                              <span style="font-size: 10x ; color: rgb(255, 0, 0); float:left ;">Currently Out of Stock !!</span>
+                              {% elif i.quantity < 10 and i.quantity > 0 %}
+                              <span style="font-size: 10x ; color: rgb(255, 0, 0); float:left ;">Only {{i.quantity}} Left !!</span>
+        
+                              {% endif %}
+                              <br>
+
+                              
+                              {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                            <span class="product-new-label">{{i.offer}}% - Off</span>
+                            {% elif i.category_offer is not 0 and i.category_offer is not None %}
+                            <span class="product-new-label">{{i.category_offer}}% - Off</span>
+      
+                            {% else %}
+      
+                            {% endif %}
+                            
+                              <hr>
+                             
+                          </div>
+
+
+
+
+
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End Product Item -->
+                    </div>
+
+
+            {% endfor %}
+
+
+                  </div>
                 </div>
 
-                
+                <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+                  <div class="row">
+                    <div class="col-12 product-items-list">
+                      <!-- Start Product Item -->
+                      <div class="product-item ">
+                        <div class="product-thumb">
+                          <a href="shop-single-product.html">
+                            <img src="assets/img/shop/list1.jpg" alt="Moren-Shop">
+                            <span class="thumb-overlay"></span>
+                          </a>
+                          <div class="product-action">
+                            <a class="action-quick-view ht-tooltip" data-tippy-content="Quick View" href="javascript:void(0);" title="Wishlist">
+                              <i class="lastudioicon-search-zoom-in"></i>
+                            </a>
+                          </div>
+                        </div>
+                        <div class="product-info">
+                          <div class="content-inner">                  
+                            <h4 class="title"><a href="shop-single-product.html">Believer Delicate Earrings</a></h4>
+                            <div class="prices">
+                              <span class="price">£69.00</span>
+                            </div>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla quis ipsum enim viverra. Enim in morbi tincidunt ante luctus tincidunt integer. Sed adipiscing vehicula.</p>
+                            <div class="product-action-btn">
+                              <a class="btn-add-cart btn-theme" href="shop-cart.html">Add to cart</a>
+                              <a class="btn-wishlist" href="shop-wishlist.html">
+                                <i class="lastudioicon-heart-2"></i>
+                              </a>
+                              <a class="btn-compare" href="shop-compare.html">
+                                <i class="lastudioicon-compare"></i>
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End Product Item -->
+
+                      
+
+
+                      <!-- End Product Item -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
+              <div class="pagination-area">
+                <nav>
+                  <ul class="page-numbers">
+                   
+                    {% if product.has_previous %}
+                    <li><a href="?page={{ product.previous_page_number}}">&lt;</a></li>
+                          
+                      {% endif %}
+                    {% for i in product.paginator.page_range %}
+                          
+                      {% if product.number == i %}
+                    <li><a class="page-number active" href="?page={{i}}">{{i}}</a></li>
+        
+                    {% else %}
+                    <li><a class="page-number" href="?page={{i}}">{{i}}</a></li>
+                  
+                    {% endif %}
+                  
+                    {% endfor %}
+                    
+                    {% if product.has_next %}
+                    <li><a class="page-number next" href="?page={{ product.next_page_number}}"><i class="icofont-long-arrow-right"></i></a></li>
+                    
+                    {% endif %}
+                   
+                  </ul>
+                </nav>
+              </div>
             </div>
-
-
-
-            {% endfor %}
-
-
+          </div>
         </div>
-        <div class="row mt-5">
-      <div class="col text-center">
-        <div class="block-27">
-          <ul>
-            
-            {% if product.has_previous %}
-            <li><a href="?page={{ product.previous_page_number}}">&lt;</a></li>
-                  
-              {% endif %}
-                {% for i in product.paginator.page_range %}
-                  
-              {% if product.number == i %}
-            <li class="active"><a href="?page={{i}}">{{i}}</a></li>
+      </div>
+    </section>
+    <!--== End Product Area Wrapper ==-->
+  </main>
 
-            {% else %}
-            <li><a href="?page={{i}}">{{i}}</a></li>
-          
-            {% endif %}
-          
-            {% endfor %}
-            
-            {% if product.has_next %}
-            <li><a href="?page={{ product.next_page_number}}">&gt;</a></li>
-            
-            {% endif %}
-          </ul>
+
+
+
+
+
+
+
+
+
+
+
+  
+  <!--== Scroll Top Button ==-->
+  <div class="scroll-to-top"><span class="icofont-arrow-up"></span></div>
+
+  <!--== Start Product Quick View ==-->
+  <aside class="product-quick-view-modal">
+    <div class="product-quick-view-inner">
+      <div class="product-quick-view-content">
+        <button type="button" class="btn-close">
+          <span class="close-icon"><i class="lastudioicon-e-remove"></i></span>
+        </button>
+        <div class="row row-gutter-0">
+          <div class="col-lg-6 col-md-6 col-12">
+            <div class="thumb">
+              <img src="assets/img/shop/quick-view1.jpg" alt="Moren-Shop">
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-12">
+            <div class="single-product-info">
+              <h4 class="title">Product Simple</h4>
+              <div class="product-rating">
+                <div class="review">
+                  <p><span></span>99 in stock</p>
+                </div>
+              </div>
+              <div class="prices">
+                <span class="price">£49.90</span>
+              </div>
+              <p class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla quis ipsum enim viverra. Enim in morbi tincidunt ante luctus tincidunt integer. Sed adipiscing vehicula.</p>
+              <div class="quick-product-action">
+                <div class="action-top">
+                  <div class="pro-qty-area">
+                    <div class="pro-qty">
+                      <input type="text" id="quantity" title="Quantity" value="1">
+                    <a href="#" class="inc qty-btn">+</a><a href="#" class="dec qty-btn">-</a></div>
+                  </div>
+                  <a class="btn-theme btn-black" href="shop-cart.html">Add to cart</a>
+                </div>
+                <div class="action-bottom">
+                  <a class="btn-wishlist" href="shop-wishlist.html"><i class="labtn-icon labtn-icon-wishlist"></i>Add to wishlist</a>
+                  <a class="btn-compare" href="shop-compare.html"><i class="labtn-icon labtn-icon-compare"></i>Add to compare</a>
+                </div>
+              </div>
+              <div class="product-ratting">
+                <div class="product-sku">
+                  SKU: <span>REF. LA-276</span>
+                </div>
+              </div>
+              <div class="product-categorys">
+                <div class="product-category">
+                  Category: <span>Uncategorized</span>
+                </div>
+              </div>
+              <div class="widget">
+                <h3 class="title">Tags:</h3>
+                <div class="widget-tags">
+                  <ul>
+                    <li><a href="shop.html">Blazer,</a></li>
+                    <li><a href="shop.html">Fashion,</a></li>
+                    <li><a href="shop.html">wordpress,</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="product-social-info">
+                <a href="#"><span class="lastudioicon-b-facebook"></span></a>
+                <a href="#"><span class="lastudioicon-b-twitter"></span></a>
+                <a href="#"><span class="lastudioicon-b-linkedin"></span></a>
+                <a href="#"><span class="lastudioicon-b-pinterest"></span></a>
+              </div>
+              <div class="product-nextprev">
+                <a href="shop-single-product.html">
+                  <i class="lastudioicon-arrow-left"></i>
+                </a>
+                <a href="shop-single-product.html">
+                  <i class="lastudioicon-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-</section>
+    <div class="canvas-overlay"></div>
+  </aside>
+  <!--== End Product Quick View ==-->
 
- 
+  <!--== Start Aside Search Menu ==-->
+  <div class="search-box-wrapper">
+    <div class="search-box-content-inner">
+      <div class="search-box-form-wrap">
+        <div class="search-note">
+          <p>Start typing and press Enter to search</p>
+        </div>
+        <form action="{% url 'searchproduct' %}" method="GET">
+          <div class="search-form position-relative">
+            <label for="search-input" class="sr-only">Search</label>
+            <input type="search" name="searched" class="form-control" placeholder="Search" id="search-input">
+            <input type="hidden" name ="id_subc" id="search-id" value="{{id}}">
+            <button class="search-button"><i class="lastudioicon-zoom-1"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--== End Aside Search Menu ==-->
+    <a href="javascript:;" class="search-close"><i class="lastudioicon-e-remove"></i></a>
+  </div>
+  <!--== End Aside Search Menu ==-->
+
+
+
+  <!--== Start Side Menu ==-->
+  <aside class="off-canvas-wrapper">
+    <div class="off-canvas-inner">
+      <div class="off-canvas-overlay d-none"></div>
+      <!-- Start Off Canvas Content Wrapper -->
+      <div class="off-canvas-content">
+        <!-- Off Canvas Header -->
+        <div class="off-canvas-header">
+          <div class="close-action">
+            <button class="btn-close"><i class="icofont-close-line"></i></button>
+          </div>
+        </div>
+
+        <div class="off-canvas-item">
+          <!-- Start Mobile Menu Wrapper -->
+          <div class="res-mobile-menu">
+            <!-- Note Content Auto Generate By Jquery From Main Menu -->
+          </div>
+          <!-- End Mobile Menu Wrapper -->
+        </div>
+        <!-- Off Canvas Footer -->
+        <div class="off-canvas-footer"></div>
+      </div>
+      <!-- End Off Canvas Content Wrapper -->
+    </div>
+  </aside>
+  <!--== End Side Menu ==-->
+</div>
+
+<!--=======================Javascript============================-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -478,4 +984,51 @@ function addcat(id){
 
 </script>
 
-{% endblock %}
+
+   
+
+<script src="{% static "js/jquery.min.js" %}"></script>
+<script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
+<script src="{% static "js/popper.min.js" %}"></script>
+<script src="{% static "js/bootstrap.min.js" %}"></script>
+<script src="{% static "js/jquery.easing.1.3.js" %}"></script>
+<script src="{% static "js/jquery.waypoints.min.js" %}"></script>
+<script src="{% static "js/jquery.stellar.min.js" %}"></script>
+<script src="{% static "js/owl.carousel.min.js" %}"></script>
+<script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
+<script src="{% static "js/aos.js" %}"></script>
+<script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
+<script src="{% static "js/bootstrap-datepicker.js" %}"></script>
+<script src="{% static "js/scrollax.min.js" %}"></script>
+<script src="{% static "js/main.js" %}"></script>
+
+
+<!--=== Modernizr Min Js ===-->
+<script src="{% static 'bot5/assets/js/modernizr.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-main.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-migrate.js' %}"></script>
+<script src="{% static 'bot5/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.appear.js' %}"></script>
+<script src="{% static 'bot5/assets/js/swiper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/fancybox.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/aos.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/tippy.all.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/vivus.js' %}"></script>
+<script src="{% static 'bot5/assets/js/parallax.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/slick.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/wow.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-zoom.min.js' %}"></script>
+
+<!--=== Custom Js ===-->
+<script src="{% static 'bot5/assets/js/custom.js' %}"></script>
+
+<!--=== RangeSlider Js ===-->
+<script src="{% static 'bot5/assets/js/rangeSlider.js' %}"></script>
+
+  
+</body>
+</html>

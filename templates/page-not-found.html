@@ -1,0 +1,45 @@
+
+{% extends 'shop.html' %}
+
+{% load static %}
+{% block content %}
+
+<!--wrapper start-->
+<div class="wrapper home-default-wrapper">
+
+  <!--== Start Preloader Content ==-->
+  <div class="preloader-wrap">
+    <div class="preloader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content site-wrapper-reveal">
+
+    <!--== Start Page Title Area ==-->
+    <section class="page-not-found-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 m-auto text-center">
+            
+            <div class="content">
+              <h4 class="title">Page cannot be found!</h4>
+              <p>Sorry, This page not found</p>
+              <a class="btn-theme btn-border" href="{% url "home" %}">Back to home</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--== End Page Title Area ==-->
+  </main>
+
+  
+  <!--== Scroll Top Button ==-->
+  <div class="scroll-to-top"><span class="icofont-arrow-up"></span></div>
+{% endblock %}

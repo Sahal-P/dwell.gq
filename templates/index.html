@@ -1,84 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
 	{% load static %}
-    <title>Dwell </title>
+
+<head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="{% static "css/open-iconic-bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/animate.css" %}">
-    
-    <link rel="stylesheet" href="{% static "css/owl.carousel.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/owl.theme.default.min.css" %}">
-    <link rel="stylesheet" href="{% static "css/magnific-popup.css" %}">
+    <title>Dwell Fashion</title>
 
-    <link rel="stylesheet" href="{% static "css/aos.css" %}">
+    <!--== Favicon ==-->
+    <link rel="shortcut icon" href="{% static 'bot5/assets/img/favicon1.ico' %}" type="image/x-icon" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-    <link rel="stylesheet" href="{% static "css/ionicons.min.css" %}">
+    <script src="https://code.jquery.com/jquery-3.6.1.slim.min.js" integrity="sha256-w8CvhFs7iHNVUtnSP0YKEg00p9Ih13rlL9zGqvLdePA=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <link rel="stylesheet" href="{% static "css/bootstrap-datepicker.css" %}">
-    <link rel="stylesheet" href="{% static "css/jquery.timepicker.css" %}">
 
-    
-    <link rel="stylesheet" href="{% static "css/flaticon.css" %}">
-    <link rel="stylesheet" href="{% static "css/icomoon.css" %}">
-    <link rel="stylesheet" href="{% static "css/style.css" %}">
-	<script src="https://unpkg.com/htmx.org@1.8.4"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.js" 
-	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
-	  crossorigin="anonymous"></script>
 
-	<!-- CSS only -->
-  </head>
-  <body>
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light " id="ftco-navbar">
-	    <div class="container">
-	      <a class="navbar-brand" href="{% url "home" %}">Dwell</a>
-	      <button class="navbar-toggletestr navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="oi oi-menu"></span> Menu
-	      </button>
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
 
-	      <div class="collapse navbar-collapse" id="ftco-nav">
-	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="{% url "home" %}" class="nav-link">Home</a></li>
-	          <li class="nav-item active"><a href="{% url "user_profile" %}" class="nav-link">Account</a></li>
-	          <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">Shop</a>
-              <div class="dropdown-menu" aria-labelledby="dropdown04">
-              	<a class="dropdown-item" href="{% url "pages:c_category" %}">Category</a>
-                <a class="dropdown-item" href="{% url "cart" %}">Cart</a>
-                <a class="dropdown-item" href="{% url "order_status" %}">Orders</a>
-				<a class="dropdown-item" href="{% url "wishlist" %}">Wishlist</a>
-			
-              </div>
-            </li>
-			<li class="nav-item dropdown">
-				<a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true"  aria-expanded="false">More</a>
-				<div class="dropdown-menu" aria-labelledby="dropdown04">
-					<a class="dropdown-item" href="{% url "pages:about" %}">About</a>
-				  <a class="dropdown-item" href="{% url "pages:contact" %}">Contact</a>
-			  
-				</div>
-			  </li>
-	         
-	          <li class="nav-item cta cta-colored"><a href="{% url "cart" %}" class="nav-link" style="font-size: 23px;"><span class="icon-shopping_cart"></span>[0]</a></li>
-			  {% if request.user.is_authenticated %}
-			  <li class="nav-item "><a href="{% url "log_out" %}" class="nav-link" >LOG OUT<span  class="icon-exit_to_app"></span></a></li>
-			  {% else %}
-			  <li class="nav-item "><a href="{% url "log_in" %}" class="nav-link" style="font-size: 32px; padding:12px; padding-left: 50px; padding-top: 0.5 rem">LOG IN<span  class="icon-exit_to_app"></span></a></li>
 
-			  {% endif %} 
 
-	        </ul>
-	      </div>
-	    </div>
-	  </nav>
-    <!-- END nav -->
+    <!--== Google Fonts ==-->
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface:400" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,500,600,700,900,900i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,500,600,700,900,900i" rel="stylesheet">
+
+    <!--== Bootstrap CSS ==-->
+    <link href="{% static 'bot5/assets/css/bootstrap.min.css' %}" rel="stylesheet"/>
+    <!--== Font-awesome Icons CSS ==-->
+    <!-- <link href="{% static 'bot/assets/css/font-awesome.min.css' %}" rel="stylesheet"/> -->
+    <!--== Icofont Min Icons CSS ==-->
+    <link href="{% static 'bot5/assets/css/icofont.min.css' %}" rel="stylesheet"/>
+    <!--== lastudioIcons CSS ==-->
+    <link href="{% static 'bot5/assets/css/lastudioIcons.css' %}" rel="stylesheet"/>
+    <!--== Animate CSS ==-->
+    <link href="{% static 'bot5/assets/css/animate.css' %}" rel="stylesheet"/>
+    <!--== Aos CSS ==-->
+    <link href="{% static 'bot5/assets/css/aos.css' %}" rel="stylesheet"/>
+    <!--== FancyBox CSS ==-->
+    <link href="{% static 'bot5/assets/css/jquery.fancybox.min.css' %}" rel="stylesheet"/>
+    <!--== Slicknav CSS ==-->
+    <link href="{% static 'bot5/assets/css/slicknav.css' %}" rel="stylesheet"/>
+    <!--== Swiper CSS ==-->
+    <link href="{% static 'bot5/assets/css/swiper.min.css' %}" rel="stylesheet"/>
+    <!--== Slick CSS ==-->
+    <link href="{% static 'bot5/assets/css/slick.css' %}" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <link href="{% static 'bot5/assets/css/style.css' %}" rel="stylesheet" />
+
+    <style> @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap'); </style>
+
+<style>
+  .product-new-label{
+    color:#fff;background-color:#028200;
+    font-size:12px;
+    text-transform:uppercase;
+    padding:2px 7px;
+    display:block;
+    position:absolute;
+    top:10px;
+    left:0
+  }
+</style>
+</head>
+
+<body>
 
 
 	{% if messages %}
@@ -93,6 +91,11 @@
 		  title: m,
 		})
 	</script>
+  {% elif message.tags == 'warning' %}
+  
+      <script>
+        alertify.alert("","{{message}}")
+      </script>
 	{% else %}
       <script>
         var m = "{{ message }}";
@@ -100,7 +103,7 @@
 			icon: 'warning',
 			title: 'Oops...',
 			text: m,
-			footer: '<a style ="color :blue;" href="{% url 'user_login' %}">click here to LogIN</a>'
+			footer: '<a style ="color :blue;" href="{% url 'user_login' %}">click here to Log in</a>'
 		  })
       </script>
 	  {% endif %}
@@ -110,312 +113,654 @@
 
 
 
-		<div class="hero-wrap js-fullheight" style="background-image: url({% static 'images/bg_1_.jpg'%});">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-        	<h3 class="v">Dwell - Time to get dress</h3>
-        	<h3 class="vr">Since - 1985</h3>
-          <div class="col-md-11 ftco-animate text-center">
-            <h1>Le Stylist</h1>
-            <h2><span>Wear Your Dress</span></h2>
+<!--wrapper start-->
+<div class="wrapper home-default-wrapper">
+
+  <!--== Start Preloader Content ==-->
+  <div class="preloader-wrap">
+    <div class="preloader">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!--== End Preloader Content ==-->
+
+  <!--== Start Header Wrapper ==-->
+  <header class="header-area header-default header-style2 header-transparent sticky-header">
+    <div class="container-fluid">
+      <div class="row row-gutter-0 align-items-center">
+        <div class="col-12">
+          <div class="header-align">
+            <div class="header-align-left">
+              <div class="header-logo-area">
+                <a href="{% url "home" %}">
+                  <h2 class="logo-main" style="font-family: 'Cinzel', serif; color: white;">Dwell</h2>
+                  <h2 class="logo-light" style="font-family: 'Cinzel', serif;">Dwell</h2>
+                </a>
+              </div>
+              <div class="header-navigation-area d-none d-xl-block">
+                <ul class="main-menu nav justify-content-center position-relative">
+                  <li ><a href="{% url "home" %}">Home</a>
+                    
+                  </li>
+                  <li class="has-submenu"><a href="{% url "pages:c_category" %}" >Shop</a>
+                    <ul class="submenu-nav submenu-nav-mega">
+                      <li class="mega-menu-item"><a class="srmenu-title" >Shop By category</a>
+                        <ul>
+                          <li><a href="{% url "pages:c_category" %}">Shop By category</a></li>
+                          {% for i in catag %}
+                          <li><a href="{% url 'pages:mensSC' i.id %}">{{i.category_name}}</a></li>
+                            
+                          {% endfor %}
+                          
+                        </ul>
+                      </li>
+                      <li class="mega-menu-item"><a class="srmenu-title" >Shop By Subcategory</a>
+                        <ul>
+                          <li><a >Shop By Subcategory</a></li>
+                          {% for i in subcat %}
+                          <li><a href="{% url 'pages:MshirtsP' i.id %}">{{i.subcategory_name}}</a></li>
+                            
+                          {% endfor %}
+                          
+                        </ul>
+                      </li>
+                      <li class="mega-menu-item"><a class="srmenu-title" href="#"></a>
+                       
+                      </li>
+                      <li class="mega-menu-item"><a class="srmenu-title" href="#"></a>
+                        
+                      </li>
+                      <li class="mega-menu-item banner-menu-content-wrap">
+                        <ul>
+                          <li>
+                            <a href="{% url "pages:c_category" %}">
+                              <img src="{% static 'bot5/assets/img/photos/menu1.jpg' %}" alt="Moren-Shop">
+                            </a>
+                            <div class="banner-menu-content">
+                              <span>Shop Now</span>
+                            </div>
+                          </li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="has-submenu"><a >Account</a>
+                    <ul class="submenu-nav">
+                      <li><a href="{% url "cart" %}">Cart</a></li>
+                          <li><a href="{% url "wishlist" %}">Wishlist</a></li>
+                          <li><a href={% url "user_profile" %}>Profile</a></li>
+                          <li><a href="{% url "order_status" %}">Orders</a></li>
+                    </ul>
+                  </li>
+                  <li ><a href="{% url "pages:blog" %}">Blog</a>
+                   
+                  </li>
+                  <li><a href="{% url "pages:contact" %}">Contact</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="header-align-right">
+              <div class="header-action-area">
+                <div class="header-action-search-form">
+                  <div class="search-form">
+                    <form action="{% url 'searchproduct' %}" method="GET">
+                      <div class="form-input-item">
+                        <label for="action-search" class="sr-only">Search</label>
+                        <input type="text" id="action-search" name="searched" placeholder="Search">
+                      </div>
+                    </form>
+                  </div>
+                </div>
+                <div class="header-action-search">
+                  <button class="btn-search btn-search-menu">
+                    <i class="lastudioicon-zoom-1"></i>
+                  </button>
+                </div>
+                <div class="header-action-login">
+                  <button class="btn-login" onclick="window.location.href='{% url "user_profile" %}'">
+                    <i class="lastudioicon-single-01-2"></i>
+                  </button>
+                </div>
+                <div class="header-action-cart">
+                  <button class="btn-cart cart-icon" onclick="window.location.href='{% url "cart" %}'">
+                    <span class="cart-count">2</span>
+                    <i class="lastudioicon-shopping-cart-2"></i>
+                  </button>
+                </div>
+                {% if request.user.is_authenticated %}
+                <div class="header-action-account d-none d-xxl-block">
+                  <button class="btn-sign-up" onclick="window.location.href='{% url "log_out" %}'">
+                    Log Out
+                  </button>
+                </div>
+                {% else %}
+                <div class="header-action-account d-none d-xxl-block">
+                  <button class="btn-sign-up" onclick="window.location.href='{% url "log_in" %}'">
+                    Log In
+                  </button>
+                </div>
+                {% endif %}
+                
+                <button class="btn-menu d-xl-none">
+                  <i class="lastudioicon-menu-3-1"></i>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="mouse">
-						<a href="" class="mouse-icon">
-							<div class="mouse-wheel"><span class="ion-ios-arrow-down"></span></div>
-						</a>
-					</div>
         </div>
       </div>
     </div>
+  </header>
+  <!--== End Header Wrapper ==-->
+  
+  <main class="main-content">
+    <!--== Start Hero Area Wrapper ==-->
+    <section class="home-slider-area slider-default">
+      <div class="home-slider-content">
+        <div class="swiper-container home-slider-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <!-- Start Slide Item -->
+              <div class="home-slider-item">
+                <div class="bg-thumb bg-overlay bg-img" data-bg-img="{% static 'bot5/assets/img/slider/h1-s1.jpg' %}"></div>
+                <div class="slider-content-area">
+                  <div class="container">
+                    <div class="row align-items-center">
+                      <div class="col-md-8 col-lg-5 m-auto">
+                        <div class="content">
+                          <div class="inner-content">
+                            <h2>Le Stylist</h2>
+                            <p>“It’s not about the dress you wear, it’s about the life you lead in the dress.” – Diana Vreeland.
 
-    <div class="goto-here"></div>
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Slide Item -->
+            </div>
+            <div class="swiper-slide">
+              <!-- Start Slide Item -->
+              <div class="home-slider-item">
+                <div class="bg-thumb bg-overlay bg-img" data-bg-img="{% static 'images/bg_1_.jpg'%}"></div>
+                <div class="slider-content-area">
+                  <div class="container">
+                    <div class="row align-items-center">
+                      <div class="col-md-8 col-lg-5 m-auto">
+                        <div class="content">
+                          <div class="inner-content">
+                            <h2>Le Stylist</h2>
+                            <p>“One is never over-dressed or underdressed in a little black dress.” – Karl Lagerfeld</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Slide Item -->
+            </div>
+            <div class="swiper-slide">
+              <!-- Start Slide Item -->
+              <div class="home-slider-item">
+                <div class="bg-thumb bg-overlay bg-img" data-bg-img="{% static 'bot5/assets/img/slider/h1-s3.jpg' %}"></div>
+                <div class="slider-content-area">
+                  <div class="container">
+                    <div class="row align-items-center">
+                      <div class="col-md-8 col-lg-5 m-auto">
+                        <div class="content">
+                          <div class="inner-content">
+                            <h2>Los guantes</h2>
+                            <p>“Fashion is a trend. Style lives within a person” – Oscar de le Renta</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Slide Item -->
+            </div>
+          </div>
+          <!-- Add Arrows -->
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </section>
+    <!--== End Hero Area Wrapper ==-->
 
-	
-    
-    <section class="mt-5 ftco-product">
-    	<div class="container">
-    		<div class="row justify-content-center mb-3 pb-3">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-          	<h1 class="big">Trending</h1>
-            <h2 class="mb-4">Trending</h2>
+    <!--== Start Collection Slider Area Wrapper ==-->
+    <section class="collection-slider-area">
+      <div class="collection-slider-content">
+        <div class="swiper-container collection-slider-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <!-- Start Slide Item -->
+              <div class="slider-item">
+                <div class="thumb">
+                  <div class="bg-thumb bg-overlay bg-img" data-bg-img="{% static 'bot5/assets/img/slider/cs1-s1.jpg' %}"></div>
+                </div>
+                <div class="slider-content-area">
+                  <div class="content">
+                    <div class="inner-content">
+                      <span>Collection 2022</span>
+                      <h2>The spectacle before us was indeed sublime</h2>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla quis ipsum enim viverra. Enim in morbi tincidunt ante luctus tincidunt integer. Sed adipiscing vehicula.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Slide Item -->
+            </div>
+            <div class="swiper-slide">
+              <!-- Start Slide Item -->
+              <div class="slider-item">
+                <div class="thumb">
+                  <div class="bg-thumb bg-overlay bg-img" data-bg-img="{% static 'bot5/assets/img/slider/h1-s1.jpg' %}"></div>
+                </div>
+                <div class="slider-content-area">
+                  <div class="content">
+                    <div class="inner-content">
+                      <span>Collection 2022</span>
+                      <h2>The spectacle before us was indeed sublime</h2>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla quis ipsum enim viverra. Enim in morbi tincidunt ante luctus tincidunt integer. Sed adipiscing vehicula.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Slide Item -->
+            </div>
+          </div>          
+          <!-- Add Arrows -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      </div>
+    </section>
+    <!--== End Collection Slider Area Wrapper ==-->
+
+    <!--== Start Products Area Wrapper ==-->
+    <section class="product-area best-sellers-product-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-lg-6 m-auto">
+            <div class="section-title text-center" data-aos="fade-up" data-aos-duration="1000">
+              <h2 class="title">Best Sellers</h2>
+              <h5 class="subtitle">COLLECTION 2022</h5>
+            </div>
           </div>
         </div>
-    		<div class="row">
-    			<div class="col-md-12">
-    				<div class="product-slider owl-carousel ftco-animate" >
+        <div class="row row-gutter-60" data-aos="fade-up" data-aos-duration="1000">
 
-    					<!-- <div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="{% static "images/product-1.jpg" %}" alt="Colorlib Template">
-		    						<span class="status">30%</span>
-		    					</a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-			    						</div>
-			    						<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-		    						</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				 -->
-	    		
 
-						{% for i in trending  %}
 
-	    				<div class="item" >
-
-								
-							
-		    			<div class="product " >
-                    <a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " src="/media/{{i.product_img1}}" alt="Colorlib Template">
-                      
-                      {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-                      <span class="status">{{i.offer}}%</span>
-                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
-                      <span class="status">{{i.category_offer}}%</span>
-                      {% endif %}
-                        
-                    </a>
-                    <div class="text py-3 px-3">
-                        <h3><a href="#">{{i.product_name}}</a></h3>
-                        <h3><a href="#">{{i.brand}}</a></h3>
-                        <div class="d-flex">
-                          
-                          {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
-                          <div class="pricing">
-                            <p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
-                        </div>
-                      
-                          
-              
-                            {% else %}
-                            <div class="pricing">
-                                <p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
-                            </div>
-
-                            {% endif %}
-                            <div class="rating">
-                                <p class="text-right">
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                    <span class="ion-ios-star-outline"></span>
-                                </p>
-                            </div>
-                        </div>
-                        {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-                      <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
-                      {% elif i.category_offer is not 0 and i.category_offer is not None %}
-                      <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
-
-                      {% else %}
-                      <span class="status">No Offer Yet</span>
-
-                      {% endif %}
-                        <hr>
-                       
-                       
-                    </div>
+          {% for i in our %}
+            
+          <div class="col-sm-6 col-lg-4">
+            <!-- Start Product Item -->
+            <div class="product-item">
+              <div class="product-thumb">
+                <a href="{% url 'pages:signle_P' i.id %}">
+                  <img src="/media/{{i.product_img1}}" alt="Moren-Shop">
+                  <span class="bg-thumb" data-bg-img="/media/{{i.product_img2}}"></span>
+                  {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                  <span class="product-new-label">{{i.offer}}% -Off</span>
+                  {% elif i.category_offer is not None and i.category_offer is not 0 %}
+                  <span class="product-new-label">{{i.category_offer}}% -Off</span>
+                  {% endif %}
+                  <span class="thumb-overlay"></span>
+                </a>
+                <div class="product-action">
+                  <a class="action-quick-view ht-tooltip" data-tippy-content="Quick View" href="javascript:void(0);" title="Wishlist">
+                    <i class="lastudioicon-search-zoom-in"></i>
+                  </a>
+                  <a class="action-compare ht-tooltip" data-tippy-content="Add to compare" href="shop-compare.html" title="Add to compare">
+                    <i class="lastudioicon-compare"></i>
+                  </a>
                 </div>
+              </div>
+              <div class="product-info">
+                <div class="content-inner">                  
+                  <h4 class="title"><a href="shop-single-product.html">{{i.product_name}}</a></h4>
+                  <div class="prices">
+                    {% if i.offer_price is not None and i.offer is not 0 or i.category_offer is not None and i.category.discount is not 0 %}
+				
+                    <span style="text-decoration: line-through;" class="mr-2 price-dc">₹ {{i.original_price}}</span>
+                <p class="price" ><span class="v_price">₹ {{i.offer_price}}</span></p>
+              
+                
+    
+              {% else %}
+                <p class="price"><span class="v_price">₹ {{i.selling_price}}</span></p>
+              {% endif %}
+                    <span class="price"></span>
+                  </div>
+                </div>
+                <div class="product-info-action">
+                  <a class="action-wishlist ht-tooltip" data-tippy-content="Add to wishlist" onclick=addWish({{i.id}})  title="Add to wishlist">
+                    <i class="lastudioicon-heart-2"></i>
+                  </a>
+                  <a class="action-cart ht-tooltip" data-tippy-content="Add to cart" onclick= addcat({{i.id}}) title="Add to cart">
+                    <i class="lastudioicon-bag-3"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Item -->
+          </div>
+
+          {% endfor %}
 
 
-	    				</div>
-						{% endfor %}
 
 
 
-    				</div>
-    			</div>
-    		</div>
-    	</div>
+
+
+
+
+
+
+
+
+
+
+        </div>
+      </div>
     </section>
+    <!--== End Products Area Wrapper ==-->
 
-    <section class=" mt-4 ftco-section ftco-no-pb ftco-no-pt bg-light">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url({% static "images/bg_2.jpg" %});">
-						<a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
-							<span class="icon-play"></span>
-						</a>
-					</div>
-					<div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
-	          <div class="heading-section-bold mb-5 mt-md-5">
-	          	<div class="ml-md-0">
-		            <h2 class="mb-4">Dwell <br>Online <br> <span>Fashion Shop</span></h2>
-	            </div>
-	          </div>
-	          <div class="pb-md-5">
-							<p>On her way she met a copy. The copy warned the Little Blind Text, that where it came from it would have been rewritten a thousand times and everything that was left from its origin would be the word "and" and the Little Blind Text should turn around and return to its own, safe country. But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.</p>
-							<p>When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of Alphabet Village and the subline of her own road, the Line Lane. Pityful a rethoric question ran over her cheek, then she continued her way.</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
 
 		<section  class=" bg-light">
-				<div id="carouselExampleIndicators" class="carousel slide" data-interval="2000" data-ride="carousel">
-					<ol class="carousel-indicators">
-					  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-					  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-					  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-					</ol>
-					
-					<div class="carousel-inner">
-						{% if banner1 %}
-					  <div class="carousel-item active">
-						<a href="{% url 'pages:MshirtsP' id2 %}">
-						<img class="d-block w-100" src="/media/images/banner2.1.jpg" alt="First slide">
-						</a>
-					  </div>
-					  {% endif %}
-					  {% for i in banner1 %}
-						{% if i.wise == "Product" %}
-						<div class="carousel-item">
-							<a href="{% url 'pages:signle_P' i.selected %}">
-							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
-							</a>
-						  </div>
-						{% elif i.wise == "Category" %}
-						<div class="carousel-item">
-							<a href="{% url 'pages:MshirtsP' i.selected %}">
-							<img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
-							</a>
-						  </div>
-							
-						{% endif %}
-					  
-					  {% endfor %}
-					 
-
-					</div>
-					
-					</div>
-					<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-					  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					  <span class="sr-only">Previous</span>
-					</a>
-					<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-					  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-					  <span class="sr-only">Next</span>
-					</a>
-			</div>
-		</section>
-
-    <section class="  mt-5 bg-light">
-    	<div class="container">
-				<div class="row justify-content-center mb-3 pb-3">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-
-          	<h1 class="big">Products</h1>
-            <h2 class="mb-4">Our Products</h2>
-			 
+      <div id="carouselExampleIndicators" class="carousel slide" data-interval="2000" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        
+        <div class="carousel-inner">
+          {% if banner1 %}
+          <div class="carousel-item active">
+          <a href="{% url 'pages:MshirtsP' id2 %}">
+          <img class="d-block w-100" src="/media/images/banner2.1.jpg" alt="First slide">
+          </a>
           </div>
-        </div>    		
-    	</div>
-    	<div class="container-fluid">
-    		<div class="row">
-    		
-				{% for i in our %}
-					
-    			<div class="col-6 col-md-6 col-lg ftco-animate">
-					<div class="product ">
-						<a href={% url 'pages:signle_P' i.id %} class="img-prod "><img class="img-fluid " class="img-responsive" src="/media/{{i.product_img1}}" alt="Colorlib Template">
-						  
-						  {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-						  <span class="status">{{i.offer}}%</span>
-						  {% elif i.category_offer is not 0 and i.category_offer is not None %}
-						  <span class="status">{{i.category_offer}}%</span>
-						  {% endif %}
-							
-						</a>
-						<div class="text py-3 px-3">
-							<h3><a href="#">{{i.product_name}}</a></h3>
-							<h3><a href="#">{{i.brand}}</a></h3>
-							<div class="d-flex">
-							  
-							  {% if i.offer_price is not None and i.offer_price is not 0 or i.category.discount is not 0 and i.category_offer is not None %}
-							  <div class="pricing">
-								<p class="price"><span class="mr-2 price-dc">₹ {{i.original_price}}.00</span><span class="price-sale">₹ {{i.offer_price}}.00</span></p>
-							</div>
-						  
-							  
-				  
-								{% else %}
-								<div class="pricing">
-									<p class="price"><span class="mr-2 price-dc">₹ {{i.mrp}}.00</span><span class="price-sale">₹ {{i.selling_price}}.00</span></p>
-								</div>
-	
-								{% endif %}
-								<div class="rating">
-									<p class="text-right">
-										<span class="ion-ios-star-outline"></span>
-										<span class="ion-ios-star-outline"></span>
-										<span class="ion-ios-star-outline"></span>
-										<span class="ion-ios-star-outline"></span>
-										<span class="ion-ios-star-outline"></span>
-									</p>
-								</div>
-							</div>
-							{% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
-						  <span style="font-size: 80x ; color: green;">{{i.offer}}% - Off</span>
-						  {% elif i.category_offer is not 0 and i.category_offer is not None %}
-						  <span style="font-size: 80x ; color: green;">{{i.category_offer}}% - Off</span>
-	
-						  {% else %}
-						  <span class="status">No Offer Yet</span>
-	
-						  {% endif %}
-							<hr>
-							
-							
-						</div>
-					</div>
-					
-    			</div>
-				{% endfor %}
+          {% endif %}
+          {% for i in banner1 %}
+          {% if i.wise == "Product" %}
+          <div class="carousel-item">
+            <a href="{% url 'pages:signle_P' i.selected %}">
+            <img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+            </a>
+            </div>
+          {% elif i.wise == "Category" %}
+          <div class="carousel-item">
+            <a href="{% url 'pages:MshirtsP' i.selected %}">
+            <img class="d-block w-100" src="/media/{{i.image}}" alt="Second slide">
+            </a>
+            </div>
+            
+          {% endif %}
+          
+          {% endfor %}
+         
 
+        </div>
+        
+        </div>
+        
+    </div>
+  </section>
 
-    		</div>
-    	</div>
-    </section>
+    <!--== Start Category Area Wrapper ==-->
+    <section class="category-area category-default-area">
+      <div class="container-fluid xs-pr-15 xs-pl-15 p-0" data-aos="fade-up" data-aos-duration="1200">
+        <div class="row row-gutter-6 masonry-grid category-masonry-style1">
+          <div class="masonry-item">
+            <div class="category-item">
+              <div class="thumb">
+                <img src="{% static 'bot5/assets/img/shop/category/g1.jpg' %}" alt="Moren-Shop">
+              </div>
+              <div class="content">
+                <div class="inner-content">
+                  <h4 class="title">SHIRTS | TOPS</h4>
+                  <div class="meta">
+                    <a href="shop.html">Midi</a>
+                    <a href="shop.html">Maxi</a>
+                  </div>
+                  <a href="shop.html" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <section class="ftco-section ftco-section-more img" style="background-image: url({% static "images/bg_5.jpg" %});">
-    	<div class="container">
-    		<div class="row justify-content-center mb-3 pb-3">
-
-          <div class="col-md-12 heading-section ftco-animate">
-          	<h2>Summer Sale</h2>
+          <div class="masonry-item item-size2">
+            <div class="category-item">
+              <div class="thumb">
+                <img src="{% static 'bot5/assets/img/shop/category/g5.jpg' %}" alt="Moren-Shop">
+              </div>
+              <div class="content">
+                <div class="inner-content">
+                  <h4 class="title">DRESSES | JUMPSUITS</h4>
+                  <div class="meta">
+                    <a href="shop.html">Jumpsuits</a>
+                    <a href="shop.html">Mini</a>
+                    <a href="shop.html">Midi</a>
+                    <a href="shop.html">Maxi</a>
+                  </div>
+                  <a href="shop.html" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="masonry-item item-size3">
+            <div class="category-item">
+              <div class="thumb">
+                <img src="{% static 'bot5/assets/img/shop/category/g3.jpg' %}" alt="Moren-Shop">
+              </div>
+              <div class="content">
+                <div class="inner-content">
+                  <h4 class="title">Knitwear</h4>
+                  <div class="meta">
+                    <a href="shop.html">Midi</a>
+                    <a href="shop.html">Maxi</a>
+                  </div>
+                  <a href="shop.html" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="masonry-item item-size3">
+            <div class="category-item">
+              <div class="thumb">
+                <img src="{% static 'bot5/assets/img/shop/category/g4.jpg' %}" alt="Moren-Shop">
+              </div>
+              <div class="content">
+                <div class="inner-content">
+                  <h4 class="title">Brazers | Jackets</h4>
+                  <div class="meta">
+                    <a href="shop.html">Midi</a>
+                    <a href="shop.html">Maxi</a>
+                  </div>
+                  <a href="shop.html" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="masonry-item">
+            <div class="category-item">
+              <div class="thumb">
+                <img src="{% static 'bot5/assets/img/shop/category/g2.jpg' %}" alt="Moren-Shop">
+              </div>
+              <div class="content">
+                <div class="inner-content">
+                  <h4 class="title">T-SHIRTS</h4>
+                  <div class="meta">
+                    <a href="shop.html">Midi</a>
+                    <a href="shop.html">Maxi</a>
+                  </div>
+                  <a href="shop.html" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-    	</div>
+      </div>
     </section>
+    <!--== End Category Area Wrapper ==-->
+
+    <!--== Start Category Slider Area Wrapper ==-->
+    <section class="category-area category-slider-area">
+      <div class="container-fluid pl-xs-15 pr-xs-15 p-0">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="category-slider-content">
+              <div class="swiper-container category-shop-slider-container">
+                <div class="swiper-wrapper">
 
 
 
-	
+              {% for i in subcat %}
+                
+              <div class="swiper-slide">
+                <div class="category-item">
+                      <div class="thumb">
+                        <img src="/media/{{i.Sub_img}}" alt="Moren-Shop">
+                      </div>
+                      <div class="content">
+                        <div class="inner-content">
+                          <h4 class="title">{{i.category.category_name}} | {{i.subcategory_name}}</h4>
+                          <div class="meta">
+                            <a href="shop.html">Midi</a>
+                            <a href="shop.html">Maxi</a>
+                          </div>
+                          <a href="{% url 'pages:MshirtsP' i.id %}" class="btn-theme btn-white btn-border btn-size-sm">View All</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              
+               {% endfor %}
+
+
+
+                </div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--== End Category Slider Area Wrapper ==-->
+
+    <!--== Start Products Area Wrapper ==-->
+    <section class="product-area new-product-area">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-lg-6 m-auto">
+            <div class="section-title text-center" data-aos="fade-up" data-aos-duration="1000">
+              <h2 class="title">New Products</h2>
+              <h5 class="subtitle">COLLECTION 2022</h5>
+            </div>
+          </div>
+        </div>
+        <div class="row row-gutter-60" data-aos="fade-up" data-aos-duration="1000">
+
+
+
+          {% for i in new_prod %}
+            
+
+
+          <div class="col-sm-6 col-lg-4">
+            <!-- Start Product Item -->
+            <div class="product-item">
+              <div class="product-thumb">
+                <a href="{% url 'pages:signle_P' i.id %}">
+                  <img src="/media/{{i.product_img1}}" alt="Moren-Shop">
+                  <span class="bg-thumb" data-bg-img="/media/{{i.product_img2}}"></span>
+                  {% if i.offer is not None and i.offer is not 0 and i.offer > i.category_offer %}
+                  <span class="product-new-label">{{i.offer}}% -Off</span>
+                  {% elif i.category_offer is not None and i.category_offer is not 0 %}
+                  <span class="product-new-label">{{i.category_offer}}% -Off</span>
+                  {% endif %}
+                  <span class="thumb-overlay"></span>
+                </a>
+                <div class="product-action">
+                  <a class="action-quick-view ht-tooltip" data-tippy-content="Quick View" href="javascript:void(0);" title="Wishlist">
+                    <i class="lastudioicon-search-zoom-in"></i>
+                  </a>
+                  <a class="action-compare ht-tooltip" data-tippy-content="Add to compare" href="shop-compare.html" title="Add to compare">
+                    <i class="lastudioicon-compare"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="product-info">
+                <div class="content-inner">                  
+                  <h4 class="title"><a href="shop-single-product.html">{{i.product_name}}</a></h4>
+                  <div class="prices">
+                    {% if i.offer_price is not None and i.offer is not 0 or i.category_offer is not None and i.category.discount is not 0 %}
+				
+                    <span style="text-decoration: line-through;" class="mr-2 price-dc">₹ {{i.original_price}}</span>
+                <p class="price" ><span class="v_price">₹ {{i.offer_price}}</span></p>
+              
+                
+    
+              {% else %}
+                <p class="price"><span class="v_price">₹ {{i.selling_price}}</span></p>
+              {% endif %}
+                    <span class="price"></span>
+                  </div>
+                </div>
+                <div class="product-info-action">
+                  <a class="action-wishlist ht-tooltip" data-tippy-content="Add to wishlist" onclick=addWish({{i.id}})  title="Add to wishlist">
+                    <i class="lastudioicon-heart-2"></i>
+                  </a>
+                  <a class="action-cart ht-tooltip" data-tippy-content="Add to cart" onclick= addcat({{i.id}}) title="Add to cart">
+                    <i class="lastudioicon-bag-3"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- End Product Item -->
+          </div>
+
+
+          {% endfor %}
+
+
+
+
+          <div class="col-md-12 text-center">
+            <a href="" class="btn-theme btn-black btn-border btn-padding mt-20">View more</a>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--== End Products Area Wrapper ==-->
 
 
 	<section  class="mb-4 bg-light">
-		<div id="carouselExampleIndicators" class="carousel slide" data-interval="2100" data-ride="carousel">
-			<ol class="carousel-indicators">
-			  <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-			  <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-			  <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-			</ol>
+    <div id="carouselExampleIndicators" class="carousel slide" data-interval="2000" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
 			{% if banner2 %}
 			<div class="carousel-inner">
 			  <div class="carousel-item active">
@@ -447,14 +792,8 @@
 			</div>
 			
 			</div>
-			<a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-			  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			  <span class="sr-only">Previous</span>
-			</a>
-			<a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-			  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-			  <span class="sr-only">Next</span>
-			</a>
+      
+			
 		</div>
 	</section>
 
@@ -462,274 +801,78 @@
 
 
 
-
-
-<!-- 
-
-    <section class="ftco-section testimony-section bg-light">
-      <div class="container">
-				<div class="row justify-content-center mb-3 pb-3">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-          	<h1 class="big">Testimony</h1>
-          </div>
-        </div>    		
-        <div class="row justify-content-center">
-          <div class="col-md-8 ftco-animate">
-          	<div class="row ftco-animate">
-		          <div class="col-md-12">
-		            <div class="carousel-testimony owl-carousel ftco-owl">
-		              <div class="item">
-		                <div class="testimony-wrap py-4 pb-5">
-		                  <div class="user-img mb-4" style="background-image: url({% static "images/person_1.jpg" %})">
-		                    <span class="quote d-flex align-items-center justify-content-center">
-		                      <i class="icon-quote-left"></i>
-		                    </span>
-		                  </div>
-		                  <div class="text text-center">
-		                    <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="item">
-		                <div class="testimony-wrap py-4 pb-5">
-		                  <div class="user-img mb-4" style="background-image: url({% static "images/person_2.jpg" %})">
-		                    <span class="quote d-flex align-items-center justify-content-center">
-		                      <i class="icon-quote-left"></i>
-		                    </span>
-		                  </div>
-		                  <div class="text text-center">
-		                    <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="item">
-		                <div class="testimony-wrap py-4 pb-5">
-		                  <div class="user-img mb-4" style="background-image: url({% static "images/person_3.jpg" %})">
-		                    <span class="quote d-flex align-items-center justify-content-center">
-		                      <i class="icon-quote-left"></i>
-		                    </span>
-		                  </div>
-		                  <div class="text text-center">
-		                    <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="item">
-		                <div class="testimony-wrap py-4 pb-5">
-		                  <div class="user-img mb-4" style="background-image: url({% static "images/person_1.jpg" %})">
-		                    <span class="quote d-flex align-items-center justify-content-center">
-		                      <i class="icon-quote-left"></i>
-		                    </span>
-		                  </div>
-		                  <div class="text text-center">
-		                    <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-		                </div>
-		              </div>
-		              <div class="item">
-		                <div class="testimony-wrap py-4 pb-5">
-		                  <div class="user-img mb-4" style="background-image: url({% static "images/person_1.jpg" %})">
-		                    <span class="quote d-flex align-items-center justify-content-center">
-		                      <i class="icon-quote-left"></i>
-		                    </span>
-		                  </div>
-		                  <div class="text text-center">
-		                    <p class="mb-4">A small river named Duden flows by their place and supplies it with the necessary regelialia. It is a paradisematic country, in which roasted parts of sentences fly into your mouth.</p>
-		                    <p class="name">Roger Scott</p>
-		                    <span class="position">Customer</span>
-		                  </div>
-		                </div>
-		              </div>
-		            </div>
-		          </div>
-		        </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
- -->
-
-
-
-
-
-
-
-
-    <section class="mt-5">
-      <div class="container">
-        <div class="row justify-content-center mb-3 pb-3">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-            <h1 class="big">Blog</h1>
-            <h2>Recent Blog</h2>
-          </div>
-        </div>
-        <div class="row d-flex">
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_1.jpg' %});">
-              </a>
-              <div class="text mt-3 d-block">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-                <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_2.jpg' %});">
-              </a>
-              <div class="text mt-3">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-                <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-4 d-flex ftco-animate">
-            <div class="blog-entry align-self-stretch">
-              <a href="blog-single.html" class="block-20" style="background-image: url({% static 'images/image_3.jpg' %});">
-              </a>
-              <div class="text mt-3">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
-                <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
-                  <div><a href="#">Admin</a></div>
-                  <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="ftco-section ftco-counter img" id="section-counter" style="background-image: url({% static "images/bg_4.jpg" %});">
-    	<div class="container">
-    		<div class="row justify-content-center py-5">
-    			<div class="col-md-10">
-		    		<div class="row">
-		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
-		            <div class="block-18 text-center">
-		              <div class="text">
-		                <strong class="number" data-number="10000">0</strong>
-		                <span>Happy Customers</span>
-		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
-		            <div class="block-18 text-center">
-		              <div class="text">
-		                <strong class="number" data-number="100">0</strong>
-		                <span>Branches</span>
-		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
-		            <div class="block-18 text-center">
-		              <div class="text">
-		                <strong class="number" data-number="1000">0</strong>
-		                <span>Partner</span>
-		              </div>
-		            </div>
-		          </div>
-		          <div class="col-md-3 d-flex justify-content-center counter-wrap ftco-animate">
-		            <div class="block-18 text-center">
-		              <div class="text">
-		                <strong class="number" data-number="100">0</strong>
-		                <span>Awards</span>
-		              </div>
-		            </div>
-		          </div>
-		        </div>
-	        </div>
-        </div>
-    	</div>
-    </section>
-
-    <section class="ftco-section bg-light ftco-services">
-    	<div class="container">
-    		<div class="row justify-content-center mb-3 pb-3">
-          <div class="col-md-12 heading-section text-center ftco-animate">
-            <h1 class="big">Services</h1>
-            <h2>We want you to express yourself</h2>
-          </div>
-        </div>
+    <!--== Start Video Divider Area Wrapper ==-->
+    <div class="divider-area divider-about-area">
+      <div class="container-fluid xs-pr-15 xs-pl-15 p-0">
         <div class="row">
-          <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
-            <div class="media block-6 services">
-              <div class="icon d-flex justify-content-center align-items-center mb-4">
-            		<span class="flaticon-002-recommended"></span>
+          <div class="col-md-12">
+            <div class="divider-about-content">
+              <div class="divider-content" data-aos="fade-up" data-aos-duration="1000">
+                <span>About Us</span>
+              <a href="{% url "home" %}"><h1 style="font-family: 'Cinzel', serif;">Dwell</h1></a>
+
+                <p>Liber adolescens eos cu. Eu vix habeo rebum elaboraret, ei usu vero ullum. Eam id nobis deleniti persecuti, mazim habemus repudiare ea vim. Ea iriure commune inciderint.</p>
+                <a href="about.html" class="btn-theme btn-black btn-border">Read more</a>
               </div>
-              <div class="media-body">
-                <h3 class="heading">Refund Policy</h3>
-                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
+              <div class="video-content" data-aos="fade-up" data-aos-duration="1000">
+                <div class="thumb">
+                  <img src="{% static 'bot5/assets/img/photos/video1.jpg' %}" alt="Moren-Image">
+                  <a class="btn-play play-video-popup" href="https://www.youtube.com/watch?v=MLpWrANjFbI">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="110" height="110" fill="none" viewBox="0 0 110 110"><circle cx="55" cy="55" r="54" stroke="currentColor" stroke-width="2" fill="none"></circle><path stroke="currentColor" stroke-width="2" d="M43.5 35.081L78 55 43.5 74.919V35.08z" fill="none"></path></svg>
+                  </a>
+                </div>
               </div>
-            </div>      
-          </div>
-          <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
-            <div class="media block-6 services">
-              <div class="icon d-flex justify-content-center align-items-center mb-4">
-            		<span class="flaticon-001-box"></span>
-              </div>
-              <div class="media-body">
-                <h3 class="heading">Premium Packaging</h3>
-                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
-              </div>
-            </div>    
-          </div>
-          <div class="col-md-4 text-center d-flex align-self-stretch ftco-animate">
-            <div class="media block-6 services">
-              <div class="icon d-flex justify-content-center align-items-center mb-4">
-            		<span class="flaticon-003-medal"></span>
-              </div>
-              <div class="media-body">
-                <h3 class="heading">Superior Quality</h3>
-                <p>Even the all-powerful Pointing has no control about the blind texts it is an almost unorthographic.</p>
-              </div>
-            </div>      
+            </div>
           </div>
         </div>
-    	</div>
-    </section>
+      </div>
+    </div>
+    <!--== End Video Divider Area Wrapper ==-->
 
-		
-		<section class="ftco-section-parallax">
-      <div class="parallax-img d-flex align-items-center">
-        <div class="container">
-          <div class="row d-flex justify-content-center py-5">
-            <div class="col-md-7 text-center heading-section ftco-animate">
-            	<h1 class="big">Subscribe</h1>
-              <h2>Subcribe to our Newsletter</h2>
-              <div class="row d-flex justify-content-center mt-5">
-                <div class="col-md-8">
-					
-
-                  <form action="" class="subscribe-form" id="subscribe">
-					{% csrf_token %}
-                    <div class="form-group d-flex">
-                      <input type="text" class="form-control" id="task" placeholder="Enter email address">
-                      <input type="submit" value="Subscribe" class="submit px-3">
+    <!--== Start Trends Social Area Wrapper ==-->
+    <section class="gallery-area gallery-trends-area">
+      <div class="container-fluid p-0">
+        <div class="row">
+          <div class="col-md-8 col-lg-6 m-auto">
+            <div class="section-title text-center" data-aos="fade-up" data-aos-duration="1000">
+              <h2 class="title">Trends</h2>
+              <h5 class="subtitle">AS SEEN ON SOCIAL MEDIA</h5>
+            </div>
+          </div>
+        </div>
+        <div class="row" data-aos="fade-up" data-aos-duration="1200">
+          <div class="col-md-12">
+            <div class="gallery-trends-content">
+              <div class="swiper-container gallery-trends-container">
+                <div class="swiper-wrapper">
+                  <div class="swiper-slide">
+                    <!-- Start Slide Item -->
+                    <div class="slider-item">
+                      <div class="bg-thumb" data-bg-img="{% static 'bot5/assets/img/gallery/bg_2.jpg' %}"></div>
                     </div>
-                  </form>
-
-
+                    <!-- End Slide Item -->
+                  </div>
+                  <div class="swiper-slide">
+                    <!-- Start Slide Item -->
+                    <div class="slider-item">
+                      <div class="bg-thumb" data-bg-img="{% static 'bot5/assets/img/gallery/t2.jpg' %}"></div>
+                    </div>
+                    <!-- End Slide Item -->
+                  </div>
+                  <div class="swiper-slide">
+                    <!-- Start Slide Item -->
+                    <div class="slider-item">
+                      <div class="bg-thumb" data-bg-img="{% static 'bot5/assets/img/gallery/t3.jpg' %}"></div>
+                    </div>
+                    <!-- End Slide Item -->
+                  </div>
+                  <div class="swiper-slide">
+                    <!-- Start Slide Item -->
+                    <div class="slider-item">
+                      <div class="bg-thumb" data-bg-img="{% static 'bot5/assets/img/gallery/t4.jpg' %}"></div>
+                    </div>
+                    <!-- End Slide Item -->
+                  </div>
                 </div>
               </div>
             </div>
@@ -737,121 +880,415 @@
         </div>
       </div>
     </section>
+    <!--== End Trends Social Area Wrapper ==-->
 
-    <footer class="ftco-footer bg-light ftco-section">
-      <div class="container">
-        <div class="row mb-5">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Modist</h2>
-              <ul class="ftco-footer-social list-unstyled float-md-left float-lft mt-5">
-                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-5">
-              <h2 class="ftco-heading-2">Menu</h2>
-              <ul class="list-unstyled">
-                <li><a href="#" class="py-2 d-block">Shop</a></li>
-                <li><a href="#" class="py-2 d-block">About</a></li>
-                <li><a href="#" class="py-2 d-block">Journal</a></li>
-                <li><a href="#" class="py-2 d-block">Contact Us</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-4">
-             <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Help</h2>
-              <div class="d-flex">
-	              <ul class="list-unstyled mr-l-5 pr-l-3 mr-4">
-	                <li><a href="#" class="py-2 d-block">Shipping Information</a></li>
-	                <li><a href="#" class="py-2 d-block">Returns &amp; Exchange</a></li>
-	                <li><a href="#" class="py-2 d-block">Terms &amp; Conditions</a></li>
-	                <li><a href="#" class="py-2 d-block">Privacy Policy</a></li>
-	              </ul>
-	              <ul class="list-unstyled">
-	                <li><a href="#" class="py-2 d-block">FAQs</a></li>
-	                <li><a href="#" class="py-2 d-block">Contact</a></li>
-	              </ul>
-	            </div>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-            	<h2 class="ftco-heading-2">Have a Questions?</h2>
-            	<div class="block-23 mb-3">
-	              <ul>
-	                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 9544633437</span></a></li>
-	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">sahalmuhammad051@gmail.com</span></a></li>
-	              </ul>
-	            </div>
-            </div>
-          </div>
-        </div>
+    <!--== Start Featured Area Wrapper ==-->
+    <section class="featured-area">
+      <div class="container" data-aos="fade-up" data-aos-duration="1000">
         <div class="row">
-          <div class="col-md-12 text-center">
-
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made by Sahal
-						  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-						</p>
+          <div class="col-sm-6 col-md-4">
+            <div class="featured-item">
+              <div class="content">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="76" height="46" fill="none" viewBox="0 0 76 46"><path fill="currentColor" d="M74.757 45.702H1.243a1.08 1.08 0 0 1-1.08-1.08V33.593a1.081 1.081 0 0 1 .864-1.06 9.73 9.73 0 0 0 0-19.07 1.081 1.081 0 0 1-.865-1.059V1.378A1.081 1.081 0 0 1 1.243.297h73.514a1.08 1.08 0 0 1 1.08 1.081v11.027a1.082 1.082 0 0 1-.864 1.06 9.73 9.73 0 0 0 0 19.07 1.081 1.081 0 0 1 .865 1.06V44.62a1.08 1.08 0 0 1-1.081 1.081zM2.324 43.54h71.352v-9.097a11.892 11.892 0 0 1 0-22.887V2.46H2.324v9.097a11.892 11.892 0 0 1 0 22.887v9.097z"></path><path fill="currentColor" d="M54.216 6.39a1.081 1.081 0 0 1-1.08-1.081V1.378a1.081 1.081 0 0 1 2.161 0v3.93a1.081 1.081 0 0 1-1.08 1.082zm0 9.828a1.08 1.08 0 0 1-1.08-1.08v-3.932a1.081 1.081 0 0 1 2.161 0v3.931a1.081 1.081 0 0 1-1.08 1.081zm0 9.828a1.08 1.08 0 0 1-1.08-1.081v-3.93a1.081 1.081 0 0 1 2.161 0v3.931a1.081 1.081 0 0 1-1.08 1.08zm0 9.828a1.08 1.08 0 0 1-1.08-1.08v-3.931a1.082 1.082 0 0 1 2.161 0v3.93a1.081 1.081 0 0 1-1.08 1.081zm0 9.828a1.08 1.08 0 0 1-1.08-1.08V40.69a1.082 1.082 0 0 1 2.161 0v3.931a1.081 1.081 0 0 1-1.08 1.081zm-33.59-11.305a1.081 1.081 0 0 1-.764-1.846l20.034-20.045a1.082 1.082 0 1 1 1.529 1.529L21.39 34.08a1.082 1.082 0 0 1-.764.316zm16.704.516a4.993 4.993 0 1 1 4.994-4.994 5 5 0 0 1-4.993 4.994zm0-7.826a2.832 2.832 0 1 0 .001 5.663 2.832 2.832 0 0 0 0-5.663zm-13.796-6.079a4.994 4.994 0 1 1 4.994-4.995 5 5 0 0 1-4.994 4.995zm0-7.826a2.832 2.832 0 1 0 0 5.663 2.832 2.832 0 0 0 0-5.663z"></path></svg>       </span>
+                <div class="inner-content">
+                  <h4 class="title">NEW DISCOUNT</h4>
+                  <p>Lorem ipsum dolor sit amet, id pericula appe llantur eam, mea.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="featured-item mt-xs-30">
+              <div class="content">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="76" height="72" fill="none" viewBox="0 0 76 72"><path fill="currentColor" d="M64.733 71.123H11.267a4.432 4.432 0 0 1-4.422-4.42V31.614a1.081 1.081 0 0 1 1.081-1.08h60.147a1.081 1.081 0 0 1 1.082 1.08v35.089a4.432 4.432 0 0 1-4.422 4.42zM9.008 32.695v34.008a2.263 2.263 0 0 0 2.26 2.26h53.465a2.262 2.262 0 0 0 2.26-2.26V32.695H9.007z"></path><path fill="currentColor" d="M73.085 32.695H2.915a2.755 2.755 0 0 1-2.753-2.749v-8.357a2.755 2.755 0 0 1 2.753-2.751h70.17a2.755 2.755 0 0 1 2.753 2.751v8.357a2.755 2.755 0 0 1-2.753 2.75zM2.915 21a.59.59 0 0 0-.59.59v8.356a.59.59 0 0 0 .59.59h70.17a.59.59 0 0 0 .59-.59v-8.357a.59.59 0 0 0-.59-.589H2.915z"></path><path fill="currentColor" d="M40.23 21a1.081 1.081 0 0 1-1.032-1.404c1.336-4.276 3.732-10.054 7.554-13.333A7.946 7.946 0 0 1 57.08 18.34a17.38 17.38 0 0 1-4.117 2.558 1.082 1.082 0 0 1-1.267-1.718c.102-.104.224-.186.36-.242a15.29 15.29 0 0 0 3.614-2.235 5.782 5.782 0 1 0-7.507-8.796C44.55 11 42.29 16.963 41.265 20.242A1.081 1.081 0 0 1 40.23 21z"></path><path fill="currentColor" d="M40.23 21a1.08 1.08 0 0 1-1.031-.757c-1.281-4.094-4.108-11.54-8.636-15.42a7.433 7.433 0 0 0-9.66 11.3 19.242 19.242 0 0 0 4.55 2.816 1.08 1.08 0 1 1-.908 1.962 21.321 21.321 0 0 1-5.052-3.136A9.597 9.597 0 0 1 31.968 3.178c4.695 4.02 7.645 11.147 9.297 16.419A1.081 1.081 0 0 1 40.23 21zm3.932 50.123H31.838a1.081 1.081 0 0 1-1.081-1.08v-38.43a1.081 1.081 0 0 1 1.08-1.08h12.325a1.081 1.081 0 0 1 1.081 1.08v38.428a1.081 1.081 0 0 1-1.08 1.081zM32.92 68.961h10.16V32.695H32.92v36.266z"></path></svg></span>
+                <div class="inner-content">
+                  <h4 class="title">GIFT VOUCHERS</h4>
+                  <p>Lorem ipsum dolor sit amet, id pericula appe llantur eam, mea.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="featured-item mt-sm-30">
+              <div class="content">
+                <span class="icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="76" height="74" fill="none" viewBox="0 0 76 74"><path fill="currentColor" d="M74.757 73.649H1.243a1.08 1.08 0 0 1-1.08-1.081V20.4a1.081 1.081 0 0 1 1.08-1.081h73.514a1.08 1.08 0 0 1 1.08 1.081v52.168a1.08 1.08 0 0 1-1.08 1.08zM2.324 71.487h71.352V21.48H2.324v50.006z"></path><path fill="currentColor" d="M74.757 21.481H1.243a1.08 1.08 0 0 1-.865-1.73L14.607.785a1.081 1.081 0 0 1 .864-.432H60.53a1.081 1.081 0 0 1 .865.432l14.228 18.968a1.081 1.081 0 0 1-.865 1.73zM3.405 19.32h69.19L59.988 2.514H16.012L3.405 19.319z"></path><path fill="currentColor" d="M47.19 21.481H28.81a1.082 1.082 0 0 1-1.059-1.297l3.784-18.968a1.08 1.08 0 0 1 1.06-.864h10.81a1.08 1.08 0 0 1 1.06.864l3.784 18.971a1.08 1.08 0 0 1-1.06 1.297v-.003zM30.128 19.32H45.87L42.52 2.514h-9.038L30.13 19.319z"></path><path fill="currentColor" d="M47.19 41.848a1.08 1.08 0 0 1-.685-.245L38 34.653l-8.505 6.95a1.08 1.08 0 0 1-1.765-.836V20.4a1.08 1.08 0 0 1 1.08-1.081h18.38a1.08 1.08 0 0 1 1.08 1.081v20.367a1.08 1.08 0 0 1-1.08 1.08zM38 32.176c.25 0 .491.087.684.245l7.424 6.066V21.48H29.892v17.006l7.424-6.067a1.08 1.08 0 0 1 .684-.244z"></path></svg></span>
+                <div class="inner-content">
+                  <h4 class="title">FREE DELIVERY</h4>
+                  <p>Lorem ipsum dolor sit amet, id pericula appe llantur eam, mea.</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </footer>
-    
+    </section>
+    <!--== End Featured Area Wrapper ==-->
+  </main>
+
+  <!--== Start Footer Area Wrapper ==-->
+  <footer class="footer-area footer-style1">
+    <div class="footer-top">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4 col-lg-6">
+            <div class="footer-logo-area">
+              <a href="{% url "home" %}"><h1 style="font-family: 'Cinzel', serif;">Dwell</h1></a>
+
+            </div>
+          </div>
+          <div class="col-md-8 col-lg-6">
+            <div class="newsletter-content-wrap">
+              <form class="newsletter-form" action="#">
+                <input class="form-control" type="text" id="email" placeholder="Enter your email address...">
+                <button class="btn btn-theme" type="submit">Subscribe</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-main">
+      <div class="container">
+        <div class="row row-gutter-0">
+          <div class="col-sm-6 col-md-4">
+            <div class="widget-item">
+              <nav class="widget-menu-wrap">
+                <ul class="nav-menu nav">
+                  <li><a href="index.html">PRIVACY POLICY</a></li>
+                  <li><a href="index.html">TERMS & CONDITIONS</a></li>
+                  <li><a href="about.html">ABOUT</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-3">
+            <div class="widget-item mt-xs-20">
+              <nav class="widget-menu-wrap">
+                <ul class="nav-menu nav">
+                  <li><a href="index.html">SHIPPING INFO</a></li>
+                  <li><a href="index.html">RETURNS / EXCHANGES</a></li>
+                  <li><a href="contact.html">CONTACT</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="widget-item widget-social-item mt-sm-30 mt-xs-20">
+              <span>ON SOCIAL NETWORKS</span>
+              <div class="widget-social-icons">
+                <a href="#/"><i class="lastudioicon lastudioicon-b-facebook"></i></a> 
+                <a href="#/"><i class="lastudioicon lastudioicon-b-pinterest"></i></a> 
+                <a href="#/"><i class="lastudioicon lastudioicon-b-twitter"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!--== End Footer Area Wrapper ==-->
   
+  <!--== Scroll Top Button ==-->
+  <div class="scroll-to-top"><span class="icofont-arrow-up"></span></div>
 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
- 
+  <!--== Start Product Quick View ==-->
+  <aside class="product-quick-view-modal">
+    <div class="product-quick-view-inner">
+      <div class="product-quick-view-content">
+        <button type="button" class="btn-close">
+          <span class="close-icon"><i class="lastudioicon-e-remove"></i></span>
+        </button>
+        <div class="row row-gutter-0">
+          <div class="col-lg-6 col-md-6 col-12">
+            <div class="thumb">
+              <img src="assets/img/shop/quick-view1.jpg" alt="Moren-Shop">
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-6 col-12">
+            <div class="single-product-info">
+              <h4 class="title">Product Simple</h4>
+              <div class="product-rating">
+                <div class="review">
+                  <p><span></span>99 in stock</p>
+                </div>
+              </div>
+              <div class="prices">
+                <span class="price">£49.90</span>
+              </div>
+              <p class="product-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fringilla quis ipsum enim viverra. Enim in morbi tincidunt ante luctus tincidunt integer. Sed adipiscing vehicula.</p>
+              <div class="quick-product-action">
+                <div class="action-top">
+                  <div class="pro-qty-area">
+                    <div class="pro-qty">
+                      <input type="text" id="quantity" title="Quantity" value="1">
+                    <a href="#" class="inc qty-btn">+</a><a href="#" class="dec qty-btn">-</a></div>
+                  </div>
+                  <a class="btn-theme btn-black" href="shop-cart.html">Add to cart</a>
+                </div>
+                <div class="action-bottom">
+                  <a class="btn-wishlist" href="shop-wishlist.html"><i class="labtn-icon labtn-icon-wishlist"></i>Add to wishlist</a>
+                  <a class="btn-compare" href="shop-compare.html"><i class="labtn-icon labtn-icon-compare"></i>Add to compare</a>
+                </div>
+              </div>
+              <div class="product-ratting">
+                <div class="product-sku">
+                  SKU: <span>REF. LA-276</span>
+                </div>
+              </div>
+              <div class="product-categorys">
+                <div class="product-category">
+                  Category: <span>Uncategorized</span>
+                </div>
+              </div>
+              <div class="widget">
+                <h3 class="title">Tags:</h3>
+                <div class="widget-tags">
+                  <ul>
+                    <li><a href="shop.html">Blazer,</a></li>
+                    <li><a href="shop.html">Fashion,</a></li>
+                    <li><a href="shop.html">wordpress,</a></li>
+                  </ul>
+                </div>
+              </div>
+              <div class="product-social-info">
+                <a href="#"><span class="lastudioicon-b-facebook"></span></a>
+                <a href="#"><span class="lastudioicon-b-twitter"></span></a>
+                <a href="#"><span class="lastudioicon-b-linkedin"></span></a>
+                <a href="#"><span class="lastudioicon-b-pinterest"></span></a>
+              </div>
+              <div class="product-nextprev">
+                <a href="shop-single-product.html">
+                  <i class="lastudioicon-arrow-left"></i>
+                </a>
+                <a href="shop-single-product.html">
+                  <i class="lastudioicon-arrow-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="canvas-overlay"></div>
+  </aside>
+  <!--== End Product Quick View ==-->
 
-  <script src="{% static "js/jquery.min.js" %}"></script>
-  <script src="{% static "js/jquery-migrate-3.0.1.min.js" %}"></script>
-  <script src="{% static "js/popper.min.js" %}"></script>
-  <script src="{% static "js/bootstrap.min.js" %}"></script>
-  <script src="{% static "js/jquery.easing.1.3.js" %}"></script>
-  <script src="{% static "js/jquery.waypoints.min.js" %}"></script>
-  <script src="{% static "js/jquery.stellar.min.js" %}"></script>
-  <script src="{% static "js/owl.carousel.min.js" %}"></script>
-  <script src="{% static "js/jquery.magnific-popup.min.js" %}"></script>
-  <script src="{% static "js/aos.js" %}"></script>
-  <script src="{% static "js/jquery.animateNumber.min.js" %}"></script>
-  <script src="{% static "js/bootstrap-datepicker.js" %}"></script>
-  <script src="{% static "js/scrollax.min.js" %}"></script>
-  <script src="{% static "js/main.js" %}"></script>
-    <!-- JavaScript Bundle with Popper -->
+  <!--== Start Aside Search Menu ==-->
+  <div class="search-box-wrapper">
+    <div class="search-box-content-inner">
+      <div class="search-box-form-wrap">
+        <div class="search-note">
+          <p>Start typing and press Enter to search</p>
+        </div>
+        <form action="#" method="post">
+          <div class="search-form position-relative">
+            <label for="search-input" class="sr-only">Search</label>
+            <input type="search" class="form-control" placeholder="Search" id="search-input">
+            <button class="search-button"><i class="lastudioicon-zoom-1"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!--== End Aside Search Menu ==-->
+    <a href="javascript:;" class="search-close"><i class="lastudioicon-e-remove"></i></a>
+  </div>
+  <!--== End Aside Search Menu ==-->
 
 
-	<script type="text/javascript">
-		$(document).on('submit','#subscribe',function(e){
-			e.preventDefault();
-			$.ajax({
-				type:'POST',
-				url:'{% url "home3" %}',
-				data:
-				{
-					task:$("#task").val(),
-					csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val()
-				},
-				success:function(r){
 
-					if (r.status ==false){
-						alert('Saved');
-					}
-					else{
-						alert('Saved66666666');
+  <!--== Start Side Menu ==-->
+  <aside class="off-canvas-wrapper">
+    <div class="off-canvas-inner">
+      <div class="off-canvas-overlay d-none"></div>
+      <!-- Start Off Canvas Content Wrapper -->
+      <div class="off-canvas-content">
+        <!-- Off Canvas Header -->
+        <div class="off-canvas-header">
+          <div class="close-action">
+            <button class="btn-close"><i class="icofont-close-line"></i></button>
+          </div>
+        </div>
 
-					}
-						}
-				})
-			});
-		</script>
+        <div class="off-canvas-item">
+          <!-- Start Mobile Menu Wrapper -->
+          <div class="res-mobile-menu">
+            <!-- Note Content Auto Generate By Jquery From Main Menu -->
+          </div>
+          <!-- End Mobile Menu Wrapper -->
+        </div>
+        <!-- Off Canvas Footer -->
+        <div class="off-canvas-footer"></div>
+      </div>
+      <!-- End Off Canvas Content Wrapper -->
+    </div>
+  </aside>
+  <!--== End Side Menu ==-->
+</div>
 
 
-  </body>
+
+<!--=======================Javascript============================-->
+
+<!--=== Modernizr Min Js ===-->
+<script src="{% static 'bot5/assets/js/modernizr.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-main.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-migrate.js' %}"></script>
+<script src="{% static 'bot5/assets/js/popper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.appear.js' %}"></script>
+<script src="{% static 'bot5/assets/js/swiper.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/fancybox.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/aos.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery.countdown.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/tippy.all.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/isotope.pkgd.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/vivus.js' %}"></script>
+<script src="{% static 'bot5/assets/js/parallax.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/slick.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/wow.min.js' %}"></script>
+<script src="{% static 'bot5/assets/js/jquery-zoom.min.js' %}"></script>
+
+<!--=== Custom Js ===-->
+<script src="{% static 'bot5/assets/js/custom.js' %}"></script> 
+<script>
+
+  function addWish(id){
+      
+    
+      var url = "{% url 'add_to_wishlist' %}"
+      $.ajax({
+        type:"GET",
+        url : url,
+        data : {"id" : id},
+        success : function(r) {
+  
+        Swal.fire(
+          'Product Added To Wishlist!',
+          '!',
+          'success'
+        )
+          
+        },
+        error: function() {
+        Swal.fire('Product Already Added')
+        }
+      });
+    }
+  
+  
+function addcat(id){
+color = $("#v_color").val()
+size  = $("#v_size").val()
+
+if (color !='' && size !=''){
+  console.log("true")
+}
+else{
+  color = 0
+  size = 0
+}
+  $.ajax({
+    type:"GET",
+    url : "{% url 'add_cart' %}",
+    data : {"id" : id ,"color":color,"size":size},
+    success : function(r) {
+      
+      if (r.status==true){
+
+        Swal.fire('Product already added ','!',
+        'success')
+      
+      }
+      else{
+
+        Swal.fire(
+        'Product Added To Cart!',
+        '!',
+        'success'
+      )
+      }
+    },
+    error: function() {
+      Swal.fire('error occured during ')
+    }
+});
+}
+  $("#v_color").change(function (){
+    console.log("<<<<<<<")
+    color = $("#v_color").val()
+    size  = $("#v_size").val()
+    $.ajax({
+      type:"GET",
+      url : "{% url 'check_variation' %}",
+      data : {"color" : color,"size":size},
+      success : function(r) {
+        
+        if (r.status==true){
+        $("#cartdiv").show();
+        $("#v_error").text("");
+        $(".v_price").text("₹"+ r.price);
+        alertify.set('notifier','position', 'top-right');
+                alertify.success('Available.!');
+
+      
+        }
+        else{
+        $("#cartdiv").hide();
+        $("#v_error").text("Selected variation not available.!");
+        alertify.set('notifier','position', 'top-right');
+                alertify.error('Not Available.!');
+        }
+      }
+    });
+
+  });
+  $("#v_size").change(function (){
+    console.log("<<<<<<<")
+    color = $("#v_color").val()
+    size  = $("#v_size").val()
+    id = {{id}}
+    $.ajax({
+      type:"GET",
+      url : "{% url 'check_variation' %}",
+      data : {"color" : color,"size":size,"id":id},
+      success : function(r) {
+        
+        if (r.status==true){
+        $("#cartdiv").show();
+        $("#v_error").text("");
+        $(".v_price").text("₹"+ r.price);
+        alertify.set('notifier','position', 'top-right');
+                alertify.success('Available.!');
+
+
+    
+        
+        }
+        else{
+        $("#cartdiv").hide();
+        $("#v_error").text("Selected variation not available.!");
+        alertify.set('notifier','position', 'top-right');
+                alertify.error('Not Available.!');
+        
+      
+        }
+      },
+      error: function() {
+        Swal.fire('error occured during ')
+      }
+    });
+
+  });
+
+
+  
+  
+  </script>
+
+</body>
+
 </html>

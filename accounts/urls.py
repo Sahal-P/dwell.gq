@@ -22,9 +22,9 @@ urlpatterns = [
      path("GenerateCSV",helpers.GenerateCSV,name="GenerateCSV"),
      path("banner", views.banner, name="banner"),
      path("add_banner", views.add_banner, name="add_banner"),
-     path("home3", views.home3, name="home3"),
      path("BannerSelect", views.BannerSelect, name="BannerSelect"),
      path("Remove_banner", views.Remove_banner, name="Remove_banner"),
      path("searchproduct", views.searchproduct, name="searchproduct"),
   
 ]
+handler404 = "accounts.views.page_not_found_view"
