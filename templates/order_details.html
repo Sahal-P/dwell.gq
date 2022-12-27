@@ -125,6 +125,8 @@
                     <h5 style="color: black;">Return Requested waiting for approval</h5>
                     {% elif order.status == "Return Aproved" %}
                     <h5 style="color: black;">Return Request Aproved</h5>
+                    {% elif order.status == "Refund Initiated" %}
+                    <h5 style="color: green;">Refund Initiated Amount added to wallet </h5>
                     {% endif %}
                     <div class="border-start h-100"></div>
                     {% comment %} <h5 class="fw-normal mb-0"><a href="#!">Pre-pay</a></h5> {% endcomment %}

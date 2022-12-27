@@ -19,6 +19,10 @@ from wallet.models import Wallet
 import uuid
 from django.core.mail import send_mail
 
+@never_cache
+def comingsoon(request):
+    return render(request,"comingsoon.html")
+
 def page_not_found_view(request, exception):
     return render(request, 'page-not-found.html', status=404)
 
@@ -99,7 +103,7 @@ def home(request):
     id = 16
     id2 = 19
     trending = Products.objects.all().order_by('?')[:6]
-    our = Products.objects.filter(subcategory_id =16).order_by('?')[:3]
+    our = Products.objects.filter(subcategory_id =3).order_by('?')[:3]
     banner = Banner.objects.all()[:3]
     banner2 = Banner.objects.all()[3:6]
     catag = Category.objects.all()

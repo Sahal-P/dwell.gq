@@ -25,6 +25,7 @@ urlpatterns = [
      path("BannerSelect", views.BannerSelect, name="BannerSelect"),
      path("Remove_banner", views.Remove_banner, name="Remove_banner"),
      path("searchproduct", views.searchproduct, name="searchproduct"),
+     path("comingsoon", views.comingsoon, name="comingsoon"),
   
 ]
 handler404 = "accounts.views.page_not_found_view"

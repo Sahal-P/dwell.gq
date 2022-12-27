@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.http import JsonResponse
-from accounts.models import Address
+from accounts.models import Address,Account
 from cart.models import CartItem,OldCart,GCart
 from orders.models import Orders
 from category.models import Products
@@ -9,6 +9,7 @@ from django.contrib import messages
 from coupen.models import Coupens
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from wallet.models import Wallet
 
 
 @login_required(login_url='adminlogin')
@@ -211,6 +212,14 @@ def admin_orderedit(request):
     order_id = request.GET.get('oid')
     value = request.GET.get('value')
     obj = Orders.objects.get(id = order_id)
+    if value == "Refund Initiated":
+        price = obj.product.selling_price
+        email = request.user
+        user = Account.objects.get(email = email)
+        wallet=Wallet.objects.get(user = user)
+        wallet.amount+=price
+        wallet.save()
+        
     obj.status = value
     obj.save()
     orders = Orders.objects.all().order_by('id')
