@@ -146,8 +146,8 @@ def GenerateInvoicePdf(request):
         return HttpResponse(format,content_type='application/pdf')
 
 def GenerateCSV(request):
+    messages.info(request,"somthing error occured !!")
     
-    
-    return HttpResponse("csv")
+    return redirect(request.META.get('HTTP_REFERER')) 
 
             
