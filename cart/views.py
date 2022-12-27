@@ -203,9 +203,16 @@ def cartrefresh(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0
         
         if GCart.objects.filter(Guest_id=create(request)).exists():
             id=GCart.objects.get(Guest_id=create(request))
-            cart_items=CartItem.objects.filter(Guest_id=id,is_active=True)
+            cart_items=CartItem.objects.filter(Guest=id,is_active=True)
             
             for cart_item in cart_items:
+                c_varient = cart_item.varient_id
+                if c_varient != "0":
+                    v = Variation.objects.get(variation_id=cart_item.varient_id)
+                    v_price = v.price
+                    cart_item.varient_price=v_price
+                    cart_item.save()
+                
                 if cart_item.product.offer_price is not None and cart_item.product.offer_price is not 0:
                     total += (cart_item.product.offer_price * cart_item.Quantity)
                 else:
