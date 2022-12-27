@@ -101,7 +101,7 @@ def d_admin(request):
 @never_cache
 def home(request):
     id = 16
-    id2 = 19
+    id2 = 7
     trending = Products.objects.all().order_by('?')[:6]
     our = Products.objects.filter(subcategory_id =3).order_by('?')[:3]
     banner = Banner.objects.all()[:3]
