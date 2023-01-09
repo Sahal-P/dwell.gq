@@ -122,11 +122,14 @@ def add_cart(request):
         
         return redirect("cart")
 
-def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0):
+def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0,count=0):
+
+    
     try :
         if request.user.is_authenticated:
             cart_items = CartItem.objects.filter(user=request.user,is_active=True)
         
+        count = CartItem.objects.filter(user =request.user).count()
 
         for cart_item in cart_items:
             c_varient = cart_item.varient_id
@@ -167,6 +170,10 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
                 tax = (5*total)/100
                 delv = 5
                 g_total = total+ tax+delv
+        cart=request.session.session_key
+        if GCart.objects.filter(Guest_id=cart).exists():
+            id=GCart.objects.get(Guest_id=cart)
+            count=CartItem.objects.filter(Guest=id,is_active=True).count()
                 
     return render (request,"cart.html", {
         "total":total,
@@ -174,7 +181,8 @@ def cart(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_tota
         "cart_items":cart_items,
         "delv":delv,
         "tax":tax,
-        "g_total":g_total
+        "g_total":g_total,
+        "count":count
     })
     
 def cartrefresh(request,Gcart=0, total=0,quantity=0,cart_items=None,tax=0,delv=0,g_total=0):

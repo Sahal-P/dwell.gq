@@ -39,13 +39,13 @@ def product_offer(request):
 @login_required(login_url='adminlogin')
 def add_Product_offer(request,id):
     if request.POST:
-        product = Products.objects.get(id = id)
-        offer = Offer_product()
-        Discount = request.POST.get('Discount')
-        offer.discount = Discount
-        offer.product = product
+        product         = Products.objects.get(id = id)
+        offer           = Offer_product()
+        Discount        = request.POST.get('Discount')
+        offer.discount  = Discount
+        offer.product   = product
         offer.save()
-        product.offer = Discount
+        product.offer   = Discount
         product.save()
         return redirect('product_offer')
     product = Products.objects.get(id=id)
@@ -54,32 +54,23 @@ def add_Product_offer(request,id):
 @never_cache
 @login_required(login_url='adminlogin')
 def sales_report(request):
-    
     orders   = Orders.objects.annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-    
     if  request.GET.get('Month') != "0":
         currentMonth = datetime.now().month
-        month1 = request.GET.get('Month') 
+        month1       = request.GET.get('Month') 
         if month1 is not None and month1 !="0":
-            month = int(month1)
-        
-            # today   = datetime.now()- relativedelta(months=1)
-            orders      = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-        
+            month   = int(month1)
+            # today = datetime.now()- relativedelta(months=1)
+            orders  = Orders.objects.filter(orderd_date__month=month).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
     elif request.GET.get('from_date'):
         from_date   = request.GET.get('from_date')
         date_to     = request.GET.get('to_date')
         if not from_date or not date_to:
             messages.info(request,"Please fill from and to date")
             return redirect(request.META.get('HTTP_REFERER')) 
-        
         to_date     = datetime.strptime(date_to , "%Y-%m-%d")
         to_date11   = to_date + timedelta(1)
-        
         orders      = Orders.objects.filter(orderd_date__range=[from_date, to_date11]).annotate(sub_total=F('product__selling_price')*F('quantity'),margin_total=F('product__original_price')*F('quantity'),profit=(F('product__selling_price')-F('product__original_price'))*F('quantity')).order_by("-orderd_date")
-   
-        
-        
     page            = Paginator(orders, 6)
     page_list       = request.GET.get('page')
     page            = page.get_page(page_list)
@@ -94,26 +85,31 @@ def d_admin(request):
         current = today.strftime("%B %d, %Y")
         date    = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(orderd_items=Count('id')).order_by("orderd_date__date")
         sales   = Orders.objects.filter(orderd_date__month = today.month).values("orderd_date__date").annotate(sales=Count('id',filter=Q(status ="Deliverd")),cancelled=Count('id' , filter=Q(status ="cancelled")),returns=Count('id' , filter=(Q(status ="Refund In Progress")|Q(status ="Return Aproved")))).order_by("orderd_date__date")
-        best_moving = Orders.objects.filter(orderd_date__year = today.year).annotate(moving = Count('product_id' )).filter(moving__gt = 2)
-        return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current,"best_moving":best_moving})
+        # best_moving = Orders.objects.filter(orderd_date__year = today.year).annotate(moving = Count('product_id' )).filter(moving__gt = 2)
+        return render(request, "admin/index.html" ,{'date':date,  'sales':sales , 'current':current})
     return redirect("adminlogin")
 
 @never_cache
 def home(request):
-    id = 16
+    id  = 16
     id2 = 7
     trending = Products.objects.all().order_by('?')[:6]
-    our = Products.objects.filter(subcategory_id =3).order_by('?')[:3]
-    banner = Banner.objects.all()[:3]
-    banner2 = Banner.objects.all()[3:6]
-    catag = Category.objects.all()
-    subcat = SubCategory.objects.all()
+    our      = Products.objects.filter(subcategory_id =3).order_by('?')[:3]
+    banner   = Banner.objects.all()[:3]
+    banner2  = Banner.objects.all()[3:6]
+    catag    = Category.objects.all()
+    subcat   = SubCategory.objects.all()
     new_prod = Products.objects.all().order_by('-added_Date')[:9]
-   
+    count = 0
     if request.user.is_authenticated:
-        
-        return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod})
-    return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod})
+        count = CartItem.objects.filter(user =request.user).count()
+        return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our ,"banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod,"count":count})
+    cart=request.session.session_key
+    if GCart.objects.filter(Guest_id=cart).exists():
+        id=GCart.objects.get(Guest_id=cart)
+        count=CartItem.objects.filter(Guest=id,is_active=True).count()
+    
+    return render(request, "index.html",{"id":id,"id2":id2,"trending":trending,"our":our , "banner1":banner,"banner2":banner2,"catag":catag,"subcat":subcat,"new_prod":new_prod,"count":count})
 
 @never_cache
 def user_login(request):
@@ -174,56 +170,46 @@ def user_signup(request,*args, **kwargs):
     if user.is_authenticated:
         return redirect("home")
     try:
-            if request.POST:
-                amount = 0
-                if request.POST.get('Referal'):
-                    referal_id = request.POST.get('Referal')
-                    
-                    if ReferalSection.objects.filter(referal_id=referal_id).exists():
-                        amount = 500
-                    else:
-                        messages.error(request,'Enterd Referal id is Invalid')
-                        return redirect(request.META.get('HTTP_REFERER'))
-                        
-                first_name= request.POST.get("first_name")
-                last_name= request.POST.get("last_name")
-                email = request.POST.get("email")
-                phone_number = request.POST.get("phone_number")
-                username = request.POST.get("username")
-                password = request.POST.get("password1")
-                if not first_name or not email or not phone_number or not username or not password:
-                    messages.error(request,'Please fill all required fields')
+        if request.POST:
+            amount = 0
+            if request.POST.get('Referal'):
+                referal_id = request.POST.get('Referal')
+                if ReferalSection.objects.filter(referal_id=referal_id).exists():
+                    amount = 500
+                else:
+                    messages.error(request,'Enterd Referal id is Invalid')
                     return redirect(request.META.get('HTTP_REFERER'))
-                
-                if Account.objects.filter(phone_number=phone_number).exists():
-                    messages.info(request,'a user with this phone number is already exist')
-                    return redirect ('user_signup')
-                if Account.objects.filter(username=username).exists():
-                    messages.info(request,'username is already taken')
-                    return redirect ('user_signup')
-                if Account.objects.filter(email=email).exists():
-                    messages.info(request, 'An account with this email is already exist')
-                    return redirect ('user_signup')
-                user = Account.objects.create_user(first_name=first_name,last_name=last_name,
-                                                email=email,username= username,
-                                                phone_number=phone_number,
-                                                password=password)
-                user.save()
-                
-                if amount is not 0:
-                    wallet = Wallet.objects.create(user=user,amount = amount)
-                    wallet.save()
-                    
-                user = Account.objects.get(email=email,username=username)
-                
-                user1 = authenticate(request,email=email,password=password)
-                if user1 is not None:
-                    otp_handler = otphandler(phone_number).sent_otp_on_phone()
-                    response = redirect("signup_otp_v")
-                    response.set_cookie('phone', phone_number)
-                    signupgetuser(email,phone_number)
-                    return response
-                
+            first_name   = request.POST.get("first_name")
+            last_name    = request.POST.get("last_name")
+            email        = request.POST.get("email")
+            phone_number = request.POST.get("phone_number")
+            username     = request.POST.get("username")
+            password     = request.POST.get("password1")
+            if not first_name or not email or not phone_number or not username or not password:
+                messages.error(request,'Please fill all required fields')
+                return redirect(request.META.get('HTTP_REFERER'))
+            if Account.objects.filter(phone_number=phone_number).exists():
+                messages.info(request,'a user with this phone number is already exist')
+                return redirect ('user_signup')
+            if Account.objects.filter(username=username).exists():
+                messages.info(request,'username is already taken')
+                return redirect ('user_signup')
+            if Account.objects.filter(email=email).exists():
+                messages.info(request, 'An account with this email is already exist')
+                return redirect ('user_signup')
+            request.session['firstname']=first_name
+            request.session['lastname']=last_name
+            request.session['email']=email
+            request.session['phonenumber']=phone_number
+            request.session['username']=username
+            request.session['password']=password
+            if amount is not 0:
+                wallet = Wallet.objects.create(user=user,amount = amount)
+                wallet.save()
+            otp_handler = otphandler(phone_number).sent_otp_on_phone()
+            response = redirect("signup_otp_v")
+            response.set_cookie('phone', phone_number)
+            return response
     except:
         messages.info(request,'Invalid credentials')
     return render(request,"signup.html")
@@ -233,16 +219,7 @@ def signup_otp_v(request):
     user = request.user
     if user.is_authenticated:
         return redirect("home")
-    email = signupgetuser.email
-    phone_number = request.COOKIES.get('phone')
-    try:
-        user = Account.objects.get(phone_number=phone_number)
-    except:
-        messages.error(request,'somthing error occured during the verification !!')
-        return redirect(request.META.get('HTTP_REFERER'))
     request.user = user
-    
-
     try:
         if request.method == "POST":
             otp1 = request.POST.get("otp1")
@@ -257,11 +234,20 @@ def signup_otp_v(request):
             
             code = otp1+otp2+otp3+otp4+otp5+otp6
             check = otphandler(phone_number).checkotp(code)
+            check=True
             if check == True:
+                first_name    = request.session.get('firstname')
+                last_name     = request.session.get('lastname')
+                email         = request.session.get('email')
+                phone_number  = request.session.get('phonenumber')
+                password      = request.session.get('password')
+                username      = request.session.get('username')
+                user          = Account.objects.create_user(first_name=first_name,last_name=last_name,email=email,username= username,phone_number=phone_number,password=password)
+                user.save()
                 login(request,user)
                 credit = 100
+                
                 if Wallet.objects.filter(user=user).exists():
-                    
                     wallet = Wallet.objects.get(user=user)
                     wallet.amount += credit
                     wallet.save()
@@ -272,6 +258,7 @@ def signup_otp_v(request):
                 
                 referal = ReferalSection.objects.create(user=user,referal_id = refer_id)
                 referal.save()
+                
                 if request.COOKIES.get('Guest_checkout'):
                     value = request.COOKIES.get('Guest_checkout')
                     data = ast.literal_eval(value)
@@ -292,8 +279,6 @@ def signup_otp_v(request):
                         return response
                     
                 response = render(request,"index.html")
-                response.delete_cookie('phone')
-
                 return response
             else:
                 messages.error(request,'Invalid otp, make sure it is correct !!')
@@ -314,18 +299,13 @@ def user_otp(request):
             if phone is True:
                 user = Account.objects.get(phone_number=phone_number)
                 request.user = user
-                
-                
                 otp_handler = otphandler(phone_number).sent_otp_on_phone()
-                
                 response = redirect("otp_v")
                 response.set_cookie('phone', phone_number)
-                signupgetuser(email,phone_number)
                 return response
             else :
                 messages.error(request,'User does not exists in this number !!')
-                return redirect(request.META.get('HTTP_REFERER'))
-                
+                return redirect(request.META.get('HTTP_REFERER')) 
     except:
        pass
     return render(request,'otp.html')
@@ -334,7 +314,6 @@ def user_otp(request):
 def otp_v(request):
     if request.user.is_authenticated:
          return redirect("home")
-     
     phone_number = request.COOKIES.get('phone')
     try:
         user = Account.objects.get(phone_number=phone_number)
@@ -342,7 +321,6 @@ def otp_v(request):
         messages.error(request,'somthing error occured during the verification !!')
         return redirect(request.META.get('HTTP_REFERER'))
     request.user = user
-
     try:    
         user =request.user
         if request.method == "POST":
@@ -370,12 +348,15 @@ def otp_v(request):
         messages.error(request,'Invalid credentials !!')
     return render (request, "otpv.html" )
 
-
 def resendotp(request):
     phone = otphandler.phone_number
-    phone_number = request.COOKIES.get('phone')
+    try:
+        phone_number = request.COOKIES.get('phone')
+    except:
+        messages.error(request,'Somthing error occured Please try again !!')
+        return redirect(request.META.get('HTTP_REFERER'))   
     
-    otphandler(phone).sent_otp_on_phone()
+    otphandler(phone_number).sent_otp_on_phone()
     return JsonResponse({phone:phone})
 
 @never_cache
